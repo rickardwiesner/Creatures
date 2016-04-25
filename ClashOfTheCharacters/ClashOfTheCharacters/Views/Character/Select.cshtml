@@ -1,0 +1,44 @@
+﻿@using ClashOfTheCharacters.Helpers;
+@using ClashOfTheCharacters.Models;
+
+@model IEnumerable<Character>
+
+@{
+    ViewBag.Title = "Select";
+    int counter = 0;
+}
+
+<h3 class="text-center">Select Your First Character</h3>
+<div class="container">
+    <div class="row">
+        @foreach (var character in Model)
+        {
+            counter++;
+
+            <div class="col-md-3 col-sm-6">
+                <div class="col-md-12 gamecard">
+                    <div class="col-md-9 col-xs-9">
+                        <h3><strong>@character.Name</strong></h3>
+                    </div>
+                    <div class="col-md-3 col-xs-3">
+                        <img class="gamecard-element" src="@Helper.GetElementUrl(character.Element)" />
+                    </div>
+                    <img class="img-responsive gamecard-image" src="@character.ImageUrl" />
+                    <p>Level: 5</p>
+                    <p>Base Attack: @character.BaseAttack</p>
+                    <p>Base Defense: @character.BaseDefense</p>
+                    <p>Base Hp: @character.BaseHp</p>
+                    <form method="post">
+                        <input hidden name="characterId" value="@character.Id" />
+                        <input type="submit" value="Select" class="btn btn-block btn-danger gamecard-select" />
+                    </form>
+                </div>
+            </div>
+
+            if (counter % 2 == 0)
+            {
+                <div class="clearfix visible-sm"></div>
+            }
+        }
+    </div>
+</div>

@@ -1,0 +1,53 @@
+﻿@model IEnumerable<ClashOfTheCharacters.Models.ApplicationUser>
+
+@{
+    ViewBag.Title = "Ladder";
+}
+
+<h2>Ladder</h2>
+<p>Search for user</p>
+<form  role="search" action="/Ladder/SearchForUser" method="post">
+    <input type="text" placeholder="Search" name="SearchField" />
+    <button type="submit">Search</button>
+</form>
+<table class="table">
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Rank)
+        </th>
+        <th>
+            <a href="~/Controllers/LadderController/SortByName">@Html.DisplayNameFor(model => model.UserName)</a>
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rank)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+        </tr>
+    }
+
+</table>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Username</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.UserName</td>
+            </tr>
+        }
+
+    </tbody>
+</table>

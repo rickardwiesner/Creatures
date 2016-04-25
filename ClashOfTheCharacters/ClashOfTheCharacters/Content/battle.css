@@ -1,0 +1,16 @@
+﻿.battle-summary {
+    font-family: Gabriola;
+    text-transform: uppercase;
+}
+
+.attack-info {
+    margin: 100px 0;
+}
+
+.battle-summary p {
+    font-size: 22px;
+}
+
+.col-battles {
+    min-height: 150px;
+}
