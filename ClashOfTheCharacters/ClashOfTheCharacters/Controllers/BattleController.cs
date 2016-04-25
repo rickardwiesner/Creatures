@@ -22,15 +22,6 @@ namespace ClashOfTheCharacters.Controllers
             var challenges = db.Challenges.Where(c => c.ChallengerId == userId || c.ReceiverId == userId && c.Accepted == false).ToList();
             var battles = db.Battles.Where(b => b.Challenge.ChallengerId == userId || b.Challenge.ReceiverId == userId).ToList();
 
-            var battleService = new BattleService();
-            battleService.RunBattles();
-
-            if (user.Stamina < user.MaxStamina)
-            {
-                var staminaService = new StaminaService();
-                staminaService.UpdateStamina(userId);
-            }
-
             ViewBag.UserId = userId;
             ViewBag.Challenges = challenges;
             ViewBag.Battles = battles;
@@ -53,6 +44,11 @@ namespace ClashOfTheCharacters.Controllers
 
                 if (user.Stamina >= 6 && db.Challenges.Count(c => c.ChallengerId == userId && c.ReceiverId == id && c.Accepted == false) < 2)
                 {
+                    if (user.Stamina == user.MaxStamina)
+                    {
+                        user.LastStaminaTime = DateTimeOffset.Now;
+                    }
+
                     user.Stamina -= 6;
 
                     var challenge = new Challenge { ChallengerId = userId, ReceiverId = id };

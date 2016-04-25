@@ -1,5 +1,69 @@
-﻿@{
+﻿@model IEnumerable<ApplicationUser>
+
+@using ClashOfTheCharacters.Models;
+
+@{
     ViewBag.Title = "Home Page";
+
+    <link href="~/Content/temp-home.css" rel="stylesheet" />
 }
 
-<h2>Home Page</h2>
+@if (!Request.IsAuthenticated)
+{
+    <div class="jumbotron">
+        <div class="row">
+            <div class="col-md-6">
+                <img class="img-responsive" src="http://pngimg.com/upload/dragon_PNG992.png" />
+            </div>
+            <div class="col-md-6">
+                <h1>Join The Battle Today!</h1>
+                <h3>Build your team of mythical creatures and compete against @Model.Count() other members of becoming the best trainer.</h3>
+                @Html.ActionLink("Sign Up", "Register", "Account", null, new { @class = "btn btn-lg btn-danger" })
+                <h5>Already a member?</h5>
+                @Html.ActionLink("Log In", "Login", "Account", null, new { @class = "btn btn-default" })
+            </div>
+
+        </div>
+    </div>
+}
+
+<h2 class="text-center">Top 5</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Rank</th>
+            <th>Username</th>
+            <th>Creatures</th>
+            <th>Active</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.OrderByDescending(u => u.Rank).Take(5))
+        {
+            <tr>
+                <td>@user.Rank</td>
+                <td>@user.UserName</td>
+                <td>
+                    @foreach (var creature in user.TeamMembers)
+                    {
+                        <img src="@creature.Character.ImageUrl" />
+                    }
+                </td>
+                <td>
+                    @if (user.IsOnline)
+                    {
+                        <span class="fa fa-circle text-success"></span>
+                    }
+                    else
+                    {
+                        <span class="fa fa-circle-o"></span>
+                    }
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+
+

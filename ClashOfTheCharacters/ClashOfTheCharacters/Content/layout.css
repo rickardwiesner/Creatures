@@ -1,0 +1,13 @@
+﻿body {
+    background-color: #fffaf6;
+    margin-top: 60px;
+}
+
+.navbar-nav > li > p {
+    padding: 17px 15px;
+    margin: 0;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: #fff0e5;
+}

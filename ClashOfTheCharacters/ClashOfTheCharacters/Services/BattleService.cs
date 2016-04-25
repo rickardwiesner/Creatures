@@ -149,14 +149,18 @@ namespace ClashOfTheCharacters.Services
 
             Random instance = new Random();
 
-            float random = 0;
+            //float random = 0;
 
-            while (random < 0.85)
-            {
-                random = (float)instance.NextDouble();
-            }
+            //while (random < 0.85)
+            //{
+            //    random = (float)instance.NextDouble();
+            //}
 
-            return (((2 * (float)attacker.Level + 10) / 250) * ((float)attacker.Damage / (float)defender.Defense) * (float)attacker.Character.BaseAttack + 2) * (1.5f * elementBonus * random);
+            //int random = instance.Next(4);
+
+            float random = (float)instance.NextDouble();
+
+            return (((2 * (float)attacker.Level + 10) / 250) * ((float)attacker.Damage / (float)defender.Defense) * (float)attacker.Character.BaseAttack + 2) * (1.5f * elementBonus * (random * 3));
         }
 
         void AddCompetitors()

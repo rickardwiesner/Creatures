@@ -74,7 +74,7 @@
                         <tr>
                             <th>Rank</th>
                             <th>Username</th>
-                            <th>Challenge</th>
+                            <th class="text-right">Challenge</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -83,7 +83,7 @@
                             <tr>
                                 <td>@user.Rank</td>
                                 <td>@user.UserName</td>
-                                <td><a href="/Battle/Challenge/@user.Id"><span class="fa fa-2x fa-send"></span></a></td>
+                                <td class="text-right"><a href="/Battle/Challenge/@user.Id"><span class="fa fa-2x fa-send"></span></a></td>
                             </tr>
                         }
 
@@ -119,16 +119,16 @@
                     <thead>
                         <tr>
                             <th>Opponent</th>
-                            <th>Ranking Points</th>
-                            <th>Result</th>
+                            <th class="text-right">Ranking Points</th>
+                            <th class="text-right">Result</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var battle in battles.Where(b => b.StartTime.CompareTo(DateTime.Now) < 0).OrderByDescending(b => b.StartTime).Take(10))
+                        @foreach (var battle in battles.Where(b => b.Calculated).OrderByDescending(b => b.StartTime).Take(10))
                         {
                             <tr>
                                 <td>@battle.Competitors.First(c => c.UserId != userId).User.UserName</td>
-                                <td>
+                                <td class="text-right">
                                     @{
                                         var rankingPointsEarned = battle.Competitors.First(c => c.UserId == userId).RankingPointsEarned;
                                     }
@@ -144,7 +144,7 @@
                                     }
 
                                 </td>
-                                <td>
+                                <td class="text-right">
                                     <a class="fancybox" href="#Result-@battle.Id"><span class="fa fa-2x fa-eye"></span></a>
 
                                     @*Result Box*@

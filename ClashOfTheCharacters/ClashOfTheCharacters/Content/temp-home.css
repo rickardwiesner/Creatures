@@ -1,0 +1,16 @@
+﻿/*.jumbotron {
+    background-image: url(https://images7.alphacoders.com/520/520820.png);
+    background-image: url(https://images3.alphacoders.com/240/240055.jpg);
+    background-image: url(http://vignette3.wikia.nocookie.net/monsterhunter/images/5/5c/MH4-Rathalos_Render_001.png/revision/latest?cb=20131127152605);
+    background-attachment: fixed;
+    background-size: cover;
+    min-height: 600px;
+}
+
+.jumbotron h2 {
+    color: white;
+}*/
+
+.jumbotron {
+    background-color: antiquewhite;
+}
