@@ -27,7 +27,7 @@
                     <li>@Html.ActionLink("Characters", "Index", "Character")</li>
                     <li>@Html.ActionLink("Ladder", "Index", "Ladder")</li>
                 </ul>
-
+                
                 @if (Request.IsAuthenticated)
                 {
                     @Html.Action("LoginPartial", "Account")
