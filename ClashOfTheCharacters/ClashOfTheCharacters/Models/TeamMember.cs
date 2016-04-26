@@ -22,6 +22,8 @@ namespace ClashOfTheCharacters.Models
 
         public virtual ICollection<BattleCharacter> BattleAppearances { get; set; }
 
+        public int Kills { get { return BattleAppearances.Sum(ba => ba.Attacks.Count(a => a.DefenderHpRemaining == 0 && a.Attacker.TeamMember == this)); } }
+
         public int Damage { get { return Convert.ToInt32(Level * Character.AttackMultiplier + Character.BaseAttack); } }
 
         public int Defense { get { return Convert.ToInt32(Level * Character.DefenseMultiplier + Character.BaseDefense); } }
@@ -31,5 +33,6 @@ namespace ClashOfTheCharacters.Models
         public int Worth { get { return Convert.ToInt32((Character.Price * 0.5) + (Level * 5)); } }
 
         public int MaxXp { get { return 50 + Level / 2 * 6 * Level; } }
+
     }
 }

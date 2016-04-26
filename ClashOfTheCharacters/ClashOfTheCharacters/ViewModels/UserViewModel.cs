@@ -12,17 +12,16 @@ namespace ClashOfTheCharacters.ViewModels
 
         public int WonBattles { get; set; }
 
-        public int BattlesWonPercentage { get { return Convert.ToInt32((float)WonBattles / (float)TotalBattles * 100); } }
+        public int WinPercentage { get { return TotalBattles == 0 ? 0 : Convert.ToInt32((float)WonBattles / TotalBattles * 100); } }
 
         public int LostBattles { get; set; }
 
-        //100 - BattlesWonPercentage
-        public int BattlesLostPercentage { get { return Convert.ToInt32((float)LostBattles / (float)TotalBattles * 100); } }
+        public int LosePercentage { get { return TotalBattles == 0 ? 0 : 100 - WinPercentage; } }
 
         public int TotalGoldEarned { get; set; }
 
-        public TeamMember TeamMember { get; set; }
+        public TeamMember MostUsedCharacter { get; set; }
 
-
+        public int Kills { get { return MostUsedCharacter.Kills; } }
     }
 }

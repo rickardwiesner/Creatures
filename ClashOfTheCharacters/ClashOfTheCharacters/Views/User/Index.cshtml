@@ -4,5 +4,11 @@
     ViewBag.Title = "Profile";
 }
 
-<h2>@Model.WonBattles</h2>
-<h2>@Model.LostBattles</h2>
+<h2>Total Battles: @Model.TotalBattles</h2>
+<h2>Won Battles: @Model.WonBattles</h2>
+<h2>Lost Battles: @Model.LostBattles</h2>
+<h2>Win Percentage: @Model.WinPercentage%</h2>
+<h2>Lose Percentage: @Model.LosePercentage%</h2>
+<h2>Total Gold Earned: @Model.TotalGoldEarned</h2>
+<h2>Most Used Character: @(Model.MostUsedCharacter == null ? "None" : Model.MostUsedCharacter.Character.Name)</h2>
+<h2>Kills: @(Model.MostUsedCharacter == null ? "None" : Model.MostUsedCharacter.Kills.ToString())</h2>
