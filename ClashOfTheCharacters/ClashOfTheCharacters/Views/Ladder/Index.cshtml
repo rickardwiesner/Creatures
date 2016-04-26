@@ -2,50 +2,39 @@
 
 @{
     ViewBag.Title = "Ladder";
+    int counter = 0;
 }
 
+
 <h2>Ladder</h2>
-<p>Search for user</p>
-<form  role="search" action="/Ladder/SearchForUser" method="post">
-    <input type="text" placeholder="Search" name="SearchField" />
-    <button type="submit">Search</button>
+<form class="form-inline" role="form" action="/Ladder/Index">
+    <div class="form-group">
+        <input class="form-control" placeholder="Search for user">
+    </div>
+    <button type="submit" class="btn btn-default">Search</button>
 </form>
-<table class="table">
-    <tr>
-
-        <th>
-            @Html.DisplayNameFor(model => model.Rank)
-        </th>
-        <th>
-            <a href="~/Controllers/LadderController/SortByName">@Html.DisplayNameFor(model => model.UserName)</a>
-        </th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Rank)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserName)
-            </td>
-        </tr>
-    }
-
-</table>
-
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
-            <th>Username</th>
+            <th>Rank</th>
+            <th>Ladder points</th>
+            <th><a href="~/Controllers/LadderController/SortByName">Username</a></th>
+            <th>Creatures</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var user in Model)
         {
+            counter++;
             <tr>
+                <td>@counter</td>
+                <td>@user.Rank</td>
+
                 <td>@user.UserName</td>
+                @foreach (var creature in user.TeamMembers)
+                {
+                    <td><img src="@creature.Character.ImageUrl" /></td>
+                }
             </tr>
         }
 

@@ -9,13 +9,13 @@ namespace ClashOfTheCharacters.Controllers
 {
     public class LadderController : Controller
     {
-            ApplicationDbContext context = new ApplicationDbContext();
+        ApplicationDbContext context = new ApplicationDbContext();
         // GET: Ladder
         public ActionResult Index()
         {
+            string userSearch = Request["searchField"] == null ? "" : Request["searchField"];
 
-            var listWithUsers = context.Users.OrderBy(x=> x.Rank);
-            return View(listWithUsers.ToList());
+            return View(context.Users.Where(c => c.UserName.Contains(userSearch)).OrderByDescending(c => c.Rank));
         }
         //[HttpPost]
         //public ActionResult SortByName()

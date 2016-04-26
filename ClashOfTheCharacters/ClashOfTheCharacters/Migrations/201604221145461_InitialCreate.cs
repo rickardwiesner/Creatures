@@ -14,7 +14,7 @@ namespace ClashOfTheCharacters.Migrations
                         Id = c.Int(nullable: false, identity: true),
                         Stamina = c.Int(nullable: false),
                         Gold = c.Int(nullable: false),
-                        Ranking = c.Int(nullable: false),
+                        Score = c.Int(nullable: false),
                         ApplicationUserId = c.String(maxLength: 128),
                     })
                 .PrimaryKey(t => t.Id)
