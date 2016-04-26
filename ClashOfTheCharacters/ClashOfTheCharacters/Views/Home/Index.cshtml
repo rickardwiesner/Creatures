@@ -38,10 +38,10 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var user in Model.OrderByDescending(u => u.Rank).Take(5))
+        @foreach (var user in Model.OrderByDescending(u => u.LadderPoints).Take(5))
         {
             <tr>
-                <td>@user.Rank</td>
+                <td>@user.LadderPoints</td>
                 <td>@user.UserName</td>
                 <td>
                     @foreach (var creature in user.TeamMembers)
