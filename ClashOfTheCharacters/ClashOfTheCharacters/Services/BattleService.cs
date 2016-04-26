@@ -37,9 +37,6 @@ namespace ClashOfTheCharacters.Services
             var challengerCompetitor = battle.Competitors.First(c => c.Challenger);
             var receiverCompetitor = battle.Competitors.First(c => !c.Challenger);
 
-            //var challengerCharacters = challengerCompetitor.BattleCharacters;
-            //var receiverCharacters = receiverCompetitor.BattleCharacters;
-
             //Så länge båda tävlande har Hp kvar...
             while (challengerCompetitor.TotalHp > 0 && receiverCompetitor.TotalHp > 0)
             {
@@ -91,8 +88,8 @@ namespace ClashOfTheCharacters.Services
                 var experienceService = new ExperienceService();
                 experienceService.CalculateXp
                     (
-                    challengerCompetitor.User.TeamMembers.First(tm => tm.CharacterId == challengerCharacter.CharacterId).Id,
-                    receiverCompetitor.User.TeamMembers.First(tm => tm.CharacterId == receiverCharacter.CharacterId).Id,
+                    challengerCompetitor.User.TeamMembers.First(tm => tm.CharacterId == challengerCharacter.TeamMember.CharacterId).Id,
+                    receiverCompetitor.User.TeamMembers.First(tm => tm.CharacterId == receiverCharacter.TeamMember.CharacterId).Id,
                     challengerCharacter.Alive
                     );
             }
@@ -121,31 +118,31 @@ namespace ClashOfTheCharacters.Services
             float elementBonus = 1;
             effect = Effect.Normal;
 
-            if (attacker.Character.Element == Element.Gravity && defender.Character.Element != Element.Gravity)
+            if (attacker.TeamMember.Character.Element == Element.Gravity && defender.TeamMember.Character.Element != Element.Gravity)
             {
                 elementBonus = 1.25f;
                 effect = Effect.GravityAttack;
             }
 
-            else if ((int)defender.Character.Element - (int)attacker.Character.Element == -2 || (int)defender.Character.Element - (int)attacker.Character.Element == 6)
+            else if ((int)defender.TeamMember.Character.Element - (int)attacker.TeamMember.Character.Element == -2 || (int)defender.TeamMember.Character.Element - (int)attacker.TeamMember.Character.Element == 6)
             {
                 elementBonus = 0.5f;
                 effect = Effect.VeryBad;
             }
 
-            else if ((int)defender.Character.Element - (int)attacker.Character.Element == -1 || attacker.Character.Element == Element.Fire && defender.Character.Element == Element.Polution)
+            else if ((int)defender.TeamMember.Character.Element - (int)attacker.TeamMember.Character.Element == -1 || attacker.TeamMember.Character.Element == Element.Fire && defender.TeamMember.Character.Element == Element.Polution)
             {
                 elementBonus = 0.75f;
                 effect = Effect.Bad;
             }
 
-            else if ((int)defender.Character.Element - (int)attacker.Character.Element == 1 || attacker.Character.Element == Element.Polution && defender.Character.Element == Element.Fire)
+            else if ((int)defender.TeamMember.Character.Element - (int)attacker.TeamMember.Character.Element == 1 || attacker.TeamMember.Character.Element == Element.Polution && defender.TeamMember.Character.Element == Element.Fire)
             {
                 elementBonus = 1.5f;
                 effect = Effect.Good;
             }
 
-            else if ((int)defender.Character.Element - (int)attacker.Character.Element == 2 || (int)defender.Character.Element - (int)attacker.Character.Element == -6)
+            else if ((int)defender.TeamMember.Character.Element - (int)attacker.TeamMember.Character.Element == 2 || (int)defender.TeamMember.Character.Element - (int)attacker.TeamMember.Character.Element == -6)
             {
                 elementBonus = 2.0f;
                 effect = Effect.VeryGood;
@@ -164,7 +161,7 @@ namespace ClashOfTheCharacters.Services
 
             //float random = (float)instance.NextDouble();
 
-            return (((2 * (float)attacker.Level + 10) / 250) * ((float)attacker.Damage / (float)defender.Defense) * (float)attacker.Character.BaseAttack + 2) * (1.5f * elementBonus * (random * 2));
+            return (((2 * (float)attacker.Level + 10) / 250) * ((float)attacker.Damage / (float)defender.Defense) * (float)attacker.TeamMember.Character.BaseAttack + 2) * (1.5f * elementBonus * (random * 2));
         }
 
         void AddCompetitors()
@@ -189,7 +186,7 @@ namespace ClashOfTheCharacters.Services
                 db.BattleCharacters.Add(new BattleCharacter
                 {
                     CompetitorId = battle.Competitors.First(c => c.Challenger).Id,
-                    CharacterId = teamMember.CharacterId,
+                    TeamMemberId = teamMember.Id,
                     Level = teamMember.Level,
                     Hp = teamMember.Hp,
                     MaxHp = teamMember.Hp
@@ -201,7 +198,7 @@ namespace ClashOfTheCharacters.Services
                 db.BattleCharacters.Add(new BattleCharacter
                 {
                     CompetitorId = battle.Competitors.First(c => !c.Challenger).Id,
-                    CharacterId = teamMember.CharacterId,
+                    TeamMemberId = teamMember.Id,
                     Level = teamMember.Level,
                     Hp = teamMember.Hp,
                     MaxHp = teamMember.Hp

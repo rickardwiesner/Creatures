@@ -17,7 +17,7 @@ namespace ClashOfTheCharacters.Services
             var winner = battle.Competitors.First(c => c.Winner);
             var loser = battle.Competitors.First(c => !c.Winner);
 
-            int rankDifference = winner.User.Rank - loser.User.Rank;
+            int rankDifference = winner.User.LadderPoints - loser.User.LadderPoints;
 
             int winnerRankingPoints = 3;
             int winnerGold = 6;
@@ -62,13 +62,13 @@ namespace ClashOfTheCharacters.Services
             //...
 
             winner.RankingPointsEarned = winnerRankingPoints;
-            winner.User.Rank += winnerRankingPoints;
+            winner.User.LadderPoints += winnerRankingPoints;
 
             winner.GoldEarned = winnerGold;
             winner.User.Gold += winnerGold;
 
             loser.RankingPointsEarned = loserRankingPoints;
-            loser.User.Rank += loserRankingPoints;
+            loser.User.LadderPoints += loserRankingPoints;
 
             loser.GoldEarned = loserGold;
             loser.User.Gold += loserGold;
