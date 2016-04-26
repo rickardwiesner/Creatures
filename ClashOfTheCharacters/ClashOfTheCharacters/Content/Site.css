@@ -34,3 +34,8 @@ textarea {
     height: 50px;
     padding: 5px 5px;
 }
+
+.table img {
+    width: 25px;
+    height: 25px;
+}

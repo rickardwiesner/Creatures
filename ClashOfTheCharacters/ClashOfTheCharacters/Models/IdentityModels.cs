@@ -29,18 +29,20 @@ namespace ClashOfTheCharacters.Models
 
         public int Rank { get; set; }
 
+        public DateTimeOffset LastActive { get; set; }
+
         public DateTimeOffset LastStaminaTime { get; set; }
 
-        //public bool StaminaIsRefilling { get; set; }
-
         public virtual ICollection<TeamMember> TeamMembers { get; set; }
+
+        public bool IsOnline { get { return (DateTimeOffset.Now - LastActive).TotalMinutes < 30; } }
 
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("EarthOfCreatures", throwIfV1Schema: false)
         {
         }
 

@@ -1,21 +1,34 @@
-﻿
+﻿@using ClashOfTheCharacters.Models;
+@using Microsoft.AspNet.Identity;
 
-@using Microsoft.AspNet.Identity
 @if (Request.IsAuthenticated)
 {
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
-    @Html.AntiForgeryToken()
+        @Html.AntiForgeryToken()
+
+        ApplicationUser user = ViewBag.User;
 
         @*@model ClashOfTheCharacters.Models.ApplicationUser*@
 
-    <ul class="nav navbar-nav navbar-right">
-        <li>
-            @*Gold: @Model.Gold*@
-            @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
-        </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-    </ul>
+        <ul class="nav navbar-nav navbar-right">
+            @if (user.Stamina != user.MaxStamina)
+            {
+                <li>
+                    <p>More Stamina In: @(10 - (DateTimeOffset.Now - user.LastStaminaTime).Minutes)m</p>
+                </li>
+            }
+            <li>
+                <p>Stamina: @user.Stamina / @user.MaxStamina</p>
+            </li>
+            <li>
+                <p>Gold: @user.Gold</p>
+            </li>
+            <li>
+                @Html.ActionLink(User.Identity.GetUserName(), "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+            </li>
+            <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+        </ul>
     }
 }
 else

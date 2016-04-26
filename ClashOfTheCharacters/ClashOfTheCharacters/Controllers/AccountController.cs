@@ -9,6 +9,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ClashOfTheCharacters.Models;
+using ClashOfTheCharacters.Services;
+using System.Threading;
 
 namespace ClashOfTheCharacters.Controllers
 {
@@ -18,13 +20,11 @@ namespace ClashOfTheCharacters.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
-        private ApplicationDbContext db = new ApplicationDbContext();
-
         public AccountController()
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -33,10 +33,36 @@ namespace ClashOfTheCharacters.Controllers
         [ChildActionOnly]
         public ActionResult LoginPartial()
         {
+            RunServices();
+
+            var db = new ApplicationDbContext();
+           
             var userId = User.Identity.GetUserId();
             var user = db.Users.Find(userId);
 
-            return PartialView("_LoginPartial", user);
+            user.LastActive = DateTimeOffset.Now;
+            db.SaveChanges();
+            
+            ViewBag.User = user;
+
+            return PartialView("_LoginPartial");
+        }
+
+        void RunServices()
+        {
+            var db = new ApplicationDbContext();
+
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Find(userId);
+
+            if (user.Stamina < user.MaxStamina)
+            {
+                var staminaService = new StaminaService();
+                staminaService.UpdateStamina(userId);
+            }
+
+            var battleService = new BattleService();
+            battleService.RunBattles();
         }
 
         public ApplicationSignInManager SignInManager
@@ -45,9 +71,9 @@ namespace ClashOfTheCharacters.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -90,7 +116,8 @@ namespace ClashOfTheCharacters.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    //return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Index", "Battle");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -131,7 +158,7 @@ namespace ClashOfTheCharacters.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -162,11 +189,11 @@ namespace ClashOfTheCharacters.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Username, Email = model.Email, Stamina = 60, MaxStamina = 60, Rank = 500, Gold = 100, LastStaminaTime = DateTimeOffset.Now };
+                var user = new ApplicationUser { UserName = model.Username, Email = "temp@creatures.com", Stamina = 60, MaxStamina = 60, Rank = 500, LastStaminaTime = DateTimeOffset.Now };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link

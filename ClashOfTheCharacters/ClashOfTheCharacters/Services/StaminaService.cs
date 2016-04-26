@@ -40,7 +40,7 @@ namespace ClashOfTheCharacters.Services
                 }
             }
 
-            db.SaveChanges();        
+            db.SaveChanges();
         }
     }
 }

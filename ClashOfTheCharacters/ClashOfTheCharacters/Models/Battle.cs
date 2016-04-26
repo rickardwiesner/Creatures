@@ -15,7 +15,7 @@ namespace ClashOfTheCharacters.Models
         public DateTime StartTime { get; set; }
 
         //Testa <= 0 (Eller skit i CompareTo och kör en timespan)
-        public bool Aired { get { return StartTime.CompareTo(DateTime.Now) < 0; } }
+        public bool Aired { get { return (StartTime - DateTime.Now).TotalMilliseconds < 0; } }
 
         public bool Calculated { get; set; }
 

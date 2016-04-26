@@ -51,6 +51,7 @@ namespace ClashOfTheCharacters.Services
                 while (challengerCharacter.Alive && receiverCharacter.Alive)
                 {
                     int damage = Convert.ToInt32(CalculateDamage(challengerCharacter.Id, receiverCharacter.Id));
+                    int hpRemaining = receiverCharacter.Hp - damage < 0 ? 0 : receiverCharacter.Hp - damage;
 
                     db.Attacks.Add(new Attack
                     {
@@ -58,15 +59,17 @@ namespace ClashOfTheCharacters.Services
                         AttackerId = challengerCharacter.Id,
                         DefenderId = receiverCharacter.Id,
                         Damage = damage,
-                        HpRemaining = receiverCharacter.Hp - damage,
+                        AttackerHpRemaining = challengerCharacter.Hp,
+                        DefenderHpRemaining = hpRemaining,
                         Effect = effect
                     });
 
-                    receiverCharacter.Hp -= damage;
+                    receiverCharacter.Hp = hpRemaining;
 
                     if (receiverCharacter.Alive)
                     {
                         damage = Convert.ToInt32(CalculateDamage(receiverCharacter.Id, challengerCharacter.Id));
+                        hpRemaining = challengerCharacter.Hp - damage < 0 ? 0 : challengerCharacter.Hp - damage;
 
                         db.Attacks.Add(new Attack
                         {
@@ -74,11 +77,12 @@ namespace ClashOfTheCharacters.Services
                             AttackerId = receiverCharacter.Id,
                             DefenderId = challengerCharacter.Id,
                             Damage = damage,
-                            HpRemaining = challengerCharacter.Hp - damage,
+                            AttackerHpRemaining = receiverCharacter.Hp,
+                            DefenderHpRemaining = hpRemaining,
                             Effect = effect
                         });
 
-                        challengerCharacter.Hp -= damage;
+                        challengerCharacter.Hp = hpRemaining;
                     }
 
                     //else if han har någon annan gubbe som lever
@@ -151,12 +155,16 @@ namespace ClashOfTheCharacters.Services
 
             float random = 0;
 
-            while (random < 0.85)
+            while (random < 0.5)
             {
                 random = (float)instance.NextDouble();
             }
 
-            return (((2 * (float)attacker.Level + 10) / 250) * ((float)attacker.Damage / (float)defender.Defense) * (float)attacker.Character.BaseAttack + 2) * (1.5f * elementBonus * random);
+            //int random = instance.Next(4);
+
+            //float random = (float)instance.NextDouble();
+
+            return (((2 * (float)attacker.Level + 10) / 250) * ((float)attacker.Damage / (float)defender.Defense) * (float)attacker.Character.BaseAttack + 2) * (1.5f * elementBonus * (random * 2));
         }
 
         void AddCompetitors()
