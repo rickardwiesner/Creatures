@@ -27,7 +27,7 @@ namespace ClashOfTheCharacters.Models
 
         public int Gold { get; set; }
 
-        public int Rank { get; set; }
+        public int LadderPoints { get; set; }
 
         public DateTimeOffset LastActive { get; set; }
 

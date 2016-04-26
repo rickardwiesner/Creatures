@@ -9,8 +9,8 @@ namespace ClashOfTheCharacters.Models
     {
         public int Id { get; set; }
 
-        public int CharacterId { get; set; }
-        public virtual Character Character { get; set; }
+        public int TeamMemberId { get; set; }
+        public virtual TeamMember TeamMember { get; set; }
 
         public int CompetitorId { get; set; }
         public virtual Competitor Competitor { get; set; }
@@ -30,7 +30,7 @@ namespace ClashOfTheCharacters.Models
         {
             get
             {
-                return Convert.ToInt32(Level * Character.AttackMultiplier + Character.BaseAttack);
+                return Convert.ToInt32(Level * TeamMember.Character.AttackMultiplier + TeamMember.Character.BaseAttack);
             }
         }
 
@@ -38,7 +38,7 @@ namespace ClashOfTheCharacters.Models
         {
             get
             {
-                return Convert.ToInt32(Level * Character.DefenseMultiplier + Character.BaseDefense);
+                return Convert.ToInt32(Level * TeamMember.Character.DefenseMultiplier + TeamMember.Character.BaseDefense);
             }
         }
     }

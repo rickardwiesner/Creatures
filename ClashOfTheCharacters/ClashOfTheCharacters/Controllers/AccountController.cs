@@ -189,7 +189,7 @@ namespace ClashOfTheCharacters.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Username, Email = "temp@creatures.com", Stamina = 60, MaxStamina = 60, Rank = 500, LastStaminaTime = DateTimeOffset.Now };
+                var user = new ApplicationUser { UserName = model.Username, Email = "temp@creatures.com", Stamina = 60, MaxStamina = 60, LadderPoints = 500, LastStaminaTime = DateTimeOffset.Now };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

@@ -16,7 +16,7 @@ namespace ClashOfTheCharacters.Controllers
             //Om det finns någon sträng i sökbaren sök, annars visa alla användare,
             string userSearch = Request["SearchInput"] == null ? "" : Request["SearchInput"];
 
-            return View(context.Users.Where(c => c.UserName.Contains(userSearch)).OrderByDescending(c => c.Rank));
+            return View(context.Users.Where(c => c.UserName.Contains(userSearch)).OrderByDescending(c => c.LadderPoints));
         }
     }
 }
