@@ -1,5 +1,4 @@
 ﻿@using ClashOfTheCharacters.Models;
-@using ClashOfTheCharacters.Helpers;
 @using Microsoft.AspNet.Identity;
 
 @if (Request.IsAuthenticated)
@@ -17,7 +16,6 @@
             {
                 <li>
                     <p>More Stamina In: @(10 - (DateTimeOffset.Now - user.LastStaminaTime).Minutes)m</p>
-                    @*<p>More Stamina In: @(ViewBag.NextStamina)m</p>*@
                 </li>
             }
             <li>

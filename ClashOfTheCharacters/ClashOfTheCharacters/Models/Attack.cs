@@ -9,8 +9,13 @@ namespace ClashOfTheCharacters.Models
     public class Attack
     {
         public int Id { get; set; }
+
         public int Damage { get; set; }
-        public int HpRemaining { get; set; }
+
+        public int DefenderHpRemaining { get; set; }
+
+        public int AttackerHpRemaining { get; set; }
+
         public Effect Effect { get; set; }
 
         public int BattleId { get; set; }

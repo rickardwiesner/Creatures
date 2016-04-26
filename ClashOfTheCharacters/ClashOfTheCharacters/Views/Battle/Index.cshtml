@@ -68,7 +68,7 @@
                 </table>
             </div>
             <div class="col-md-12 col-battles">
-                <h3>Users</h3>
+                <h3>Trainers "Online"</h3>
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -157,63 +157,61 @@
 
                                         <h3 class="text-center">Winner: @battle.Competitors.First(c => c.Winner).User.UserName</h3>
                                         <hr />
-                                        <div class="container battle-summary">
+                                        <div class="container">
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <h4>@challenger.User.UserName</h4>
-                                                    <p>Gold Earned: @challenger.GoldEarned</p>
-                                                    <p>Ranking Points @(challenger.RankingPointsEarned > 0 ? "Earned: " + challenger.RankingPointsEarned : "Lost: " + challenger.RankingPointsEarned)</p>
+                                                    <h3>@challenger.User.UserName</h3>
+                                                    <h4>Gold Earned: @challenger.GoldEarned</h4>
+                                                    <h4>Ranking Points @(challenger.RankingPointsEarned > 0 ? "Earned: " + challenger.RankingPointsEarned : "Lost: " + challenger.RankingPointsEarned)</h4>
                                                 </div>
                                                 <div class="col-md-6 text-right">
-                                                    <h4>@receiver.User.UserName</h4>
-                                                    <p>Gold Earned: @receiver.GoldEarned</p>
-                                                    <p>Ranking Points @(receiver.RankingPointsEarned > 0 ? "Earned:" + receiver.RankingPointsEarned : "Lost:" + receiver.RankingPointsEarned)</p>
+                                                    <h3>@receiver.User.UserName</h3>
+                                                    <h4>Gold Earned: @receiver.GoldEarned</h4>
+                                                    <h4>Ranking Points @(receiver.RankingPointsEarned > 0 ? "Earned:" + receiver.RankingPointsEarned : "Lost:" + receiver.RankingPointsEarned)</h4>
                                                 </div>
 
                                                 @foreach (var attack in battle.Attacks)
                                                 {
-                                                    <div class="col-md-4 col-sm-4">
+                                                    <div class="col-md-4 col-sm-4">                                    
                                                         <div class="col-md-12 gamecard">
                                                             <div class="col-md-9 col-xs-9">
-                                                                <h3><strong>@attack.Attacker.Character.Name</strong></h3>
+                                                                <h3><strong>@attack.Attacker.Character.Name</strong><span> (@attack.Attacker.Competitor.User.UserName)</span></h3>
                                                             </div>
                                                             <div class="col-md-3 col-xs-3">
                                                                 <img class="gamecard-element" src="@Helper.GetElementUrl(attack.Attacker.Character.Element)" />
                                                             </div>
                                                             <img class="img-responsive gamecard-image" src="@attack.Attacker.Character.ImageUrl" />
-                                                            @*<div class="gamecard-xpbar">
-                                                        <div style="width: @Helper.GetPercentage(attack.HpRemaining, attack.Defender.MaxHp)%"></div>
+                                                            <div class="gamecard-xpbar">
+                                                        <div style="width: @Helper.GetPercentage(attack.AttackerHpRemaining, attack.Attacker.MaxHp)%"></div>
                                                     </div>
-                                                    <p class="text-right">Hp: @(attack.HpRemaining > 0 ? attack.HpRemaining : 0) / @attack.Defender.MaxHp</p>*@
+                                                    <p class="text-right">Hp: @(attack.AttackerHpRemaining > 0 ? attack.AttackerHpRemaining : 0) / @attack.Attacker.MaxHp</p>
                                                             <p>Level: @attack.Attacker.Level</p>
                                                             <p>Attack: @attack.Attacker.Damage</p>
                                                             <p>Defense: @attack.Attacker.Defense</p>
-                                                            <p>Max Hp: @attack.Attacker.MaxHp</p>
                                                         </div>
                                                     </div>
                                                     <div class="text-center col-md-4 col-sm-4 attack-info">
-                                                        <h3 class="text-danger">Damage: @attack.Damage</h3>
+                                                        
+                                                        <h3 class="text-danger">@(attack.Attacker.Character.Name) dealt @(attack.Damage) damage to @(attack.Defender.Character.Name)</h3>
+                                                        <h4>The attack was @Helper.GetEffect(attack.Effect).ToLower()</h4>
 
-                                                        <p>Hp: @(attack.HpRemaining > 0 ? attack.HpRemaining : 0) / @attack.Defender.MaxHp</p>
-                                                        <p>@Helper.GetEffect(attack.Effect)</p>
                                                     </div>
                                                     <div class="col-md-4 col-sm-4">
                                                         <div class="col-md-12 gamecard">
                                                             <div class="col-md-9 col-xs-9">
-                                                                <h3><strong>@attack.Defender.Character.Name</strong></h3>
+                                                                <h3><strong>@attack.Defender.Character.Name</strong><span> (@attack.Defender.Competitor.User.UserName)</span></h3>
                                                             </div>
                                                             <div class="col-md-3 col-xs-3">
                                                                 <img class="gamecard-element" src="@Helper.GetElementUrl(attack.Defender.Character.Element)" />
                                                             </div>
                                                             <img class="img-responsive gamecard-image" src="@attack.Defender.Character.ImageUrl" />
-                                                            @*<div class="gamecard-xpbar">
-                                                        <div style="width: @Helper.GetPercentage(attack.HpRemaining, attack.Defender.MaxHp)%"></div>
+                                                            <div class="gamecard-xpbar">
+                                                        <div style="width: @Helper.GetPercentage(attack.DefenderHpRemaining, attack.Defender.MaxHp)%"></div>
                                                     </div>
-                                                    <p class="text-right">Hp: @(attack.HpRemaining > 0 ? attack.HpRemaining : 0) / @attack.Defender.MaxHp</p>*@
+                                                    <p class="text-right">Hp: @(attack.DefenderHpRemaining > 0 ? attack.DefenderHpRemaining : 0) / @attack.Defender.MaxHp</p>
                                                             <p>Level: @attack.Defender.Level</p>
                                                             <p>Attack: @attack.Defender.Damage</p>
                                                             <p>Defense: @attack.Defender.Defense</p>
-                                                            <p>Max Hp: @attack.Defender.MaxHp</p>
                                                         </div>
                                                     </div>
 
