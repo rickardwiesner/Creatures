@@ -20,44 +20,16 @@ namespace ClashOfTheCharacters.Models
         public int CharacterId { get; set; }
         public virtual Character Character { get; set; }
 
-        public int Damage
-        {
-            get
-            {
-                return Convert.ToInt32(Level * Character.AttackMultiplier + Character.BaseAttack);
-            }
-        }
+        public virtual ICollection<BattleCharacter> BattleAppearances { get; set; }
 
-        public int Defense
-        {
-            get
-            {
-                return Convert.ToInt32(Level * Character.DefenseMultiplier + Character.BaseDefense);
-            }
-        }
+        public int Damage { get { return Convert.ToInt32(Level * Character.AttackMultiplier + Character.BaseAttack); } }
 
-        public int Hp
-        {
-            get
-            {
-                return Convert.ToInt32(Level * Character.HpMultiplier + Character.BaseHp);
-            }
-        }
+        public int Defense { get { return Convert.ToInt32(Level * Character.DefenseMultiplier + Character.BaseDefense); } }
 
-        public int Worth
-        {
-            get
-            {
-                return Convert.ToInt32((Character.Price * 0.5) + (Level * 5));
-            }
-        }
+        public int Hp { get { return Convert.ToInt32(Level * Character.HpMultiplier + Character.BaseHp); } }
 
-        public int MaxXp
-        {
-            get
-            {
-                return 50 + Level / 2 * 6 * Level;
-            }
-        }
+        public int Worth { get { return Convert.ToInt32((Character.Price * 0.5) + (Level * 5)); } }
+
+        public int MaxXp { get { return 50 + Level / 2 * 6 * Level; } }
     }
 }

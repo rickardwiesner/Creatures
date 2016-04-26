@@ -19,28 +19,14 @@ namespace ClashOfTheCharacters.Controllers
             var userId = User.Identity.GetUserId();
             var user = db.Users.Find(userId);
 
-            var battleCharacters = db.BattleCharacters.Where(b => b.TeamMember.ApplicationUserId == userId).ToList();
-
-            var battleCharacter = battleCharacters.Max();
-
-            var newTeamMembers = new List<BattleCharacter>();
-
-            foreach (var item in battleCharacters)
+            var userViewModel = new UserViewModel
             {
-                newTeamMembers.Add(item);
-            }
+                WonBattles = db.Competitors.Where(c => c.UserId == userId && c.Winner).Count(),
+                LostBattles = db.Competitors.Where(c => c.UserId == userId && !c.Winner).Count(),
+                TeamMember = user.TeamMembers.OrderByDescending(t => t.BattleAppearances.Count()).First(),
+            };
 
-            //var teamMember = teamMembers2.First();
-
-            //var userViewModel = new UserViewModel
-            //{
-            //    WonBattles = db.Competitors.Where(c => c.UserId == userId && c.Winner).Count(),
-            //    LostBattles = db.Competitors.Where(c => c.UserId == userId && !c.Winner).Count(),
-            //    //TeamMember = db.BattleCharacters.Max(b => b.TeamMember.ApplicationUserId == userId)
-            //    TeamMember = teamMember
-            //};
-
-            return View(/*userViewModel*/);
+            return View(userViewModel);
         }
     }
 }
