@@ -6,8 +6,11 @@
     <title>@ViewBag.Title - Earth of Creatures</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    
+
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery.fancybox.js"></script>
+    <script src="~/Scripts/fancybox-custom.js"></script>
+
 </head>
 <body>
     <div class="navbar navbar-default navbar-fixed-top">
@@ -23,28 +26,42 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Battle", "Index", "Battle")</li>
-                    <li>@Html.ActionLink("Creatures", "Index", "Character")</li>
                     <li>@Html.ActionLink("Ladder", "Index", "Ladder")</li>
-                    <li>@Html.ActionLink("Shop", "Index", "Shop")</li>
-                    <li>@Html.ActionLink("Help", "Index", "Help")</li>
-                </ul>
-                
-                @if (Request.IsAuthenticated)
-                {
-                    @Html.Action("LoginPartial", "Account")
-                }
+                    <li><a href="#">Help</a></li>                  
 
-                else
-                {
-                    @Html.Partial("_LoginPartial")
-                }
+                    @if (Request.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("Battle", "Index", "Battle")</li>
+                        <li>@Html.ActionLink("Team", "Index", "Character")</li>
+                        <li><a href="#">Shop</a></li>
+                    }
+
+                </ul>
+
+                @Html.Partial("_LoginPartial")
 
             </div>
         </div>
     </div>
-    <div class="container body-content">
-        @RenderBody()
+    <div class="container">
+
+        @if (Request.IsAuthenticated)
+        {
+            <div class="row">
+                <div class="col-md-8 body-content">
+                    @RenderBody()
+                </div>
+                <div class="col-md-4">
+                    @Html.Action("ProfilePartial", "User")
+                </div>
+            </div>
+        }
+
+        else
+        {
+            @RenderBody()
+        }
+
         <hr />
         <footer>
             <p>&copy; @DateTime.Now.Year - Earth of Creatures</p>

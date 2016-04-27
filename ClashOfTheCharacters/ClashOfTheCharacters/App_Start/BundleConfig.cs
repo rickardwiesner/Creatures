@@ -26,9 +26,11 @@ namespace ClashOfTheCharacters
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrapcustom.css",
                       "~/Content/font-awesome.min.css",
+                      "~/Content/jquery.fancybox.css",
                       "~/Content/character.css",
                       "~/Content/battle.css",
                       "~/Content/layout.css",
+                      "~/Content/profile-partial.css",
                       "~/Content/site.css"));
         }
     }

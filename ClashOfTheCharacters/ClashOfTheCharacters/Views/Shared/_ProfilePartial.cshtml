@@ -1,0 +1,254 @@
+﻿@using ClashOfTheCharacters.Models
+@using ClashOfTheCharacters.Helpers
+
+@model ClashOfTheCharacters.ViewModels.ProfilePartialViewModel
+
+<section class="container-fluid profile-partial">
+
+    <h4>
+
+        <span>
+            <img class="img-circle" src="@Model.ImageUrl" />
+        </span> @Model.Username <span>
+            #@Model.Rank
+        </span><span class="span-level">
+            Lvl: @Model.Level
+        </span>
+    </h4>
+    <a class="fancybox" href="#ChangePicture"><span class="fa fa-wrench fa-fw text-warning"></span></a>
+
+    @*Profile Picture*@
+    <div class="container-fluid fancybox-hidden" id="ChangePicture">
+        <h4>Change Profile Picture</h4>
+        <form class="form-inline" method="post" action="/User/UpdateProfilePicture">
+            <div class="form-group">
+                <input type="text" class="form-control" name="imageUrl" placeholder="Enter Url">
+            </div>
+            <button type="submit" class="btn btn-default">Update</button>
+        </form>
+    </div>
+
+    @*<div class="row">*@
+    <div class="col-md-12">
+        <div class="col-md-12 col-xs-6 col-lg-6 col-user-info text-center">
+            <span class="fa fa-line-chart"> @Model.LadderPoints</span>
+        </div>
+        <div class="col-md-12 col-xs-6 col-lg-6 col-user-info text-center">
+            <span class="fa fa-money"> @Model.Gold</span>
+        </div>
+        <div class="col-md-12 col-xs-6 col-lg-6 col-user-info text-center">
+            <span class="fa fa-flash"> @Model.Stamina / @Model.MaxStamina</span>
+        </div>
+        <div class="col-md-12 col-xs-6 col-lg-6 col-user-info text-center">
+            <span class="fa fa-graduation-cap"> @Model.Xp / @Model.MaxXp</span>
+        </div>
+    </div>
+
+    @if (Model.Stamina != Model.MaxStamina)
+            {
+        <div class="col-md-12 margin-top-20">
+            <p class="text-center">More Stamina in: @(Model.NextStaminaMinutes)m</p>
+        </div>
+    }
+
+    <div class="row margin-bottom-20">
+        <div class="container-characters">
+
+            @for (int i = 0; i < 6; i++)
+            {
+                if (i % 3 == 0)
+                {
+                    <div class="clearfix visible-xs"></div>
+                    <div class="clearfix visible-sm"></div>
+                    <div class="clearfix visible-md"></div>
+                    <div class="clearfix visible-lg"></div>
+                }
+                <div class="col-md-4 col-xs-4">
+                    <div class="col-md-12 gamecard-small">
+                        @if (Model.TeamMembers.ElementAtOrDefault(i) != null)
+                        {
+                            <p>@Model.TeamMembers.ElementAt(i).Character.Name <span><img class="gamecard-element-small" src="@Helper.GetElementUrl(Model.TeamMembers.ElementAt(i).Character.Element)" /></span></p>
+                            <img class="img-responsive" src="@Model.TeamMembers.ElementAt(i).Character.ImageUrl" />
+                            <p>Dmg: @Model.TeamMembers.ElementAt(i).Damage</p>
+                            <p>Def: @Model.TeamMembers.ElementAt(i).Defense</p>
+                                <p>Hp: @Model.TeamMembers.ElementAt(i).Hp</p>
+                        }
+
+                        else
+                        {
+                            <p>Empty</p>
+                            <img class="img-responsive" src="/Images/Other/concrete.jpg" />
+                            <p>Dmg:</p>
+                            <p>Def:</p>
+                                <p>Hp:</p>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<section class="container-fluid profile-partial margin-top-20">
+    <div class="col-md-12 col-battles">
+        <h3>On Going</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Opponent</th>
+                    <th class="text-center">Ladder Points</th>
+                    <th class="text-right">Time Left</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var battle in Model.OngoingBattles)
+            {
+                var opponent = battle.Challenge.ChallengerId == Model.UserId ? battle.Challenge.Receiver : battle.Challenge.Challenger;
+
+                    <tr>
+                        <td><h5>@opponent.UserName</h5></td>
+                        <td class="text-center"><h5>@opponent.LadderPoints</h5></td>
+                        <td class="text-right"><h5>@(battle.StartTime.Subtract(DateTime.Now.TimeOfDay).Minute + 1)m</h5></td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</section>
+<section class="container-fluid profile-partial margin-top-20">
+    <div class="col-md-12 col-battles">
+        <h3>Recent Battles</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Opponent</th>
+                    <th class="text-center">Ladder Points</th>
+                    <th class="text-right">Result</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var battle in Model.RecentBattles)
+            {
+                    <tr>
+                        <td><h5>@battle.Competitors.First(c => c.UserId != Model.UserId).User.UserName</h5></td>
+                        <td class="text-center">
+                            @{
+                                var rankingPointsEarned = battle.Competitors.First(c => c.UserId == Model.UserId).RankingPointsEarned;
+                            }
+
+                            @if (rankingPointsEarned > 0)
+                            {
+                                <h5 class="text-success">@rankingPointsEarned</h5>
+                            }
+
+                            else
+                            {
+                                <h5 class="text-danger">@rankingPointsEarned</h5>
+                            }
+
+                        </td>
+                        <td class="text-right">
+                            <a class="fancybox" href="#Result-@battle.Id"><span class="fa fa-2x fa-eye"></span></a>
+
+                            @*Result Box*@
+                            <div class="fancybox-hidden" id="Result-@battle.Id">
+
+                                @{
+                                    Competitor challenger = battle.Competitors.First(c => c.Challenger);
+                                    Competitor receiver = battle.Competitors.First(c => !c.Challenger);
+                                }
+
+                                <h3 class="text-center">Winner: @battle.Competitors.First(c => c.Winner).User.UserName</h3>
+                                <hr />
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h3>@challenger.User.UserName</h3>
+                                            <h4>Gold Earned: @challenger.GoldEarned</h4>
+                                            <h4>Xp Earned: @challenger.XpEarned</h4>
+                                            <h4>Ladder Points @(challenger.RankingPointsEarned > 0 ? "Earned: " + challenger.RankingPointsEarned : "Lost: " + challenger.RankingPointsEarned)</h4>
+                                            @foreach (var battleCharacter in challenger.BattleCharacters)
+                                            {
+                                                <h5>@(battleCharacter.TeamMember.Character.Name) Earned: @(battleCharacter.XpEarned)Xp</h5>
+                                            }
+                                        </div>
+                                        <div class="col-md-6 text-right">
+                                            <h3>@receiver.User.UserName</h3>
+                                            <h4>Gold Earned: @receiver.GoldEarned</h4>
+                                            <h4>Xp Earned: @receiver.XpEarned</h4>
+                                            <h4>Ladder Points @(receiver.RankingPointsEarned > 0 ? "Earned:" + receiver.RankingPointsEarned : "Lost:" + receiver.RankingPointsEarned)</h4>
+                                            @foreach (var battleCharacter in receiver.BattleCharacters)
+                                            {
+                                                <h5>@(battleCharacter.TeamMember.Character.Name) Earned: @(battleCharacter.XpEarned)xp</h5>
+                                            }
+                                        </div>
+
+                                        @foreach (var attack in battle.Attacks)
+                                        {
+                                            <div class="clearfix visible-xs"></div>
+                                            <div class="clearfix visible-sm"></div>
+                                            <div class="clearfix visible-md"></div>
+                                            <div class="clearfix visible-lg"></div>
+
+                                            <div class="col-md-4 col-sm-4">
+                                                <div class="col-md-12 gamecard">
+                                                    <div class="col-md-9 col-xs-9">
+                                                        <h3><strong>@attack.Attacker.TeamMember.Character.Name</strong><span> (@attack.Attacker.Competitor.User.UserName)</span></h3>
+                                                    </div>
+                                                    <div class="col-md-3 col-xs-3">
+                                                        <img class="gamecard-element" src="@Helper.GetElementUrl(attack.Attacker.TeamMember.Character.Element)" />
+                                                    </div>
+                                                    <img class="img-responsive gamecard-image" src="@attack.Attacker.TeamMember.Character.ImageUrl" />
+                                                    <div class="gamecard-hpbar">
+                                                        <div style="width: @Helper.GetPercentage(attack.AttackerHpRemaining, attack.Attacker.MaxHp)%"></div>
+                                                    </div>
+                                                    <p class="text-right">Hp: @(attack.AttackerHpRemaining > 0 ? attack.AttackerHpRemaining : 0) / @attack.Attacker.MaxHp</p>
+                                                    <p>Level: @attack.Attacker.Level</p>
+                                                    <p>Attack: @attack.Attacker.Damage</p>
+                                                    <p>Defense: @attack.Attacker.Defense</p>
+                                                </div>
+                                            </div>
+                                            <div class="text-center col-md-4 col-sm-4 attack-info">
+
+                                                <h3 class="text-danger">@(attack.Attacker.TeamMember.Character.Name) dealt @(attack.Damage) damage to @(attack.Defender.TeamMember.Character.Name)</h3>
+                                                <h4>The attack was @Helper.GetEffect(attack.Effect).ToLower()</h4>
+
+                                            </div>
+                                                   <div class="col-md-4 col-sm-4">
+                                                       <div class="col-md-12 gamecard">
+                                                           <div class="col-md-9 col-xs-9">
+                                                               <h3><strong>@attack.Defender.TeamMember.Character.Name</strong><span> (@attack.Defender.Competitor.User.UserName)</span></h3>
+                                                           </div>
+                                                           <div class="col-md-3 col-xs-3">
+                                                               <img class="gamecard-element" src="@Helper.GetElementUrl(attack.Defender.TeamMember.Character.Element)" />
+                                                           </div>
+                                                           <img class="img-responsive gamecard-image" src="@attack.Defender.TeamMember.Character.ImageUrl" />
+                                                           <div class="gamecard-hpbar">
+                                                               <div style="width: @Helper.GetPercentage(attack.DefenderHpRemaining, attack.Defender.MaxHp)%"></div>
+                                                           </div>
+                                                           <p class="text-right">Hp: @(attack.DefenderHpRemaining > 0 ? attack.DefenderHpRemaining : 0) / @attack.Defender.MaxHp</p>
+                                                           <p>Level: @attack.Defender.Level</p>
+                                                           <p>Attack: @attack.Defender.Damage</p>
+                                                           <p>Defense: @attack.Defender.Defense</p>
+                                                       </div>
+                                                   </div>
+
+                                                   <hr />
+
+                                                   <div class="clearfix visible-xs"></div>
+                                                   <div class="clearfix visible-sm"></div>
+                                                   <div class="clearfix visible-md"></div>
+                                                   <div class="clearfix visible-lg"></div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                                    }
+
+            </tbody>
+        </table>
+    </div>
+</section>

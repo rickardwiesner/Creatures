@@ -14,16 +14,15 @@ namespace ClashOfTheCharacters.Models
 
         public DateTime StartTime { get; set; }
 
-        //Testa <= 0 (Eller skit i CompareTo och kör en timespan)
         public bool Aired { get { return (StartTime - DateTime.Now).TotalMilliseconds < 0; } }
 
         public bool Calculated { get; set; }
 
         public virtual ICollection<Attack> Attacks { get; set; }
+
         public virtual ICollection<Competitor> Competitors { get; set; }
 
         public int ChallengeId { get; set; }
-
         public virtual Challenge Challenge { get; set; }
     }
 }

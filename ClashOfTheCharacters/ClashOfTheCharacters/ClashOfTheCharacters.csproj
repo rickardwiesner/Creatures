@@ -216,6 +216,7 @@
     <Compile Include="Services\RewardService.cs" />
     <Compile Include="Services\StaminaService.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\ProfilePartialViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -237,6 +238,7 @@
     <Content Include="Content\jquery.fancybox-thumbs.css" />
     <Content Include="Content\jquery.fancybox.css" />
     <Content Include="Content\layout.css" />
+    <Content Include="Content\profile-partial.css" />
     <Content Include="Content\temp-home.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
@@ -256,6 +258,9 @@
     <Content Include="Images\Elements\earth.png" />
     <Content Include="Images\Elements\fire.png" />
     <Content Include="Images\Elements\water.png" />
+    <Content Include="Images\Other\concrete.jpg" />
+    <Content Include="Images\Other\gamecard.jpg" />
+    <Content Include="Images\Other\noprofilepicture.jpg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="fonts\FontAwesome.otf" />
@@ -322,6 +327,7 @@
     <Content Include="Views\Ladder\Index.cshtml" />
     <Content Include="Views\Ladder\SearchForUser.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\Shared\_ProfilePartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

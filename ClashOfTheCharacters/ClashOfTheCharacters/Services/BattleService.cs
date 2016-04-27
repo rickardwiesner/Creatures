@@ -86,12 +86,7 @@ namespace ClashOfTheCharacters.Services
                 }     
 
                 var experienceService = new ExperienceService();
-                experienceService.CalculateXp
-                    (
-                    challengerCompetitor.User.TeamMembers.First(tm => tm.CharacterId == challengerCharacter.TeamMember.CharacterId).Id,
-                    receiverCompetitor.User.TeamMembers.First(tm => tm.CharacterId == receiverCharacter.TeamMember.CharacterId).Id,
-                    challengerCharacter.Alive
-                    );
+                experienceService.CalculateXp(challengerCharacter.Id, receiverCharacter.Id, challengerCharacter.Alive);
             }
 
             if (receiverCompetitor.TotalHp > 0)

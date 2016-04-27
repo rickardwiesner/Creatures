@@ -1,6 +1,6 @@
 ﻿body {
     background-color: #fffaf6;
-    margin-top: 120px;
+    margin-top: 60px;
 }
 
 .navbar-nav > li > p {
@@ -10,6 +10,10 @@
 
 .table-striped > tbody > tr:nth-of-type(odd) {
     background-color: #fff0e5;
+}
+
+.table-striped > tbody > tr:nth-of-type(even) {
+    background-color: #fffaf6;
 }
 
 .navbar-user {

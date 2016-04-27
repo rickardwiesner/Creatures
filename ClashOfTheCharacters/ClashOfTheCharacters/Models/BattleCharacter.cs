@@ -16,13 +16,12 @@ namespace ClashOfTheCharacters.Models
         public virtual Competitor Competitor { get; set; }
 
         public int Level { get; set; }
-        
-        //Borde skickas till TeamMember
-        public int Slot { get; set; }
 
         public int Hp { get; set; }
 
         public int MaxHp { get; set; }
+
+        public int XpEarned { get; set; }
 
         public bool Alive { get { return Hp > 0; } }
 

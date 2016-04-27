@@ -16,9 +16,9 @@
     <script src="~/Scripts/fancybox-custom.js"></script>
 }
 
-<div class="container">
+
     <div class="row">
-        <div class="container col-md-7">
+        <div class="container col-md-12">
             <div class="col-md-12 col-battles">
                 <h3>Received Challenges</h3>
                 <table class="table table-striped">
@@ -34,10 +34,10 @@
                         @foreach (var challenge in challenges.Where(c => c.ReceiverId == userId))
                         {
                             <tr>
-                                <td>@challenge.Challenger.UserName</td>
-                                <td>@challenge.Challenger.LadderPoints</td>
-                                <td class="text-right">@Html.ActionLink("Accept", "Accept", new { challengeId = challenge.Id })</td>
-                                <td class="text-right">@Html.ActionLink("Decline", "Cancel", new { challengeId = challenge.Id })</td>
+                                <td><h5>@challenge.Challenger.UserName</h5></td>
+                                <td><h5>@challenge.Challenger.LadderPoints</h5></td>
+                                <td class="text-right"><a href="/Battle/Accept/@challenge.Id"><span class="text-success fa fa-2x fa-check"></span></a></td>
+                                <td class="text-right"><a href="/Battle/Cancel/@challenge.Id"><span class="fa fa-2x fa-remove"></span></a></td>
                             </tr>
                         }
 
@@ -58,9 +58,9 @@
                         @foreach (var challenge in challenges.Where(c => c.ChallengerId == userId && c.Accepted == false))
                         {
                             <tr>
-                                <td>@challenge.Receiver.UserName</td>
-                                <td>@challenge.Receiver.LadderPoints</td>
-                                <td class="text-right">@Html.ActionLink("Cancel", "Cancel", new { challengeId = challenge.Id })</td>
+                                <td><h5>@challenge.Receiver.UserName</h5></td>
+                                <td><h5>@challenge.Receiver.LadderPoints</h5></td>
+                                <td class="text-right"><a href="/Battle/Cancel/@challenge.Id"><span class="fa fa-2x fa-remove"></span></a></td>
                             </tr>
                         }
 
@@ -81,8 +81,8 @@
                         @foreach (var user in Model.OrderByDescending(u => u.LadderPoints))
                         {
                             <tr>
-                                <td>@user.UserName</td>
-                                <td>@user.LadderPoints</td>
+                                <td><h5>@user.UserName</h5></td>
+                                <td><h5>@user.LadderPoints</h5></td>
                                 <td class="text-right"><a href="/Battle/Challenge/@user.Id"><span class="fa fa-2x fa-send"></span></a></td>
                             </tr>
                         }
@@ -91,151 +91,4 @@
                 </table>
             </div>
         </div>
-        <div class="container col-md-5">
-            <div class="col-md-12 col-battles">
-                <h3>On Going</h3>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Opponent</th>
-                            <th>Ladder Points</th>
-                            <th class="text-right">Starting</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var battle in battles.Where(b => b.StartTime.CompareTo(DateTime.Now) > 0))
-                        {
-                            var user = battle.Challenge.ChallengerId == userId ? battle.Challenge.Receiver : battle.Challenge.Challenger;
-
-                            <tr>
-                                <td>@user.UserName</td>
-                                <td>@user.LadderPoints</td>
-                                <td class="text-right">@(battle.StartTime.Subtract(DateTime.Now.TimeOfDay).Minute + 1)m</td>
-                            </tr>
-                        }
-
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-12 col-battles">
-                <h3>Finished Battles</h3>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Opponent</th>
-                            <th class="text-right">Ladder Points</th>
-                            <th class="text-right">Result</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var battle in battles.Where(b => b.Calculated).OrderByDescending(b => b.StartTime).Take(10))
-                        {
-                            <tr>
-                                <td>@battle.Competitors.First(c => c.UserId != userId).User.UserName</td>
-                                <td class="text-right">
-                                    @{
-                                        var rankingPointsEarned = battle.Competitors.First(c => c.UserId == userId).RankingPointsEarned;
-                                    }
-
-                                    @if (rankingPointsEarned > 0)
-                                    {
-                                        <h4 class="text-success">@rankingPointsEarned</h4>
-                                    }
-
-                                    else
-                                    {
-                                        <h4 class="text-danger">@rankingPointsEarned</h4>
-                                    }
-
-                                </td>
-                                <td class="text-right">
-                                    <a class="fancybox" href="#Result-@battle.Id"><span class="fa fa-2x fa-eye"></span></a>
-
-                                    @*Result Box*@
-                                    <div class="fancybox-hidden" id="Result-@battle.Id">
-
-                                        @{
-                                            Competitor challenger = battle.Competitors.First(c => c.Challenger);
-                                            Competitor receiver = battle.Competitors.First(c => !c.Challenger);
-                                        }
-
-                                        <h3 class="text-center">Winner: @battle.Competitors.First(c => c.Winner).User.UserName</h3>
-                                        <hr />
-                                        <div class="container">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <h3>@challenger.User.UserName</h3>
-                                                    <h4>Gold Earned: @challenger.GoldEarned</h4>
-                                                    <h4>Ranking Points @(challenger.RankingPointsEarned > 0 ? "Earned: " + challenger.RankingPointsEarned : "Lost: " + challenger.RankingPointsEarned)</h4>
-                                                </div>
-                                                <div class="col-md-6 text-right">
-                                                    <h3>@receiver.User.UserName</h3>
-                                                    <h4>Gold Earned: @receiver.GoldEarned</h4>
-                                                    <h4>Ranking Points @(receiver.RankingPointsEarned > 0 ? "Earned:" + receiver.RankingPointsEarned : "Lost:" + receiver.RankingPointsEarned)</h4>
-                                                </div>
-
-                                                @foreach (var attack in battle.Attacks)
-                                                {
-                                                    <div class="col-md-4 col-sm-4">                                    
-                                                        <div class="col-md-12 gamecard">
-                                                            <div class="col-md-9 col-xs-9">
-                                                                <h3><strong>@attack.Attacker.TeamMember.Character.Name</strong><span> (@attack.Attacker.Competitor.User.UserName)</span></h3>
-                                                            </div>
-                                                            <div class="col-md-3 col-xs-3">
-                                                                <img class="gamecard-element" src="@Helper.GetElementUrl(attack.Attacker.TeamMember.Character.Element)" />
-                                                            </div>
-                                                            <img class="img-responsive gamecard-image" src="@attack.Attacker.TeamMember.Character.ImageUrl" />
-                                                            <div class="gamecard-xpbar">
-                                                        <div style="width: @Helper.GetPercentage(attack.AttackerHpRemaining, attack.Attacker.MaxHp)%"></div>
-                                                    </div>
-                                                    <p class="text-right">Hp: @(attack.AttackerHpRemaining > 0 ? attack.AttackerHpRemaining : 0) / @attack.Attacker.MaxHp</p>
-                                                            <p>Level: @attack.Attacker.Level</p>
-                                                            <p>Attack: @attack.Attacker.Damage</p>
-                                                            <p>Defense: @attack.Attacker.Defense</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="text-center col-md-4 col-sm-4 attack-info">
-                                                        
-                                                        <h3 class="text-danger">@(attack.Attacker.TeamMember.Character.Name) dealt @(attack.Damage) damage to @(attack.Defender.TeamMember.Character.Name)</h3>
-                                                        <h4>The attack was @Helper.GetEffect(attack.Effect).ToLower()</h4>
-
-                                                    </div>
-                                                    <div class="col-md-4 col-sm-4">
-                                                        <div class="col-md-12 gamecard">
-                                                            <div class="col-md-9 col-xs-9">
-                                                                <h3><strong>@attack.Defender.TeamMember.Character.Name</strong><span> (@attack.Defender.Competitor.User.UserName)</span></h3>
-                                                            </div>
-                                                            <div class="col-md-3 col-xs-3">
-                                                                <img class="gamecard-element" src="@Helper.GetElementUrl(attack.Defender.TeamMember.Character.Element)" />
-                                                            </div>
-                                                            <img class="img-responsive gamecard-image" src="@attack.Defender.TeamMember.Character.ImageUrl" />
-                                                            <div class="gamecard-xpbar">
-                                                        <div style="width: @Helper.GetPercentage(attack.DefenderHpRemaining, attack.Defender.MaxHp)%"></div>
-                                                    </div>
-                                                    <p class="text-right">Hp: @(attack.DefenderHpRemaining > 0 ? attack.DefenderHpRemaining : 0) / @attack.Defender.MaxHp</p>
-                                                            <p>Level: @attack.Defender.Level</p>
-                                                            <p>Attack: @attack.Defender.Damage</p>
-                                                            <p>Defense: @attack.Defender.Defense</p>
-                                                        </div>
-                                                    </div>
-
-                                                    <hr />
-
-                                                    <div class="clearfix visible-xs"></div>
-                                                    <div class="clearfix visible-sm"></div>
-                                                    <div class="clearfix visible-md"></div>
-                                                    <div class="clearfix visible-lg"></div>
-                                                }
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                                        }
-
-                    </tbody>
-                </table>
-            </div>
-        </div>
     </div>
-</div>

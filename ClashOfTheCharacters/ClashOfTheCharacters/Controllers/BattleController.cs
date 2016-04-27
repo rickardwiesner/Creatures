@@ -61,7 +61,7 @@ namespace ClashOfTheCharacters.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Accept(int challengeId)
+        public ActionResult Accept(int id)
         {
             var userId = User.Identity.GetUserId();
             var user = db.Users.Find(userId);
@@ -71,21 +71,25 @@ namespace ClashOfTheCharacters.Controllers
                 return RedirectToAction("Select", "Character");
             }
 
-            var battle = new Battle { ChallengeId = challengeId, StartTime = DateTime.Now.AddMinutes(2) };
+            var battle = new Battle { ChallengeId = id, StartTime = DateTime.Now.AddMinutes(2) };
 
-            db.Challenges.Find(challengeId).Accepted = true;
+            db.Challenges.Find(id).Accepted = true;
             db.Battles.Add(battle);
             db.SaveChanges();
 
             return RedirectToAction("Index");
         }
 
-        public ActionResult Cancel(int challengeId)
+        public ActionResult Cancel(int id)
         {
             var userId = User.Identity.GetUserId();
 
-            var challenge = db.Challenges.Find(challengeId);
-            challenge.Challenger.Stamina += 6;
+            var challenge = db.Challenges.Find(id);
+
+            if (challenge.Challenger.Stamina != challenge.Challenger.MaxStamina)
+            {
+                challenge.Challenger.Stamina += 6;
+            }
 
             db.Challenges.Remove(challenge);
             db.SaveChanges();
