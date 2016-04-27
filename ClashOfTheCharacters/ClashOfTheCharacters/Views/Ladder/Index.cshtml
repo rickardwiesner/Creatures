@@ -18,7 +18,8 @@
         <tr>
             <th>Rank</th>
             <th>Ladder points</th>
-            <th><a href="~/Controllers/LadderController/SortByName">Username</a></th>
+            @*<th><a href="~/Controllers/LadderController/SortByName">Username</a></th>*@
+            <th>Username</th>
             <th>Creatures</th>
         </tr>
     </thead>
@@ -27,14 +28,16 @@
         {
             counter++;
             <tr>
-                <td>@counter</td>
-                <td>@user.LadderPoints</td>
+                <td><h5>@counter</h5></td>
+                <td><h5>@user.LadderPoints</h5></td>
 
-                <td>@user.UserName</td>
-                @foreach (var creature in user.TeamMembers)
-                {
-                    <td><img src="@creature.Character.ImageUrl" /></td>
-                }
+                <td><h5>@user.UserName</h5></td>
+                <td>
+                    @foreach (var creature in user.TeamMembers)
+                    {
+                        <img src="@creature.Character.ImageUrl" />
+                    }
+                </td>
             </tr>
         }
 

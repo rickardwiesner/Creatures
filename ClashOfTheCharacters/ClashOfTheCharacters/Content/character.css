@@ -1,10 +1,31 @@
 ﻿.gamecard {
-    background-image: url(http://www.teamliquid.net/staff/Meko/spl/background.jpg);
+    background-image: url('../Images/Other/gamecard.jpg');
     background-size: cover;
     border: 1px solid black;
     margin-top: 30px;
     font-family: Gabriola;
     text-transform: uppercase;
+}
+
+.gamecard-small {
+    background-image: url('../Images/Other/gamecard.jpg');
+    background-size: cover;
+    border: 1px solid black;
+    margin-top: 15px;
+    font-family: Gabriola;
+    text-transform: uppercase;
+    padding: 2px;
+}
+
+.gamecard-element-small {
+    height: 15px;
+    width: 15px;
+    float: right;
+    margin-top: 2px;
+}
+
+.container-characters {
+    margin-bottom: 20px;
 }
 
 .gamecard p {
@@ -25,21 +46,32 @@
 
 .gamecard-xpbar {
     background-color: darkblue;
-    height: 20px; 
+    height: 20px;
     padding-bottom: 1px;
 }
 
-.gamecard-xpbar div {
-    background-color: dodgerblue;
-    height: 100%;  
-}
+    .gamecard-xpbar div {
+        background-color: dodgerblue;
+        height: 100%;
+    }
 
-.gamecard-xpbar span {
-    color: white;
-}
+    .gamecard-xpbar span {
+        color: white;
+    }
 
 .gamecard-select {
     font-size: 22px;
     margin-bottom: 10px;
     text-transform: uppercase;
 }
+
+.gamecard-hpbar {
+    background-color: #5a954a;
+    height: 20px;
+    padding-bottom: 1px;
+}
+
+    .gamecard-hpbar div {
+        background-color: #86c376;
+        height: 100%;
+    }

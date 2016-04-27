@@ -1,5 +1,4 @@
-﻿@using ClashOfTheCharacters.Models;
-@using Microsoft.AspNet.Identity;
+﻿@using Microsoft.AspNet.Identity;
 
 @if (Request.IsAuthenticated)
 {
@@ -7,47 +6,13 @@
     {
         @Html.AntiForgeryToken()
 
-        @*@model ClashOfTheCharacters.Models.ApplicationUser*@
-
         <ul class="nav navbar-nav navbar-right">
-            @*@if (user.Stamina != user.MaxStamina)
-            {
-                <li>
-                    <p>More Stamina In: @(10 - (DateTimeOffset.Now - user.LastStaminaTime).Minutes)m</p>
-                </li>
-            }
-            <li>
-                <p>Stamina: @user.Stamina / @user.MaxStamina</p>
-            </li>
-            <li>
-                <p>Gold: @user.Gold</p>
-            </li>
-            <li>
-                <p>Ladder Points: @user.LadderPoints</p>
-            </li>*@
             <li>
                 @Html.ActionLink(User.Identity.GetUserName(), "Index", "User", routeValues: null, htmlAttributes: new { title = "Manage" })
             </li>
             <li><a href="javascript:document.getElementById('logoutForm').submit()">Log out</a></li>
         </ul>
     }
-    <ul class="nav navbar-nav navbar-user">
-
-        @{
-            ApplicationUser user = ViewBag.User;
-        }
-
-        <li><p>Ladder Points: @user.LadderPoints</p></li>
-        <li><p>Gold: @user.Gold</p></li>
-        <li><p>Stamina: @user.Stamina / @user.MaxStamina</p></li>
-
-        @if (user.Stamina != user.MaxStamina)
-        {
-            <li>
-                <p>More Stamina In: @(10 - (DateTimeOffset.Now - user.LastStaminaTime).Minutes)m</p>
-            </li>
-        }
-    </ul>
 }
 else
 {

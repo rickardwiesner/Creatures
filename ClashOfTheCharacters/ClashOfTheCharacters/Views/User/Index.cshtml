@@ -3,12 +3,15 @@
 @{
     ViewBag.Title = "Profile";
 }
-
-<h2>Total Battles: @Model.TotalBattles</h2>
-<h2>Won Battles: @Model.WonBattles</h2>
-<h2>Lost Battles: @Model.LostBattles</h2>
-<h2>Win Percentage: @Model.WinPercentage%</h2>
-<h2>Lose Percentage: @Model.LosePercentage%</h2>
-<h2>Total Gold Earned: @Model.TotalGoldEarned</h2>
-<h2>Most Used Character: @(Model.MostUsedCharacter == null ? "None" : Model.MostUsedCharacter.Character.Name)</h2>
-<h2>Kills: @(Model.MostUsedCharacter == null ? "None" : Model.MostUsedCharacter.Kills.ToString())</h2>
+<h2>@Model.Username</h2>
+<hr />
+<h3>Total Battles: @Model.TotalBattles</h3>
+<h3>Won Battles: @Model.WonBattles  (@Model.WinPercentage%)</h3>
+<h3>Lost Battles: @Model.LostBattles  (@Model.LosePercentage%)</h3>
+<h3>Total Gold Earned: @Model.TotalGoldEarned</h3>
+<br />
+<h3>Most Used Character: @(Model.TotalBattles == 0 ? "None" : Model.MostUsedCharacter.Character.Name)</h3>
+<h3>Battles: @(Model.MostUsedCharacter.BattleAppearances.Count())</h3>
+<br />
+<h3>Most Valuable Character: @(Model.TotalBattles == 0 ? "None" : Model.MostValuedCharacter.Character.Name)</h3>
+<h3>Kills: @(Model.MostValuedCharacter.Kills)</h3>

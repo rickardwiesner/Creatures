@@ -10,12 +10,14 @@ namespace ClashOfTheCharacters.Models
         public int Id { get; set; }
 
         public bool Winner { get; set; }
-        //Tvek på den här propertyn
+
         public bool Challenger { get; set; }
 
         public int GoldEarned { get; set; }
 
         public int RankingPointsEarned { get; set; }
+
+        public int XpEarned { get; set; }
 
         public int TotalHp { get { return BattleCharacters.Sum(bc => bc.Hp); } }
 

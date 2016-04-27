@@ -21,11 +21,19 @@ namespace ClashOfTheCharacters.Models
             return userIdentity;
         }
 
+        public string ImageUrl { get; set; }
+
         public int Stamina { get; set; }
 
         public int MaxStamina { get; set; }
 
         public int Gold { get; set; }
+
+        public int Xp { get; set; }
+
+        public int MaxXp { get { return 50 + Level / 2 * 6 * Level; } }
+
+        public int Level { get; set; }
 
         public int LadderPoints { get; set; }
 

@@ -8,6 +8,8 @@ namespace ClashOfTheCharacters.ViewModels
 {
     public class UserViewModel
     {
+        public string Username { get; set; }
+
         public int TotalBattles { get { return WonBattles + LostBattles; } }
 
         public int WonBattles { get; set; }
@@ -22,6 +24,7 @@ namespace ClashOfTheCharacters.ViewModels
 
         public TeamMember MostUsedCharacter { get; set; }
 
-        public int Kills { get { return MostUsedCharacter.Kills; } }
+        public TeamMember MostValuedCharacter { get; set; }
+
     }
 }

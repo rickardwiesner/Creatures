@@ -10,8 +10,12 @@ namespace ClashOfTheCharacters.Models
     public class TeamMember
     {
         public int Id { get; set; }
+
         public int Level { get; set; }
+
         public int Xp { get; set; }
+
+        public int Slot { get; set; }
 
         [Required]
         public string ApplicationUserId { get; set; }
@@ -21,8 +25,6 @@ namespace ClashOfTheCharacters.Models
         public virtual Character Character { get; set; }
 
         public virtual ICollection<BattleCharacter> BattleAppearances { get; set; }
-
-        public int Kills { get { return BattleAppearances.Sum(ba => ba.Attacks.Count(a => a.DefenderHpRemaining == 0 && a.Attacker.TeamMember == this)); } }
 
         public int Damage { get { return Convert.ToInt32(Level * Character.AttackMultiplier + Character.BaseAttack); } }
 
@@ -34,5 +36,22 @@ namespace ClashOfTheCharacters.Models
 
         public int MaxXp { get { return 50 + Level / 2 * 6 * Level; } }
 
+        public int Kills
+        {
+            get
+            {
+                var db = new ApplicationDbContext();
+                return db.Attacks.Count(a => a.Attacker.TeamMemberId == Id && a.DefenderHpRemaining == 0);
+            }
+        }
+
+        public int Deaths
+        {
+            get
+            {
+                var db = new ApplicationDbContext();
+                return db.Attacks.Count(a => a.Defender.TeamMemberId == Id && a.FinishingBlow);
+            }
+        }
     }
 }

@@ -10,12 +10,12 @@ namespace ClashOfTheCharacters.Services
     {
         ApplicationDbContext db = new ApplicationDbContext();
 
-        public void CalculateXp(int attackerId, int defenderId, bool attackerWon)
+        public void CalculateXp(int challengerCharacterId, int receiverCharacterId, bool challengerCharacterWon)
         {
-            var attacker = db.TeamMembers.Find(attackerId);
-            var defender = db.TeamMembers.Find(defenderId);
+            var winner = challengerCharacterWon ? db.BattleCharacters.Find(challengerCharacterId) : db.BattleCharacters.Find(receiverCharacterId);
+            var loser = challengerCharacterWon ? db.BattleCharacters.Find(receiverCharacterId) : db.BattleCharacters.Find(challengerCharacterId);
 
-            int levelDifference = attacker.Level - defender.Level;
+            int levelDifference = winner.Level - loser.Level;
 
             int winnerXp = 8;
             int loserXp = 4;
@@ -54,34 +54,50 @@ namespace ClashOfTheCharacters.Services
                 loserXp = 12;
             }
 
-            if (attackerWon)
-            {
-                AddXp(attackerId, winnerXp);
-                AddXp(defenderId, loserXp);
-            }
+            winner.XpEarned += winnerXp;
+            loser.XpEarned += loserXp;
 
-            else
-            {
-                AddXp(defenderId, winnerXp);
-                AddXp(attackerId, loserXp);
-            }
+            db.SaveChanges();
+
+            AddXp(winner.TeamMemberId, winnerXp);
+            AddXp(loser.TeamMemberId, loserXp);
         }
 
-        void AddXp(int teamMemberId, int xp)
+        public void AddXp(int teamMemberId, int xp)
         {
-            var attacker = db.TeamMembers.Find(teamMemberId);
+            var teamMember = db.TeamMembers.Find(teamMemberId);
 
-            if (attacker.Xp + xp >= attacker.MaxXp)
+            if (teamMember.Xp + xp >= teamMember.MaxXp)
             {
-                int remaingXp = attacker.MaxXp - attacker.Xp;
+                int remaingXp = teamMember.MaxXp - teamMember.Xp;
 
-                attacker.Level++;
-                attacker.Xp = xp - remaingXp;
+                teamMember.Level++;
+                teamMember.Xp = xp - remaingXp;
             }
 
             else
             {
-                attacker.Xp += xp;
+                teamMember.Xp += xp;
+            }
+
+            db.SaveChanges();
+        }
+
+        public void AddXp(string userId, int xp)
+        {
+            var user = db.Users.Find(userId);
+
+            if (user.Xp + xp >= user.MaxXp)
+            {
+                int remaingXp = user.MaxXp - user.Xp;
+
+                user.Level++;
+                user.Xp = xp - remaingXp;
+            }
+
+            else
+            {
+                user.Xp += xp;
             }
 
             db.SaveChanges();

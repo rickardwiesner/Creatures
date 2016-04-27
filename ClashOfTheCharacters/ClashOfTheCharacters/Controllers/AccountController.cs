@@ -30,41 +30,6 @@ namespace ClashOfTheCharacters.Controllers
             SignInManager = signInManager;
         }
 
-        [ChildActionOnly]
-        public ActionResult LoginPartial()
-        {
-            RunServices();
-
-            var db = new ApplicationDbContext();
-           
-            var userId = User.Identity.GetUserId();
-            var user = db.Users.Find(userId);
-
-            user.LastActive = DateTimeOffset.Now;
-            db.SaveChanges();
-            
-            ViewBag.User = user;
-
-            return PartialView("_LoginPartial");
-        }
-
-        void RunServices()
-        {
-            var db = new ApplicationDbContext();
-
-            var userId = User.Identity.GetUserId();
-            var user = db.Users.Find(userId);
-
-            if (user.Stamina < user.MaxStamina)
-            {
-                var staminaService = new StaminaService();
-                staminaService.UpdateStamina(userId);
-            }
-
-            var battleService = new BattleService();
-            battleService.RunBattles();
-        }
-
         public ApplicationSignInManager SignInManager
         {
             get
@@ -189,7 +154,7 @@ namespace ClashOfTheCharacters.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Username, Email = "temp@creatures.com", Stamina = 60, MaxStamina = 60, LadderPoints = 500, LastStaminaTime = DateTimeOffset.Now };
+                var user = new ApplicationUser { UserName = model.Username, Email = "temp@creatures.com", Stamina = 60, MaxStamina = 60, LadderPoints = 500, LastStaminaTime = DateTimeOffset.Now, ImageUrl = "/Images/Other/noprofilepicture.jpg", Level = 1 };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

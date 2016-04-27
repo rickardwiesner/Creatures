@@ -17,6 +17,8 @@ namespace ClashOfTheCharacters.Models
 
         public int AttackerHpRemaining { get; set; }
 
+        public bool FinishingBlow { get { return DefenderHpRemaining == 0 ? true : false; } }
+
         public Effect Effect { get; set; }
 
         public int BattleId { get; set; }
