@@ -23,6 +23,8 @@ namespace ClashOfTheCharacters.Models
 
         public int XpEarned { get; set; }
 
+        public int Slot { get; set; }
+
         public bool Alive { get { return Hp > 0; } }
 
         public int Damage { get { return Convert.ToInt32(Level * TeamMember.Character.AttackMultiplier + TeamMember.Character.BaseAttack); } }

@@ -180,7 +180,7 @@ namespace ClashOfTheCharacters.Services
         {
             var battle = db.Battles.Find(battleId);
 
-            foreach (var teamMember in battle.Challenge.Challenger.TeamMembers.ToList())
+            foreach (var teamMember in battle.Challenge.Challenger.TeamMembers.OrderBy(tm => tm.Slot).ToList())
             {
                 db.BattleCharacters.Add(new BattleCharacter
                 {
@@ -188,11 +188,12 @@ namespace ClashOfTheCharacters.Services
                     TeamMemberId = teamMember.Id,
                     Level = teamMember.Level,
                     Hp = teamMember.Hp,
-                    MaxHp = teamMember.Hp
+                    MaxHp = teamMember.Hp,
+                    Slot = teamMember.Slot
                 });
             }
 
-            foreach (var teamMember in battle.Challenge.Receiver.TeamMembers.ToList())
+            foreach (var teamMember in battle.Challenge.Receiver.TeamMembers.OrderBy(tm => tm.Slot).ToList())
             {
                 db.BattleCharacters.Add(new BattleCharacter
                 {
@@ -200,7 +201,8 @@ namespace ClashOfTheCharacters.Services
                     TeamMemberId = teamMember.Id,
                     Level = teamMember.Level,
                     Hp = teamMember.Hp,
-                    MaxHp = teamMember.Hp
+                    MaxHp = teamMember.Hp,
+                    Slot = teamMember.Slot
                 });
             }
 

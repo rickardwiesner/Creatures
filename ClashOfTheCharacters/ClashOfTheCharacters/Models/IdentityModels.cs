@@ -37,6 +37,8 @@ namespace ClashOfTheCharacters.Models
 
         public int LadderPoints { get; set; }
 
+        public bool Admin { get; set; }
+
         public DateTimeOffset LastActive { get; set; }
 
         public DateTimeOffset LastStaminaTime { get; set; }

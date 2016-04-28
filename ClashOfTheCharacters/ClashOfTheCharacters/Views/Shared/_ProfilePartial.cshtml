@@ -132,7 +132,7 @@
                         <td>
                             <div class="dropdown">
                                 <a><h5>@opponent.UserName</h5></a>
-                                <div class="dropdown-content-small container-fluid">
+                                <div class="dropdown-content container-fluid">
                                     <div class="row">
                                         @for (int i = 0; i < 6; i++)
                                         {
@@ -225,7 +225,7 @@
                                             <h4>Gold Earned: @challenger.GoldEarned</h4>
                                             <h4>Xp Earned: @challenger.XpEarned</h4>
                                             <h4>Ladder Points @(challenger.RankingPointsEarned > 0 ? "Earned: " + challenger.RankingPointsEarned : "Lost: " + challenger.RankingPointsEarned)</h4>
-                                            @foreach (var battleCharacter in challenger.BattleCharacters)
+                                            @foreach (var battleCharacter in challenger.BattleCharacters.Where(bc => bc.XpEarned > 0).OrderBy(bc => bc.Slot))
                                             {
                                                 <h5>@(battleCharacter.TeamMember.Character.Name) Earned: @(battleCharacter.XpEarned)Xp</h5>
                                             }
@@ -235,7 +235,7 @@
                                             <h4>Gold Earned: @receiver.GoldEarned</h4>
                                             <h4>Xp Earned: @receiver.XpEarned</h4>
                                             <h4>Ladder Points @(receiver.RankingPointsEarned > 0 ? "Earned:" + receiver.RankingPointsEarned : "Lost:" + receiver.RankingPointsEarned)</h4>
-                                            @foreach (var battleCharacter in receiver.BattleCharacters)
+                                            @foreach (var battleCharacter in receiver.BattleCharacters.Where(bc => bc.XpEarned > 0).OrderBy(bc => bc.Slot))
                                             {
                                                 <h5>@(battleCharacter.TeamMember.Character.Name) Earned: @(battleCharacter.XpEarned)xp</h5>
                                             }
