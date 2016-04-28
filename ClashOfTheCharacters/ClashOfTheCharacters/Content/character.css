@@ -1,7 +1,7 @@
 ﻿.gamecard {
     background-image: url('../Images/Other/gamecard.jpg');
     background-size: cover;
-    border: 1px solid black;
+    border: 1px solid #808080;
     font-family: Gabriola;
     text-transform: uppercase;
 }
@@ -18,7 +18,7 @@
 .gamecard-small {
     background-image: url('../Images/Other/gamecard.jpg');
     background-size: cover;
-    border: 1px solid black;
+    border: 1px solid #808080;
     margin-top: 15px;
     font-family: Gabriola;
     text-transform: uppercase;
@@ -28,7 +28,7 @@
 .gamecard-xs {
     background-image: url('../Images/Other/gamecard.jpg');
     background-size: cover;
-    border: 1px solid black;
+    border: 1px solid #808080;
     font-family: Gabriola;
     text-transform: uppercase;
     padding: 1px;
