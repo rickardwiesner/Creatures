@@ -16,9 +16,10 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>Username</th>
             <th>Rank</th>
             <th>Ladder points</th>
+            <th>Username</th>
+            <th class="text-center">Team</th>
             @*<th><a href="~/Controllers/LadderController/SortByName">Username</a></th>*@
         </tr>
     </thead>
@@ -27,43 +28,52 @@
         {
             counter++;
             <tr>
-                @*@*Dropdown*@
+                <td><h5>@counter</h5></td>
+                <td><h5>@user.LadderPoints</h5></td>
+                <td><h5>@user.UserName</h5></td>
                 <td>
-                    <div class="dropdown">
-                        <a><h5>@user.UserName</h5></a>
-                        <div class="dropdown-content container">
-                            <div class="row">
-                                @for (int i = 0; i < 6; i++)
-                                {
-                                    var teamMember = user.TeamMembers.FirstOrDefault(tm => tm.Slot == i + 1);
+                    @*@*Hover Dropdown*@
+                    <div class="dropdown center-block">
+                        <a class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="fa fa-users"></span>
+                        </a>
 
-                                    <div class="col-md-2 col-xs-2">
-                                        @*<a href="#")>*@
-                                        <div class="col-md-12 gamecard-xs">
-                                            <p>
-                                                @(teamMember != null ? "Lvl: " + teamMember.Level.ToString() : "Empty")
-                                                @if (teamMember != null)
-                                                {
-                                                    <span>
-                                                        <img class="gamecard-element-xs" src="@Helper.GetElementUrl(teamMember.Character.Element)" />
-                                                    </span>
-                                                }
-                                            </p>
-                                            <img class="img-responsive" src="@(teamMember != null ? teamMember.Character.ImageUrl : "/Images/Other/concrete.jpg")" />
-                                            <p>Dmg: @(teamMember != null ? teamMember.Damage.ToString() : "")</p>
-                                            <p>Def: @(teamMember != null ? teamMember.Defense.ToString() : "")</p>
-                                            <p>Hp: @(teamMember != null ? teamMember.Hp.ToString() : "")</p>
+                        <div class="container-fluid dropdown-menu">
 
-                                        </div>
-                                        @*</a>*@
+                            @for (int i = 0; i < 6; i++)
+                            {
+                                var teamMember = user.TeamMembers.FirstOrDefault(tm => tm.Slot == i + 1);
+
+                                <div class="col-md-4 col-xs-4">
+                                    <div class="col-md-12 gamecard-xs">
+                                        <p>
+                                            @(teamMember != null ? "Lvl: " + teamMember.Level.ToString() : "Empty")
+                                            @if (teamMember != null)
+                                            {
+                                                <span>
+                                                    <img class="gamecard-element-xs" src="@Helper.GetElementUrl(teamMember.Character.Element)" />
+                                                </span>
+                                            }
+                                        </p>
+                                        <img class="img-responsive" src="@(teamMember != null ? teamMember.Character.ImageUrl : "/Images/Other/concrete.jpg")" />
+                                        <p>Dmg: @(teamMember != null ? teamMember.Damage.ToString() : "")</p>
+                                        <p>Def: @(teamMember != null ? teamMember.Defense.ToString() : "")</p>
+                                        <p>Hp: @(teamMember != null ? teamMember.Hp.ToString() : "")</p>
                                     </div>
+                                </div>
+
+                                if (i == 2)
+                                {
+                                    <div class="clearfix visible-xs"></div>
+                                                    <div class="clearfix visible-sm"></div>
+                                                    <div class="clearfix visible-md"></div>
+                                                    <div class="clearfix visible-lg"></div>
                                 }
-                            </div>
+                            }
                         </div>
                     </div>
                 </td>
-                <td><h5>@counter</h5></td>
-                <td><h5>@user.LadderPoints</h5></td>
+                
             </tr>
         }
 

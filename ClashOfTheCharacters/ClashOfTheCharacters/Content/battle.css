@@ -6,6 +6,11 @@ h3 span {
     font-size: 16px;
 }
 
+.dropdown-menu .col-md-4 {
+    padding: 1px;
+}
+
+/*Ta bort - Från*/
 .dropdown {
     width: 25px;
 }
@@ -40,8 +45,17 @@ h3 span {
 .dropdown > a > h5:hover {
     cursor: pointer;
 }
+/*Ta bort - Till*/
+
+
 
 .text-small {
     font-size: 12px;
 }
 
+.dropdown-menu {
+    left: -50px;
+    min-width: 200px;
+    padding: 0px;
+    background-color: #fff0e5;
+} 
