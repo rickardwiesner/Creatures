@@ -10,12 +10,12 @@
         <span>
             <img class="img-circle" src="@Model.ImageUrl" />
         </span> @Model.Username <span>
-            #@Model.Rank
-        </span><span class="span-level">
             Lvl: @Model.Level
+        </span><span class="span-level">
+            Rank: #@Model.Rank
         </span>
     </h4>
-    <a class="fancybox" href="#ChangePicture"><span class="fa fa-wrench fa-fw text-warning"></span></a>
+    <a class="fancybox" href="#ChangePicture"><span class="fa fa-wrench avatar-wrench text-warning"></span></a>
 
     @*Profile Picture*@
     <div class="container-fluid fancybox-hidden" id="ChangePicture">
@@ -63,26 +63,48 @@
                     <div class="clearfix visible-md"></div>
                     <div class="clearfix visible-lg"></div>
                 }
-                <div class="col-md-4 col-xs-4">
-                    <div class="col-md-12 gamecard-small">
-                        @if (Model.TeamMembers.ElementAtOrDefault(i) != null)
-                        {
-                            <p>@Model.TeamMembers.ElementAt(i).Character.Name <span><img class="gamecard-element-small" src="@Helper.GetElementUrl(Model.TeamMembers.ElementAt(i).Character.Element)" /></span></p>
-                            <img class="img-responsive" src="@Model.TeamMembers.ElementAt(i).Character.ImageUrl" />
-                            <p>Dmg: @Model.TeamMembers.ElementAt(i).Damage</p>
-                            <p>Def: @Model.TeamMembers.ElementAt(i).Defense</p>
-                                <p>Hp: @Model.TeamMembers.ElementAt(i).Hp</p>
-                        }
 
-                        else
+                var teamMember = Model.TeamMembers.FirstOrDefault(tm => tm.Slot == i + 1);
+
+                <div class="col-md-4 col-xs-4">
+                    <a @Html.AttributeEncode(teamMember != null ? "data-toggle=dropdown class=gamecard-button" : "class=gamecard-disabled")>
+                        <div class="col-md-12 gamecard-small">
+                            <p>
+                                @(teamMember != null ? teamMember.Character.Name : "Empty")
+                                @if (teamMember != null)
+                                {
+                                    <span>
+                                        <img class="gamecard-element-small" src="@Helper.GetElementUrl(teamMember.Character.Element)" />
+                                    </span>
+                                }
+                            </p>
+                            <img class="img-responsive" src="@(teamMember != null ? teamMember.Character.ImageUrl : "/Images/Other/concrete.jpg")" />
+                            <p>Dmg: @(teamMember != null ? teamMember.Damage.ToString() : "")</p>
+                            <p>Def: @(teamMember != null ? teamMember.Defense.ToString() : "")</p>
+                            <p>Hp: @(teamMember != null ? teamMember.Hp.ToString() : "")</p>
+
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><p>Move @(teamMember != null ? teamMember.Character.Name : "") to</p></li>
+                        @for (int j = 0; j < 6; j++)
                         {
-                            <p>Empty</p>
-                            <img class="img-responsive" src="/Images/Other/concrete.jpg" />
-                            <p>Dmg:</p>
-                            <p>Def:</p>
-                                <p>Hp:</p>
-                        }
-                    </div>
+                            var teamMemberInSlot = Model.TeamMembers.FirstOrDefault(tm => tm.Slot == j + 1);
+
+                            if (teamMember != null)
+                            {
+                                if (teamMemberInSlot == null)
+                                {
+                                    <li>@Html.ActionLink(string.Format("Slot: {0} - Empty", j + 1), "ChangeToEmptySlot", new { teamMemberId = teamMember.Id, slot = j + 1 })</li>
+                                }
+
+                                else if (teamMemberInSlot.Id != teamMember.Id)
+                                {
+                                    <li>@Html.ActionLink(string.Format("Slot: {0} - {1}", j + 1, teamMemberInSlot.Character.Name), "ChangeSlot", new { originalTeamMemberId = teamMemberInSlot.Id, replacerTeamMemberId = teamMember.Id })</li>
+                                }
+                            }
+                        }                     
+                    </ul>
                 </div>
             }
         </div>
@@ -106,7 +128,42 @@
                 var opponent = battle.Challenge.ChallengerId == Model.UserId ? battle.Challenge.Receiver : battle.Challenge.Challenger;
 
                     <tr>
-                        <td><h5>@opponent.UserName</h5></td>
+                        @*@*Dropdown*@
+                        <td>
+                            <div class="dropdown">
+                                <a><h5>@opponent.UserName</h5></a>
+                                <div class="dropdown-content-small container-fluid">
+                                    <div class="row">
+                                        @for (int i = 0; i < 6; i++)
+                                        {
+                                            var teamMember = opponent.TeamMembers.FirstOrDefault(tm => tm.Slot == i + 1);
+
+                                            <div class="col-md-2 col-xs-2">
+                                                @*<a href="#")>*@
+                                                <div class="col-md-12 gamecard-xs">
+                                                    <p>
+                                                        @(teamMember != null ? "Lvl: " + teamMember.Level.ToString() : "Empty")
+                                                        @if (teamMember != null)
+                                                        {
+                                                            <span>
+                                                                <img class="gamecard-element-xs" src="@Helper.GetElementUrl(teamMember.Character.Element)" />
+                                                            </span>
+                                                        }
+                                                    </p>
+                                                    <img class="img-responsive" src="@(teamMember != null ? teamMember.Character.ImageUrl : "/Images/Other/concrete.jpg")" />
+                                                    <p>Dmg: @(teamMember != null ? teamMember.Damage.ToString() : "")</p>
+                                                    <p>Def: @(teamMember != null ? teamMember.Defense.ToString() : "")</p>
+                                                    <p>Hp: @(teamMember != null ? teamMember.Hp.ToString() : "")</p>
+
+                                                </div>
+                                                @*</a>*@
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+
                         <td class="text-center"><h5>@opponent.LadderPoints</h5></td>
                         <td class="text-right"><h5>@(battle.StartTime.Subtract(DateTime.Now.TimeOfDay).Minute + 1)m</h5></td>
                     </tr>
@@ -192,12 +249,12 @@
                                             <div class="clearfix visible-lg"></div>
 
                                             <div class="col-md-4 col-sm-4">
-                                                <div class="col-md-12 gamecard">
-                                                    <div class="col-md-9 col-xs-9">
-                                                        <h3><strong>@attack.Attacker.TeamMember.Character.Name</strong><span> (@attack.Attacker.Competitor.User.UserName)</span></h3>
-                                                    </div>
-                                                    <div class="col-md-3 col-xs-3">
-                                                        <img class="gamecard-element" src="@Helper.GetElementUrl(attack.Attacker.TeamMember.Character.Element)" />
+                                                <div class="col-md-12 gamecard margin-bottom-20">
+                                                    <div class="col-md-12 col-xs-12">
+                                                        <h3>
+                                                            <strong>@attack.Attacker.TeamMember.Character.Name</strong><span> (@attack.Attacker.Competitor.User.UserName)</span>
+                                                            <span><img class="gamecard-element" src="@Helper.GetElementUrl(attack.Attacker.TeamMember.Character.Element)" /></span>
+                                                        </h3>
                                                     </div>
                                                     <img class="img-responsive gamecard-image" src="@attack.Attacker.TeamMember.Character.ImageUrl" />
                                                     <div class="gamecard-hpbar">
@@ -215,31 +272,31 @@
                                                 <h4>The attack was @Helper.GetEffect(attack.Effect).ToLower()</h4>
 
                                             </div>
-                                                   <div class="col-md-4 col-sm-4">
-                                                       <div class="col-md-12 gamecard">
-                                                           <div class="col-md-9 col-xs-9">
-                                                               <h3><strong>@attack.Defender.TeamMember.Character.Name</strong><span> (@attack.Defender.Competitor.User.UserName)</span></h3>
-                                                           </div>
-                                                           <div class="col-md-3 col-xs-3">
-                                                               <img class="gamecard-element" src="@Helper.GetElementUrl(attack.Defender.TeamMember.Character.Element)" />
-                                                           </div>
-                                                           <img class="img-responsive gamecard-image" src="@attack.Defender.TeamMember.Character.ImageUrl" />
-                                                           <div class="gamecard-hpbar">
-                                                               <div style="width: @Helper.GetPercentage(attack.DefenderHpRemaining, attack.Defender.MaxHp)%"></div>
-                                                           </div>
-                                                           <p class="text-right">Hp: @(attack.DefenderHpRemaining > 0 ? attack.DefenderHpRemaining : 0) / @attack.Defender.MaxHp</p>
-                                                           <p>Level: @attack.Defender.Level</p>
-                                                           <p>Attack: @attack.Defender.Damage</p>
-                                                           <p>Defense: @attack.Defender.Defense</p>
-                                                       </div>
-                                                   </div>
+                                            <div class="col-md-4 col-sm-4">
+                                                <div class="col-md-12 gamecard">
+                                                    <div class="col-md-12 col-xs-12">
+                                                        <h3>
+                                                            <strong>@attack.Defender.TeamMember.Character.Name</strong><span> (@attack.Defender.Competitor.User.UserName)</span>
+                                                            <span><img class="gamecard-element" src="@Helper.GetElementUrl(attack.Defender.TeamMember.Character.Element)" /></span>
+                                                        </h3>
+                                                    </div>
+                                                    <img class="img-responsive gamecard-image" src="@attack.Defender.TeamMember.Character.ImageUrl" />
+                                                    <div class="gamecard-hpbar">
+                                                        <div style="width: @Helper.GetPercentage(attack.DefenderHpRemaining, attack.Defender.MaxHp)%"></div>
+                                                    </div>
+                                                    <p class="text-right">Hp: @(attack.DefenderHpRemaining > 0 ? attack.DefenderHpRemaining : 0) / @attack.Defender.MaxHp</p>
+                                                    <p>Level: @attack.Defender.Level</p>
+                                                    <p>Attack: @attack.Defender.Damage</p>
+                                                    <p>Defense: @attack.Defender.Defense</p>
+                                                </div>
+                                            </div>
 
-                                                   <hr />
+                                            <hr />
 
-                                                   <div class="clearfix visible-xs"></div>
-                                                   <div class="clearfix visible-sm"></div>
-                                                   <div class="clearfix visible-md"></div>
-                                                   <div class="clearfix visible-lg"></div>
+                                                <div class="clearfix visible-xs"></div>
+                                                <div class="clearfix visible-sm"></div>
+                                                <div class="clearfix visible-md"></div>
+                                                <div class="clearfix visible-lg"></div>
                                         }
                                     </div>
                                 </div>

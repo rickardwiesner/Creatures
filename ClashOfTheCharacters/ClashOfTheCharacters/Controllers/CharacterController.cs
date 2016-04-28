@@ -109,7 +109,7 @@ namespace ClashOfTheCharacters.Controllers
             var userId = User.Identity.GetUserId();
             int characterId = Convert.ToInt32(Request.Form.Get("characterId"));
 
-            var teamMember = new TeamMember { ApplicationUserId = userId, CharacterId = characterId, Level = 5 };
+            var teamMember = new TeamMember { ApplicationUserId = userId, CharacterId = characterId, Level = 5, Slot = 1 };
             db.TeamMembers.Add(teamMember);
             db.SaveChanges();
 
