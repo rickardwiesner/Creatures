@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+<p>Add a creature</p>
+<div class="row">
+    <form class="form-group" method="post" action="/Admin/AddCreature">
+        <input type="text" name="cNameInput" placeholder="Name" />
+        @*       Lägga till en dropdown för alla element man kan välja?
+            <input type="text" name="elementInput" placeholder="Element" />*@
+        <input type="text" name="baseAttackInput" placeholder="Base Attack" />
+        <input type="text" name="baseDefenseInput" placeholder="Base Defense" />
+        <input type="text" name="baseHpInput" placeholder="Base HP" />
+        <input type="text" name="attMultiplierInput" placeholder="Attack Multiplier" />
+        <input type="text" name="defMultiplierInput" placeholder="Defense Multiplier" />
+        <input type="text" name="hpMultiplierInput" placeholder="HP Multiplier" />
+        <input type="text" name="imageUrlInput" placeholder="Image URL" />
+        <input type="text" name="priceInput" placeholder="Price" />
+        <button>Add creature!</button>
+    </form>
+</div>
