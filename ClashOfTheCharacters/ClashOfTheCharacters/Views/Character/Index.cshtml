@@ -4,57 +4,41 @@
 @model IEnumerable<TeamMember>
 
 @{
-    ViewBag.Title = "Index";
-    int counter = 0;
+    ViewBag.Title = "Team";
 }
 
 
-    <div class="row">
-        @foreach (var teamMember in Model)
+<div class="row">
+
+    @for (int i = 0; i < 6; i++)
+    {
+        if (i % 3 == 0)
         {
-            counter++;
-
-            <div class="col-md-4 col-sm-6">
-                <div class="col-md-12 gamecard">
-                    <div class="col-md-9 col-xs-9">
-                        <h3><strong>@teamMember.Character.Name</strong></h3>
-                    </div>
-                    <div class="col-md-3 col-xs-3">
-                        <img class="gamecard-element" src="@Helper.GetElementUrl(teamMember.Character.Element)" />
-                    </div>
-                    <img class="img-responsive gamecard-image" src="@teamMember.Character.ImageUrl" />
-                    <div class="gamecard-xpbar">
-                        <div style="width: @Helper.GetPercentage(teamMember.Xp, teamMember.MaxXp)%"></div>
-                    </div>
-                    <p class="text-right">@teamMember.Xp / @teamMember.MaxXp</p>
-                    <p>Level: @teamMember.Level</p>
-                    <p>Worth: @teamMember.Worth</p>
-                    <p>Attack: @teamMember.Damage</p>
-                    <p>Defense: @teamMember.Defense</p>
-                    <p>Hp: @teamMember.Hp</p>
-                </div>
-            </div>
-
-            if (counter % 2 == 0)
-            {
-                <div class="clearfix visible-sm"></div>
-            }
+            <div class="clearfix visible-xs"></div>
+            <div class="clearfix visible-sm"></div>
+            <div class="clearfix visible-md"></div>
+            <div class="clearfix visible-lg"></div>
         }
 
-        @for (int i = 0; i < 6 - Model.Count(); i++)
-        {
-            <div class="col-md-4 col-sm-6">
-                <div class="col-md-12 gamecard">
-                    <h3><strong>Empty Slot</strong></h3>
-                    <img class="img-responsive gamecard-image" src="/Images/Characters/emptyslot.jpg" />
-                    <div class="gamecard-xpbar"></div>
-                    <p class="text-right">0 / 0</p>
-                    <p>Level: 0</p>
-                    <p>Worth: 0</p>
-                    <p>Attack: 0</p>
-                    <p>Defense: 0</p>
-                    <p>Hp: 0</p>
+        var teamMember = Model.FirstOrDefault(tm => tm.Slot == i + 1);
+
+        <div class="col-md-4 col-sm-6">
+            <div class="col-md-12 gamecard margin-bottom-20">
+                <h4>
+                    <strong>@(teamMember != null ? teamMember.Character.Name : "Empty Slot")</strong>
+                    <span> @(teamMember != null ? "Lvl: " + teamMember.Level.ToString() : "")</span>
+                    <span><img class="gamecard-element" src="@(teamMember != null ? Helper.GetElementUrl(teamMember.Character.Element) : null)"/></span>
+                </h4>
+                <img class="img-responsive gamecard-image" src=@(teamMember != null ? teamMember.Character.ImageUrl : "/Images/Characters/emptyslot.jpg") />
+                <div class="gamecard-xpbar">
+                    <div style="width:@(teamMember != null ? Helper.GetPercentage(teamMember.Xp, teamMember.MaxXp) : "0")%"></div>
                 </div>
+                <p class="text-right">@(teamMember != null ? teamMember.Xp : 0) / @(teamMember != null ? teamMember.MaxXp : 0)</p>
+                <p>Worth: @(teamMember != null ? teamMember.Worth : 0)</p>
+                <p>Damage: @(teamMember != null ? teamMember.Damage : 0)</p>
+                <p>Defense: @(teamMember != null ? teamMember.Defense : 0)</p>
+                <p>Hp: @(teamMember != null ? teamMember.Hp : 0)</p>
             </div>
-        }
-    </div>
+        </div>
+    }
+</div>

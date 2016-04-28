@@ -33,6 +33,37 @@ namespace ClashOfTheCharacters.Controllers
             return View(userViewModel);
         }
 
+        public ActionResult ChangeSlot(int originalTeamMemberId, int replacerTeamMemberId)
+        {
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Find(userId);
+
+            var originalTeamMember = user.TeamMembers.First(tm => tm.Id == originalTeamMemberId);
+            int originalTeamMemberSlot = originalTeamMember.Slot;
+
+            var replacerTeamMember = user.TeamMembers.First(tm => tm.Id == replacerTeamMemberId);
+            int replacerTeamMemberSlot = replacerTeamMember.Slot;
+
+            originalTeamMember.Slot = replacerTeamMemberSlot;
+            replacerTeamMember.Slot = originalTeamMemberSlot;
+
+            db.SaveChanges();
+
+            return Redirect(Request.UrlReferrer.PathAndQuery);
+        }
+
+        public ActionResult ChangeToEmptySlot(int teamMemberId, int slot)
+        {
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Find(userId);
+
+            user.TeamMembers.First(tm => tm.Id == teamMemberId).Slot = slot;
+
+            db.SaveChanges();
+
+            return Redirect(Request.UrlReferrer.PathAndQuery);
+        }
+
         [ChildActionOnly]
         public ActionResult ProfilePartial()
         {

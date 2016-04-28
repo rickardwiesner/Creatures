@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<ClashOfTheCharacters.Models.ApplicationUser>
-
+@using ClashOfTheCharacters.Helpers;
 @{
     ViewBag.Title = "Ladder";
     int counter = 0;
@@ -16,11 +16,10 @@
 <table class="table table-striped">
     <thead>
         <tr>
+            <th>Username</th>
             <th>Rank</th>
             <th>Ladder points</th>
             @*<th><a href="~/Controllers/LadderController/SortByName">Username</a></th>*@
-            <th>Username</th>
-            <th>Creatures</th>
         </tr>
     </thead>
     <tbody>
@@ -28,16 +27,43 @@
         {
             counter++;
             <tr>
+                @*@*Dropdown*@
+                <td>
+                    <div class="dropdown">
+                        <a><h5>@user.UserName</h5></a>
+                        <div class="dropdown-content container">
+                            <div class="row">
+                                @for (int i = 0; i < 6; i++)
+                                {
+                                    var teamMember = user.TeamMembers.FirstOrDefault(tm => tm.Slot == i + 1);
+
+                                    <div class="col-md-2 col-xs-2">
+                                        @*<a href="#")>*@
+                                        <div class="col-md-12 gamecard-xs">
+                                            <p>
+                                                @(teamMember != null ? "Lvl: " + teamMember.Level.ToString() : "Empty")
+                                                @if (teamMember != null)
+                                                {
+                                                    <span>
+                                                        <img class="gamecard-element-xs" src="@Helper.GetElementUrl(teamMember.Character.Element)" />
+                                                    </span>
+                                                }
+                                            </p>
+                                            <img class="img-responsive" src="@(teamMember != null ? teamMember.Character.ImageUrl : "/Images/Other/concrete.jpg")" />
+                                            <p>Dmg: @(teamMember != null ? teamMember.Damage.ToString() : "")</p>
+                                            <p>Def: @(teamMember != null ? teamMember.Defense.ToString() : "")</p>
+                                            <p>Hp: @(teamMember != null ? teamMember.Hp.ToString() : "")</p>
+
+                                        </div>
+                                        @*</a>*@
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </td>
                 <td><h5>@counter</h5></td>
                 <td><h5>@user.LadderPoints</h5></td>
-
-                <td><h5>@user.UserName</h5></td>
-                <td>
-                    @foreach (var creature in user.TeamMembers)
-                    {
-                        <img src="@creature.Character.ImageUrl" />
-                    }
-                </td>
             </tr>
         }
 
