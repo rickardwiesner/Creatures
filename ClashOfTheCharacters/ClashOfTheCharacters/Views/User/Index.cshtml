@@ -10,7 +10,7 @@
 <h3>Lost Battles: @Model.LostBattles  (@Model.LosePercentage%)</h3>
 <h3>Total Gold Earned: @Model.TotalGoldEarned</h3>
 <br />
-<h3>Most Used Character: @(Model.TotalBattles == 0 ? "None" : Model.MostUsedCharacter.Character.Name)</h3>
+<h3>Most Battle Appearances: @(Model.TotalBattles == 0 ? "None" : Model.MostUsedCharacter.Character.Name)</h3>
 <h3>Battles: @(Model.MostUsedCharacter.BattleAppearances.Count())</h3>
 <br />
 <h3>Most Valuable Character: @(Model.TotalBattles == 0 ? "None" : Model.MostValuedCharacter.Character.Name)</h3>
