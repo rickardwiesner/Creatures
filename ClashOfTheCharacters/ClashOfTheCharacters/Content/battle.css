@@ -12,10 +12,10 @@ h3 span {
 
 /*Ta bort - Från*/
 .dropdown {
-    width: 25px;
+    width: 21px;
 }
 
-.dropdown-content {
+/*.dropdown-content {
     display: none;
     position: relative;
     min-width: 320px;
@@ -44,7 +44,7 @@ h3 span {
 
 .dropdown > a > h5:hover {
     cursor: pointer;
-}
+}*/
 /*Ta bort - Till*/
 
 
@@ -58,4 +58,29 @@ h3 span {
     min-width: 200px;
     padding: 0px;
     background-color: #fff0e5;
-} 
+}
+
+.btn-hover {
+    color: #808080;
+}
+
+.btn-hover:hover {
+    color: #808080;
+}
+   
+a.btn-hover .text-on-hover{
+    display: none;
+}
+ 
+.btn-hover:hover .text-on-hover {
+    position: absolute;
+    display: block;
+}
+
+.text-on-hover {
+    display: none;
+    color: #808080;
+    font-size: 12px;
+    right: 22px;
+    margin-top: 30px;
+}

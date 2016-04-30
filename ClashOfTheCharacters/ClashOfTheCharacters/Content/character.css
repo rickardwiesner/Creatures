@@ -4,6 +4,25 @@
     border: 1px solid #808080;
     font-family: Gabriola;
     text-transform: uppercase;
+    margin-bottom: 30px;
+}
+
+.gamecard:hover {
+    opacity: 0.6;
+}  
+
+.gamecard h4 {
+    font-family: Gabriola;
+    font-size: 27px;
+}
+
+.gamecard h5 {
+    font-family: Gabriola;
+    font-size: 24px;
+}
+
+.gamecard h4 span {
+    font-size: 16px;
 }
 
 .gamecard-button {
@@ -106,9 +125,11 @@
     }
 
 .gamecard-select {
-    font-size: 22px;
-    margin-bottom: 10px;
-    text-transform: uppercase;
+     padding-bottom: 30px;
+}
+
+.btn-select {
+    margin-bottom: 20px;
 }
 
 .gamecard-hpbar {

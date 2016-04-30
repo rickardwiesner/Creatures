@@ -12,10 +12,13 @@
 
     @for (int i = 0; i < 6; i++)
     {
+        if (i == 2)
+        {
+            <div class="clearfix visible-sm"></div>
+        }
+
         if (i % 3 == 0)
         {
-            <div class="clearfix visible-xs"></div>
-            <div class="clearfix visible-sm"></div>
             <div class="clearfix visible-md"></div>
             <div class="clearfix visible-lg"></div>
         }
@@ -27,7 +30,10 @@
                 <h4>
                     <strong>@(teamMember != null ? teamMember.Character.Name : "Empty Slot")</strong>
                     <span> @(teamMember != null ? "Lvl: " + teamMember.Level.ToString() : "")</span>
-                    <span><img class="gamecard-element" src="@(teamMember != null ? Helper.GetElementUrl(teamMember.Character.Element) : null)"/></span>
+                    @if (teamMember != null)
+                    {
+                        <span><img class="gamecard-element" src="@Helper.GetElementUrl(teamMember.Character.Element)" /></span>
+                    }
                 </h4>
                 <img class="img-responsive gamecard-image" src=@(teamMember != null ? teamMember.Character.ImageUrl : "/Images/Characters/emptyslot.jpg") />
                 <div class="gamecard-xpbar">

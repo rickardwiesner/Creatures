@@ -9,36 +9,54 @@
 }
 
 <h3 class="text-center">Select Your First Character</h3>
-<div class="container">
+<hr />
     <div class="row">
         @foreach (var character in Model)
         {
             counter++;
 
-            <div class="col-md-3 col-sm-6">
-                <div class="col-md-12 gamecard">
-                    <div class="col-md-9 col-xs-9">
-                        <h3><strong>@character.Name</strong></h3>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <a href="/Character/Selected/@character.Id">
+                    <div class="col-md-12 col-sm-12 col-xs-12 gamecard gamecard-select">
+                        <h4>
+                            <strong>@character.Name</strong>
+                            <span> Lvl: 5</span>
+                            <span><img class="gamecard-element" src="@Helper.GetElementUrl(character.Element)" /></span>
+                        </h4>
+                        <img class="img-responsive gamecard-image" src=@character.ImageUrl />
+                        <div class="col-md-6 col-sm-6 col-xs-6 text-center margin-top-20">
+                            <h5>Base Stats</h5>
+                            <p>Dmg: @character.BaseAttack</p>
+                            <p>Def: @character.BaseDefense</p>
+                            <p>Hp: @character.BaseHp</p>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6 text-center margin-top-20">
+                            <h5>Growth</h5>
+                            <p>Dmg: @character.AttackMultiplier</p>
+                            <p>Def: @character.DefenseMultiplier</p>
+                            <p>Hp: @character.HpMultiplier</p>
+                        </div>
                     </div>
-                    <div class="col-md-3 col-xs-3">
-                        <img class="gamecard-element" src="@Helper.GetElementUrl(character.Element)" />
+                </a>
+                @*<div class="col-md-12 col-sm-12 col-xs-12 btn-select">*@
+                    @*<form class="col-md-12 col-sm-12 col-xs-12 btn-select" method="post">
+                        <input hidden value="@character.Id" name="characterId" />
+                        <input type="submit" class="btn btn-danger btn-block" value="Select" />
+                    </form>*@
+                @*</div>*@
+                @*<form>
+                    <input hidden value="@character.Id" name="characterId" />
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-danger btn-block form-control" value="Select" />
                     </div>
-                    <img class="img-responsive gamecard-image" src="@character.ImageUrl" />
-                    <p>Level: 5</p>
-                    <p>Base Attack: @character.BaseAttack</p>
-                    <p>Base Defense: @character.BaseDefense</p>
-                    <p>Base Hp: @character.BaseHp</p>
-                    <form method="post">
-                        <input hidden name="characterId" value="@character.Id" />
-                        <input type="submit" value="Select" class="btn btn-block btn-danger gamecard-select" />
-                    </form>
-                </div>
+                </form>*@
             </div>
 
-            if (counter % 2 == 0)
+            if (counter == 2)
             {
+                <div class="clearfix visible-lg"></div>
                 <div class="clearfix visible-sm"></div>
+                <div class="clearfix visible-md"></div>
             }
         }
     </div>
-</div>
