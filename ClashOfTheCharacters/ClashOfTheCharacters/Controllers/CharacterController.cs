@@ -102,6 +102,17 @@ namespace ClashOfTheCharacters.Controllers
             return View(characters.ToList());
         }
 
+        public ActionResult Selected(int id)
+        {
+            var userId = User.Identity.GetUserId();
+
+            var teamMember = new TeamMember { ApplicationUserId = userId, CharacterId = id, Level = 5, Slot = 1 };
+            db.TeamMembers.Add(teamMember);
+            db.SaveChanges();
+
+            return RedirectToAction("Index", "Battle");
+        }
+
         [HttpPost]
         [ActionName("Select")]
         public ActionResult Select_Post()

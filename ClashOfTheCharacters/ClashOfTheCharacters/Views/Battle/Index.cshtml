@@ -222,7 +222,10 @@
 
                                     else
                                     {
-                                        @*<span class="text-small">@(user.Id == userId ? "" : "(Max. 2 Active Challenges)  ")</span>*@<span class="fa fa-2x fa-send"></span>
+                                        <a class="btn-hover">
+                                            <span class="text-on-hover">@(user.Id == userId ? "Can't Challenge Yourself" : "Max. 2 Active Challenges")</span>
+                                            <span class="fa fa-2x fa-send"></span>
+                                        </a>
                                     }
 
                                 </td>
