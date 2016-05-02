@@ -24,7 +24,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var user in Model)
+        @foreach (var user in Model.Where(c => c.UserName.Contains(ViewBag.Search)).OrderByDescending(c => c.LadderPoints).ToList())
         {
             counter++;
             <tr>
@@ -43,7 +43,7 @@
                             @for (int i = 0; i < 6; i++)
                             {
                                 var teamMember = user.TeamMembers.FirstOrDefault(tm => tm.Slot == i + 1);
-
+                                <p>Vad</p>
                                 <div class="col-md-4 col-xs-4">
                                     <div class="col-md-12 gamecard-xs">
                                         <p>

@@ -52,8 +52,9 @@ namespace ClashOfTheCharacters.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("EarthOfCreatures", throwIfV1Schema: false)
+            : base(/*"EarthOfCreatures", throwIfV1Schema: false*/)
         {
+            
         }
 
         public static ApplicationDbContext Create()
