@@ -23,7 +23,8 @@ namespace ClashOfTheCharacters.Controllers
             var userViewModel = new UserViewModel
             {
                 Username = user.UserName,
-                WonBattles = db.Competitors.Where(c => c.UserId == userId && c.Winner).Count(),
+				ProfilePicture = user.ImageUrl,
+				WonBattles = db.Competitors.Where(c => c.UserId == userId && c.Winner).Count(),
                 LostBattles = db.Competitors.Where(c => c.UserId == userId && !c.Winner).Count(),
                 MostUsedCharacter = user.TeamMembers.OrderByDescending(t => t.BattleAppearances.Count()).First(),
                 MostValuedCharacter = user.TeamMembers.OrderByDescending(t => t.Kills).First(),
