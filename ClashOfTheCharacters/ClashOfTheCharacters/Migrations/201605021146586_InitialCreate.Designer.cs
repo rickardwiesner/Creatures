@@ -13,7 +13,7 @@ namespace ClashOfTheCharacters.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201604221145461_InitialCreate"; }
+            get { return "201605021146586_InitialCreate"; }
         }
         
         string IMigrationMetadata.Source

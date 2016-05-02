@@ -1,0 +1,98 @@
+﻿@model ClashOfTheCharacters.Models.Character
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Character</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Element)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Element)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ImageUrl)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ImageUrl)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BaseAttack)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BaseAttack)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BaseDefense)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BaseDefense)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BaseHp)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BaseHp)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AttackMultiplier)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AttackMultiplier)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DefenseMultiplier)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DefenseMultiplier)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HpMultiplier)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HpMultiplier)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

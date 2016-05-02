@@ -3,15 +3,59 @@
 @{
     ViewBag.Title = "Profile";
 }
-<h2>@Model.Username</h2>
-<hr />
-<h3>Total Battles: @Model.TotalBattles</h3>
-<h3>Won Battles: @Model.WonBattles  (@Model.WinPercentage%)</h3>
-<h3>Lost Battles: @Model.LostBattles  (@Model.LosePercentage%)</h3>
-<h3>Total Gold Earned: @Model.TotalGoldEarned</h3>
-<br />
-<h3>Most Battle Appearances: @(Model.TotalBattles == 0 ? "None" : Model.MostUsedCharacter.Character.Name)</h3>
-<h3>Battles: @(Model.MostUsedCharacter.BattleAppearances.Count())</h3>
-<br />
-<h3>Most Valuable Character: @(Model.TotalBattles == 0 ? "None" : Model.MostValuedCharacter.Character.Name)</h3>
-<h3>Kills: @(Model.MostValuedCharacter.Kills)</h3>
+<section class="container-fluid">
+	<div class="row">
+		<div class="panel panel-danger">
+			<div class="panel-heading">
+				<h3 class="panel-title">@Model.Username</h3>
+			</div>
+			<div class="panel-body">
+				<div class="row">
+
+					<div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="@Model.ProfilePicture" class="img-circle img-responsive"> </div>
+					<br />
+					<div class="col-md-9 col-lg-9 ">
+						<table class="table table-user-information">
+							<tbody>
+								<tr>
+									<td>Total Battles:</td>
+									<td>@Model.TotalBattles</td>
+								</tr>
+								<tr>
+									<td> Won Battles: </td>
+									<td>
+										@Model.WonBattles  (@Model.WinPercentage%)
+									</td>
+								</tr>
+								<tr>
+									<td>Lost Battles:</td>
+									<td>@Model.LostBattles  (@Model.LosePercentage%)				  </td>
+								</tr>
+								<tr>
+									<td>Total Gold Earned: </td>
+									<td>@Model.TotalGoldEarned</td>
+								</tr>
+								<tr>
+									<td>Most Battle Appearances: </td>
+									<td>@(Model.TotalBattles == 0 ? "None" : Model.MostUsedCharacter.Character.Name)</td>
+								</tr>
+								<tr>
+									<td>Battles:</td>
+									<td>@(Model.MostUsedCharacter.BattleAppearances.Count())</td>
+								</tr>
+								<tr>
+									<td>Most Valuable Character:</td>
+									<td> @(Model.TotalBattles == 0 ? "None" : Model.MostValuedCharacter.Character.Name)</td>
+								</tr>
+								<tr>
+									<td>Kills:</td>
+									<td>@(Model.MostValuedCharacter.Kills)</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
