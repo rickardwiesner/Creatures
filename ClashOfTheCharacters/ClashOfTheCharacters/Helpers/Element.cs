@@ -14,7 +14,7 @@ namespace ClashOfTheCharacters.Helpers
         Earth,
         Darkness,
         Water,
-        Polution,
+        Pollution,
         Gravity
     }
 }

@@ -46,6 +46,26 @@ namespace ClashOfTheCharacters.Helpers
             }
         }
 
+        static public string GetRemainingTime(DateTimeOffset dateTime)
+        {
+            var timeSpan = dateTime - DateTimeOffset.Now;
+
+            if (timeSpan.TotalMinutes < 1)
+            {
+                return timeSpan.Seconds + "s";
+            }
+
+            else if (timeSpan.TotalHours < 1)
+            {
+                return timeSpan.Minutes + "m";
+            }
+
+            else
+            {
+                return string.Format("{0}h & {1}m", timeSpan.Hours, timeSpan.Minutes);
+            }          
+        }
+
         static public string GetEffect(Effect effect)
         {
             switch (effect)

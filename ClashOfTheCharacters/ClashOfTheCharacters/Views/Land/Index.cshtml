@@ -1,0 +1,18 @@
+﻿@model ClashOfTheCharacters.Models.CurrentLand
+
+@{
+    ViewBag.Title = "Land";
+}
+
+<div class="row map">
+    @foreach (var stage in Model.Land.Stages.OrderBy(s => s.Index))
+    {
+        <div class="col-md-3 col-xs-3">
+            <h4>Stage: @stage.Index</h4>
+            <a @Html.AttributeEncode(Model.CurrentStage == stage.Index ? "href=/Land/Battle/" + Model.Id : "")>
+                <img class="img-responsive @Html.AttributeEncode(Model.CurrentStage == stage.Index ? "" : "stage-unavailable")" />
+            </a>
+        </div>
+    }
+</div>
+

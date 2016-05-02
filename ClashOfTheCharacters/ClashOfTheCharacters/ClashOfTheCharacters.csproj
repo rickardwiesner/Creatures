@@ -188,7 +188,9 @@
     <Compile Include="Controllers\CharacterController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LadderController.cs" />
+    <Compile Include="Controllers\LandController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MapController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -196,6 +198,7 @@
     <Compile Include="Helpers\Effect.cs" />
     <Compile Include="Helpers\Element.cs" />
     <Compile Include="Helpers\Helper.cs" />
+    <Compile Include="Helpers\Whereabout.cs" />
     <Compile Include="Migrations\201604221145461_InitialCreate.cs" />
     <Compile Include="Migrations\201604221145461_InitialCreate.Designer.cs">
       <DependentUpon>201604221145461_InitialCreate.cs</DependentUpon>
@@ -208,9 +211,15 @@
     <Compile Include="Models\Challenge.cs" />
     <Compile Include="Models\Character.cs" />
     <Compile Include="Models\Competitor.cs" />
+    <Compile Include="Models\CurrentLand.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Land.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Stage.cs" />
     <Compile Include="Models\TeamMember.cs" />
+    <Compile Include="Models\Travel.cs" />
+    <Compile Include="Models\UnlockedLand.cs" />
+    <Compile Include="Models\WildCreature.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BattleService.cs" />
     <Compile Include="Services\ExperienceService.cs" />
@@ -238,7 +247,9 @@
     <Content Include="Content\jquery.fancybox-buttons.css" />
     <Content Include="Content\jquery.fancybox-thumbs.css" />
     <Content Include="Content\jquery.fancybox.css" />
+    <Content Include="Content\land.css" />
     <Content Include="Content\layout.css" />
+    <Content Include="Content\map.css" />
     <Content Include="Content\profile-partial.css" />
     <Content Include="Content\temp-home.css" />
     <Content Include="favicon.ico" />
@@ -250,6 +261,14 @@
     <Content Include="Images\Characters\bogey.jpg" />
     <Content Include="Images\Characters\drogo.jpg" />
     <Content Include="Images\Characters\emptyslot.jpg" />
+    <Content Include="Images\Characters\Fire\fire1.jpg" />
+    <Content Include="Images\Characters\Fire\fire2.jpg" />
+    <Content Include="Images\Characters\Fire\fire3.jpg" />
+    <Content Include="Images\Characters\Fire\fire4.jpg" />
+    <Content Include="Images\Characters\Fire\fire5.jpg" />
+    <Content Include="Images\Characters\Fire\fire6.jpg" />
+    <Content Include="Images\Characters\Fire\fire7.jpg" />
+    <Content Include="Images\Characters\Fire\fire8.jpg" />
     <Content Include="Images\Characters\horsich.jpg" />
     <Content Include="Images\Characters\kiera.jpg" />
     <Content Include="Images\Characters\mossy.jpg" />
@@ -259,9 +278,21 @@
     <Content Include="Images\Elements\earth.png" />
     <Content Include="Images\Elements\fire.png" />
     <Content Include="Images\Elements\water.png" />
+    <Content Include="Images\Land\wild-creature-fire.png" />
+    <Content Include="Images\Map\air.png" />
+    <Content Include="Images\Map\darkness.png" />
+    <Content Include="Images\Map\earth.png" />
+    <Content Include="Images\Map\fire.jpg" />
+    <Content Include="Images\Map\gravity.png" />
+    <Content Include="Images\Map\light.png" />
+    <Content Include="Images\Map\nature.png" />
+    <Content Include="Images\Map\pollution.png" />
+    <Content Include="Images\Map\water.png" />
     <Content Include="Images\Other\concrete.jpg" />
     <Content Include="Images\Other\gamecard.jpg" />
+    <Content Include="Images\Other\map.jpg" />
     <Content Include="Images\Other\noprofilepicture.jpg" />
+    <Content Include="Images\Other\village.gif" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="fonts\FontAwesome.otf" />
@@ -333,6 +364,10 @@
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Shared\_ProfilePartial.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Map\Index.cshtml" />
+    <Content Include="Views\Map\Travel.cshtml" />
+    <Content Include="Views\Map\Travelling.cshtml" />
+    <Content Include="Views\Land\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

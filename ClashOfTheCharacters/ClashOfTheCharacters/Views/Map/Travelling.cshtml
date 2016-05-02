@@ -1,0 +1,15 @@
+﻿@using ClashOfTheCharacters.Helpers
+
+@model ClashOfTheCharacters.Models.Travel
+
+@{
+    ViewBag.Title = "Travelling";
+}
+
+<h2>Travelling to the land of @Model.Land.Element</h2>
+<h4>Arriving in: @Helper.GetRemainingTime(Model.ArrivalTime)</h4>
+<form method="post">
+    <input type="submit" class="btn btn-default" value="Cancel the journey" />
+</form>
+<p>You will get @(Model.Land.Cost / 2) stamina back if you're cancelling this journey</p>
+
