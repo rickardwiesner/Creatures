@@ -23,6 +23,7 @@ namespace ClashOfTheCharacters.Controllers
             var battles = db.Battles.Where(b => b.Challenge.ChallengerId == userId || b.Challenge.ReceiverId == userId).ToList();
 
             ViewBag.UserId = userId;
+            ViewBag.Stamina = user.Stamina;
             ViewBag.Challenges = challenges;
             ViewBag.Battles = battles;
 

@@ -125,13 +125,13 @@ namespace ClashOfTheCharacters.Services
                 effect = Effect.VeryBad;
             }
 
-            else if ((int)defender.TeamMember.Character.Element - (int)attacker.TeamMember.Character.Element == -1 || attacker.TeamMember.Character.Element == Element.Fire && defender.TeamMember.Character.Element == Element.Polution)
+            else if ((int)defender.TeamMember.Character.Element - (int)attacker.TeamMember.Character.Element == -1 || attacker.TeamMember.Character.Element == Element.Fire && defender.TeamMember.Character.Element == Element.Pollution)
             {
                 elementBonus = 0.75f;
                 effect = Effect.Bad;
             }
 
-            else if ((int)defender.TeamMember.Character.Element - (int)attacker.TeamMember.Character.Element == 1 || attacker.TeamMember.Character.Element == Element.Polution && defender.TeamMember.Character.Element == Element.Fire)
+            else if ((int)defender.TeamMember.Character.Element - (int)attacker.TeamMember.Character.Element == 1 || attacker.TeamMember.Character.Element == Element.Pollution && defender.TeamMember.Character.Element == Element.Fire)
             {
                 elementBonus = 1.5f;
                 effect = Effect.Good;

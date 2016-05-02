@@ -50,7 +50,7 @@ namespace ClashOfTheCharacters.Models
             get
             {
                 var db = new ApplicationDbContext();
-                return db.Attacks.Count(a => a.Defender.TeamMemberId == Id && a.FinishingBlow);
+                return db.Attacks.Count(a => a.Defender.TeamMemberId == Id && a.DefenderHpRemaining == 0);
             }
         }
     }

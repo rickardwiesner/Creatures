@@ -28,7 +28,6 @@
         </form>
     </div>
 
-    @*<div class="row">*@
     <div class="col-md-12">
         <div class="col-md-12 col-xs-6 col-lg-6 col-user-info text-center">
             <span class="fa fa-line-chart"> @Model.LadderPoints</span>
@@ -70,7 +69,7 @@
                     <a @Html.AttributeEncode(teamMember != null ? "data-toggle=dropdown class=gamecard-button" : "class=gamecard-disabled")>
                         <div class="col-md-12 gamecard-small">
                             <p>
-                                @(teamMember != null ? teamMember.Character.Name : "Empty")
+                                @(teamMember != null ? "Lvl: " + teamMember.Level : "Empty")
                                 @if (teamMember != null)
                                 {
                                     <span>

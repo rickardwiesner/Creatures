@@ -7,13 +7,21 @@
     margin-bottom: 30px;
 }
 
-.gamecard:hover {
+.gamecard-select:hover {
     opacity: 0.6;
 }  
 
 .gamecard h4 {
     font-family: Gabriola;
     font-size: 27px;
+}
+
+.gamecard-worth {
+    float: left;
+}
+
+.gamecard-xp-maxxp {
+    float: right;
 }
 
 .gamecard h5 {

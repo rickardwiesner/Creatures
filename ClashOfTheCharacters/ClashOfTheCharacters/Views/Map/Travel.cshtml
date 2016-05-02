@@ -1,0 +1,16 @@
+﻿@model ClashOfTheCharacters.Models.Land
+
+@{
+    ViewBag.Title = "Travel";
+}
+
+<h2>Are you sure you want to travel to the land of @Model.Element</h2>
+<h4>Cost: @Model.Cost Stamina</h4>
+<h4>Time: @Model.Hours Hours</h4>
+<form method="post">
+    <input hidden name="landId" value="@Model.Id" />
+    <input type="submit" class="btn btn-lg btn-danger" value="Yes, let's travel!" />
+</form>
+<p>This journey will cost you @Model.Cost stamina and takes @Model.Hours hours</p>
+<a href="/Map/Index" class="btn btn-default">No, go back</a>
+

@@ -13,6 +13,7 @@ namespace ClashOfTheCharacters.Models
         public Element Element { get; set; }
         public string ImageUrl { get; set; }
         public int Price { get; set; }
+        public Whereabout Whereabout { get; set; }
 
         public int BaseAttack { get; set; }
         public int BaseDefense { get; set; }

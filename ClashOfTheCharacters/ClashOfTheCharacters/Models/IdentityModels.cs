@@ -43,9 +43,11 @@ namespace ClashOfTheCharacters.Models
 
         public DateTimeOffset LastStaminaTime { get; set; }
 
+        public bool IsOnline { get { return (DateTimeOffset.Now - LastActive).TotalMinutes < 30; } }
+
         public virtual ICollection<TeamMember> TeamMembers { get; set; }
 
-        public bool IsOnline { get { return (DateTimeOffset.Now - LastActive).TotalMinutes < 30; } }
+        public virtual ICollection<UnlockedLand> UnlockedLands { get; set; }
 
     }
 
@@ -77,5 +79,11 @@ namespace ClashOfTheCharacters.Models
         //public DbSet<BattleReward> BattleRewards { get; set; }
         public DbSet<Competitor> Competitors { get; set; }
         public DbSet<BattleCharacter> BattleCharacters { get; set; }
+        public DbSet<Land> Lands { get; set; }
+        public DbSet<Travel> Travels { get; set; }
+        public DbSet<UnlockedLand> UnlockedLands { get; set; }
+        public DbSet<CurrentLand> CurrentLands { get; set; }
+        public DbSet<Stage> Stages { get; set; }
+        public DbSet<WildCreature> WildCreatures { get; set; }
     }
 }

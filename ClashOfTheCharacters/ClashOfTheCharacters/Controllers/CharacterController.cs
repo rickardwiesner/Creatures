@@ -106,6 +106,11 @@ namespace ClashOfTheCharacters.Controllers
         {
             var userId = User.Identity.GetUserId();
 
+            if (db.TeamMembers.Any(tm => tm.ApplicationUserId == userId))
+            {
+                return RedirectToAction("Index");
+            }
+
             var teamMember = new TeamMember { ApplicationUserId = userId, CharacterId = id, Level = 5, Slot = 1 };
             db.TeamMembers.Add(teamMember);
             db.SaveChanges();

@@ -1,0 +1,38 @@
+﻿.map {
+    background-image: url('../Images/Other/map.jpg');
+    background-size: cover;
+}
+
+.map-element-air {
+    width: 80%;
+    margin-top: 15px;
+}
+
+.map-element-100 {
+    height: 100%;
+    width: 100%;
+}
+
+.map-element-padding {
+    padding: 10px;
+}
+
+.map-element-gravity {
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+.map-castle {
+    margin-top: 30px;
+    margin-bottom: 50px;
+    padding: 10px;
+}
+
+.map h3 {
+    margin-top: 0;
+    font-family: Gabriola;
+}
+
+.map-availability {
+    opacity: 0.5;
+}
