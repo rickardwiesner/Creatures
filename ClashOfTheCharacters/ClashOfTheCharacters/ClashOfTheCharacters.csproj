@@ -270,6 +270,7 @@
     <Content Include="Images\Elements\earth.png" />
     <Content Include="Images\Elements\fire.png" />
     <Content Include="Images\Elements\water.png" />
+    <Content Include="Images\Help\element_effect.png" />
     <Content Include="Images\Land\wild-creature-fire.png" />
     <Content Include="Images\Map\air.png" />
     <Content Include="Images\Map\darkness.png" />
@@ -285,6 +286,7 @@
     <Content Include="Images\Other\map.jpg" />
     <Content Include="Images\Other\noprofilepicture.jpg" />
     <Content Include="Images\Other\village.gif" />
+    <Content Include="Images\Help\ScoreCount.PNG" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="fonts\FontAwesome.otf" />
@@ -357,6 +359,10 @@
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Shared\_ProfilePartial.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Index.cshtml" />
+    <Content Include="Views\Help\Faq.cshtml" />
+    <Content Include="Views\Help\Gameguide.cshtml" />
+    <Content Include="Views\Help\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
