@@ -24,7 +24,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var user in Model.Where(c => c.UserName.Contains(ViewBag.Search)).OrderByDescending(c => c.LadderPoints).ToList())
+        @foreach (var user in Model)
         {
             counter++;
             <tr>

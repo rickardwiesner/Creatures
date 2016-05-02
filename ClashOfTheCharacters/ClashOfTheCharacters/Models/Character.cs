@@ -15,7 +15,7 @@ namespace ClashOfTheCharacters.Models
         public int Price { get; set; }
         public Whereabout Whereabout { get; set; }
 
-        public int BaseAttack { get; set; }
+        public int BaseAttack { get; set; } 
         public int BaseDefense { get; set; }
         public int BaseHp { get; set; }
 
