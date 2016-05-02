@@ -51,11 +51,17 @@ namespace ClashOfTheCharacters.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        //För databas hos Binero
         public ApplicationDbContext()
-            : base(/*"EarthOfCreatures", throwIfV1Schema: false*/)
+            : base()
         {
             
         }
+        //För lokal databas
+        //public ApplicationDbContext()
+        //           : base("EarthOfCreatures", throwIfV1Schema: false)
+        //{
+        //}
 
         public static ApplicationDbContext Create()
         {
