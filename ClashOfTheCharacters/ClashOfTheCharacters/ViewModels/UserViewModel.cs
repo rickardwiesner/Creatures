@@ -9,8 +9,8 @@ namespace ClashOfTheCharacters.ViewModels
     public class UserViewModel
     {
         public string Username { get; set; }
-
-        public int TotalBattles { get { return WonBattles + LostBattles; } }
+		public string ProfilePicture { get; set; }
+		public int TotalBattles { get { return WonBattles + LostBattles; } }
 
         public int WonBattles { get; set; }
 
