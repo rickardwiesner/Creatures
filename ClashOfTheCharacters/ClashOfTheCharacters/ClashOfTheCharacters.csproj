@@ -194,10 +194,7 @@
     <Compile Include="Helpers\Effect.cs" />
     <Compile Include="Helpers\Element.cs" />
     <Compile Include="Helpers\Helper.cs" />
-    <Compile Include="Migrations\201604221145461_InitialCreate.cs" />
-    <Compile Include="Migrations\201604221145461_InitialCreate.Designer.cs">
-      <DependentUpon>201604221145461_InitialCreate.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Helpers\Whereabout.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Attack.cs" />

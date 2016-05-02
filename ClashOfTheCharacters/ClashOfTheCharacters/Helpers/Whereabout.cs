@@ -8,6 +8,6 @@ namespace ClashOfTheCharacters.Helpers
     public enum Whereabout
     {
         Shop,
-        Wild,
+        Wild
     }
 }
