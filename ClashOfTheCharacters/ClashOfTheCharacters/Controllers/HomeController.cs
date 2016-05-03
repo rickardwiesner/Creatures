@@ -1,8 +1,10 @@
 ﻿using ClashOfTheCharacters.Models;
+using ClashOfTheCharacters.ViewModels;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -14,9 +16,27 @@ namespace ClashOfTheCharacters.Controllers
 
         public ActionResult Index()
         {
-            //var userId = User.Identity.GetUserId();
+            var homeViewModel = new HomeViewModel
+            {
+                Users = db.Users.ToList(),
+                Characters = db.Characters.ToList()
+            };
 
-            return View(db.Users.ToList());
+            return View(homeViewModel);
+        }
+        public ActionResult Characters(int? id)
+        {
+
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Character charact = db.Characters.Find(id);
+            if (charact == null)
+            {
+                return HttpNotFound();
+            }
+            return View(charact);
         }
 
         public ActionResult About()
