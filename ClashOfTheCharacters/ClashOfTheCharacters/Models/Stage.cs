@@ -18,6 +18,7 @@ namespace ClashOfTheCharacters.Models
         public int LandId { get; set; }
         public virtual Land Land { get; set; }
 
-        public virtual ICollection<WildCreature> WildCreature { get; set; }
+        //Tvek
+        //public virtual ICollection<WildCreature> WildCreatures { get; set; }
     }
 }

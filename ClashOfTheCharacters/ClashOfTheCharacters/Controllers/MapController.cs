@@ -32,6 +32,11 @@ namespace ClashOfTheCharacters.Controllers
                 return RedirectToAction("Travelling");
             }
 
+            if (db.CurrentLands.Any(t => t.UserId == userId))
+            {
+                return RedirectToAction("Index", "Land");
+            }
+
             if ((land.Element == Element.Darkness || land.Element == Element.Pollution || land.Element == Element.Nature || land.Element == Element.Light || land.Element == Element.Gravity) && !user.UnlockedLands.Any(ul => ul.LandId == id) || user.Stamina < land.Cost)
             {
                 return RedirectToAction("Index");

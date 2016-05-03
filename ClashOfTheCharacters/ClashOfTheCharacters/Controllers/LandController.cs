@@ -1,4 +1,7 @@
-﻿using ClashOfTheCharacters.Models;
+﻿using ClashOfTheCharacters.Helpers;
+using ClashOfTheCharacters.Models;
+using ClashOfTheCharacters.Services;
+using ClashOfTheCharacters.ViewModels;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
@@ -12,8 +15,9 @@ namespace ClashOfTheCharacters.Controllers
     public class LandController : Controller
     {
         ApplicationDbContext db = new ApplicationDbContext();
+        WildBattleService wildBattleService = new WildBattleService();
 
-        public ActionResult Land()
+        public ActionResult Index()
         {
             var userId = User.Identity.GetUserId();
 
@@ -36,23 +40,32 @@ namespace ClashOfTheCharacters.Controllers
                 return RedirectToAction("Index", "Map");
             }
 
-            var currentLand = db.CurrentLands.First(cl => cl.UserId == userId);
+            wildBattleService.InitializeBattle(userId);
 
-            var instance = new Random();
-            var random = instance.Next(101);
+            return View(db.WildBattles.First(wb => wb.UserId == userId));
+        }
 
-            if (random == 1)
-            {
+        [HttpPost]
+        public ActionResult Attack()
+        {
+            var userId = User.Identity.GetUserId();
+            var wildBattle = db.WildBattles.First(wb => wb.UserId == userId);
 
-            }
+            wildBattleService.Attack(userId);
+            wildBattleService.Defend(userId);
+
+            return RedirectToAction("Battle");
+        }
+
+        [HttpPost]
+        public ActionResult Capture()
+        {
+            var userId = User.Identity.GetUserId();
+            var wildBattle = db.WildBattles.First(wb => wb.UserId == userId);
 
 
-            //Kolla om motståndaren är på rätt stage
-            //Slumpa fram en motståndare
-            //Lägg till rätt level på gubbarna
-            //Generera en battle
 
-            return View();
+            return RedirectToAction("Battle");
         }
     }
 }

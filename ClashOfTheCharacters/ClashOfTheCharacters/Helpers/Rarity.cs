@@ -5,9 +5,12 @@ using System.Web;
 
 namespace ClashOfTheCharacters.Helpers
 {
-    public enum Whereabout
+    public enum Rarity
     {
-        Shop,
-        Wild
+        Common,
+        Uncommon,
+        Rare,
+        Epic,
+        Legendary
     }
 }
