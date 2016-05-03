@@ -73,30 +73,44 @@ namespace ClashOfTheCharacters.Services
         {
             var wildBattle = db.WildBattles.First(wb => wb.UserId == userId);
 
-            var attacker = wildBattle.WildBattleCreatures.First(wbc => wbc.UserId != null && wbc.Alive);
-            var defender = wildBattle.WildBattleCreatures.First(wbc => wbc.UserId == null && wbc.Alive);
+            var userCreature = wildBattle.WildBattleCreatures.Where(wbc => wbc.UserId != null && wbc.Alive).OrderBy(wbc => wbc.Slot).First();
+            var cpuCreature = wildBattle.WildBattleCreatures.Where(wbc => wbc.UserId == null && wbc.Alive).OrderBy(wbc => wbc.Slot).First();
 
-            int damage = Convert.ToInt32(CalculateDamage(attacker.Id, defender.Id));
-            int hpRemaining = defender.Hp - damage < 0 ? 0 : defender.Hp - damage;
+            int damage = Convert.ToInt32(CalculateDamage(userCreature.Id, cpuCreature.Id));
+            int hpRemaining = cpuCreature.Hp - damage < 0 ? 0 : cpuCreature.Hp - damage;
 
             db.WildBattleActions.Add(new WildBattleAction
             {
                 WildBattleId = wildBattle.Id,
-                AttackerId = attacker.Id,
-                DefenderId = defender.Id,
+                AttackerId = userCreature.Id,
+                DefenderId = cpuCreature.Id,
                 Damage = damage,
                 Effect = effect,              
             });
 
-            defender.Hp = hpRemaining;
+            cpuCreature.Hp = hpRemaining;
 
-        }
+            if (cpuCreature.Hp == 0 && wildBattle.WildBattleCreatures.Any(wbc => wbc.UserId == null && wbc.Alive))
+            {
+                cpuCreature = wildBattle.WildBattleCreatures.Where(wbc => wbc.UserId == null && wbc.Alive).OrderBy(wbc => wbc.Slot).First();
+            }
 
-        public void Defend(string userId)
-        {
-            var wildBattle = db.WildBattles.First(wb => wb.UserId == userId);
+            else
+            {
+                //winner
+                return;
+            }
 
+            db.WildBattleActions.Add(new WildBattleAction
+            {
+                WildBattleId = wildBattle.Id,
+                AttackerId = cpuCreature.Id,
+                DefenderId = userCreature.Id,
+                Damage = damage,
+                Effect = effect
+            });
 
+            db.SaveChanges();
         }
 
         float CalculateDamage(int attackerId, int defenderId)
