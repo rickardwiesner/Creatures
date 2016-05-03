@@ -84,6 +84,8 @@ namespace ClashOfTheCharacters.Models
         public DbSet<UnlockedLand> UnlockedLands { get; set; }
         public DbSet<CurrentLand> CurrentLands { get; set; }
         public DbSet<Stage> Stages { get; set; }
-        public DbSet<WildCreature> WildCreatures { get; set; }
+        public DbSet<WildBattle> WildBattles { get; set; }
+        public DbSet<WildBattleCreature> WildBattleCreatures { get; set; }
+        public DbSet<WildBattleAction> WildBattleActions { get; set; }
     }
 }

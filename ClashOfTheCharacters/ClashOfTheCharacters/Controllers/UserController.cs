@@ -132,6 +132,12 @@ namespace ClashOfTheCharacters.Controllers
             user.LastActive = DateTimeOffset.Now;
             db.SaveChanges();
 
+            if (db.Travels.Any(t => t.UserId == userId))
+            {
+                var travelService = new TravelService();
+                travelService.CheckArrivalTime(userId);
+            }
+
             if (user.Stamina < user.MaxStamina)
             {
                 var staminaService = new StaminaService();

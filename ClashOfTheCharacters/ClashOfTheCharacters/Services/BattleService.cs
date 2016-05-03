@@ -156,9 +156,6 @@ namespace ClashOfTheCharacters.Services
             {
                 random = 2;
             }
-            //int random = instance.Next(4);
-
-            //float random = (float)instance.NextDouble();
 
             return (((2 * (float)attacker.Level + 10) / 250) * ((float)attacker.Damage / (float)defender.Defense) * (float)attacker.TeamMember.Character.BaseAttack + 2) * (1.5f * elementBonus * (random * 2));
         }

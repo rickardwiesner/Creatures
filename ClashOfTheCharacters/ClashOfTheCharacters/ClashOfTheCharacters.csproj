@@ -194,7 +194,7 @@
     <Compile Include="Helpers\Effect.cs" />
     <Compile Include="Helpers\Element.cs" />
     <Compile Include="Helpers\Helper.cs" />
-    <Compile Include="Helpers\Whereabout.cs" />
+    <Compile Include="Helpers\Rarity.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Attack.cs" />
@@ -211,12 +211,16 @@
     <Compile Include="Models\TeamMember.cs" />
     <Compile Include="Models\Travel.cs" />
     <Compile Include="Models\UnlockedLand.cs" />
-    <Compile Include="Models\WildCreature.cs" />
+    <Compile Include="Models\WildBattle.cs" />
+    <Compile Include="Models\WildBattleAction.cs" />
+    <Compile Include="Models\WildBattleCreature.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BattleService.cs" />
     <Compile Include="Services\ExperienceService.cs" />
     <Compile Include="Services\RewardService.cs" />
     <Compile Include="Services\StaminaService.cs" />
+    <Compile Include="Services\TravelService.cs" />
+    <Compile Include="Services\WildBattleService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\ProfilePartialViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
@@ -357,6 +361,8 @@
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Shared\_ProfilePartial.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Land\Index.cshtml" />
+    <Content Include="Views\Land\Battle.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
