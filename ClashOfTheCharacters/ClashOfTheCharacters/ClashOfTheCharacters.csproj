@@ -274,6 +274,8 @@
     <Content Include="Images\Elements\earth.png" />
     <Content Include="Images\Elements\fire.png" />
     <Content Include="Images\Elements\water.png" />
+    <Content Include="Images\Help\element_effect.png" />
+    <Content Include="Images\Help\ScoreCount.PNG" />
     <Content Include="Images\Land\wild-creature-fire.png" />
     <Content Include="Images\Map\air.png" />
     <Content Include="Images\Map\darkness.png" />
