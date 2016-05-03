@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Ladder";
     int counter = 0;
+    bool search = ViewBag.Search;
 }
 
 
@@ -16,11 +17,14 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>Rank</th>
+            @if (!search)
+            {
+                <th>Rank</th>
+            }
+
             <th>Ladder points</th>
             <th>Username</th>
             <th class="text-center">Team</th>
-            @*<th><a href="~/Controllers/LadderController/SortByName">Username</a></th>*@
         </tr>
     </thead>
     <tbody>
@@ -28,7 +32,10 @@
         {
             counter++;
             <tr>
-                <td><h5>@counter</h5></td>
+                @if (!search)
+                {
+                    <td><h5>@counter</h5></td>
+                }
                 <td><h5>@user.LadderPoints</h5></td>
                 <td><h5>@user.UserName</h5></td>
                 <td>
@@ -65,7 +72,7 @@
                                 if (i == 2)
                                 {
                                     <div class="clearfix visible-xs"></div>
-                                                    <div class="clearfix visible-sm"></div>
+                                    <div class="clearfix visible-sm"></div>
                                                     <div class="clearfix visible-md"></div>
                                                     <div class="clearfix visible-lg"></div>
                                 }
@@ -73,7 +80,7 @@
                         </div>
                     </div>
                 </td>
-                
+
             </tr>
         }
 

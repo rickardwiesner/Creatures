@@ -48,7 +48,6 @@ namespace ClashOfTheCharacters.Models
         public virtual ICollection<TeamMember> TeamMembers { get; set; }
 
         public virtual ICollection<UnlockedLand> UnlockedLands { get; set; }
-
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

@@ -90,16 +90,23 @@ namespace ClashOfTheCharacters.Services
 
             cpuCreature.Hp = hpRemaining;
 
-            if (cpuCreature.Hp == 0 && wildBattle.WildBattleCreatures.Any(wbc => wbc.UserId == null && wbc.Alive))
-            {
-                cpuCreature = wildBattle.WildBattleCreatures.Where(wbc => wbc.UserId == null && wbc.Alive).OrderBy(wbc => wbc.Slot).First();
-            }
-
-            else
+            if (cpuCreature.Hp == 0 && !wildBattle.WildBattleCreatures.Any(wbc => wbc.UserId == null && wbc.Alive))
             {
                 //winner
+                db.SaveChanges();
+
                 return;
             }
+
+            else if (cpuCreature.Hp == 0 && wildBattle.WildBattleCreatures.Any(wbc => wbc.UserId == null && wbc.Alive))
+            {        
+                
+                cpuCreature = wildBattle.WildBattleCreatures.Where(wbc => wbc.UserId == null && wbc.Alive).OrderBy(wbc => wbc.Slot).First();
+
+            }
+
+            damage = Convert.ToInt32(CalculateDamage(userCreature.Id, cpuCreature.Id));
+            hpRemaining = cpuCreature.Hp - damage < 0 ? 0 : cpuCreature.Hp - damage;
 
             db.WildBattleActions.Add(new WildBattleAction
             {
@@ -109,6 +116,8 @@ namespace ClashOfTheCharacters.Services
                 Damage = damage,
                 Effect = effect
             });
+
+            userCreature.Hp = hpRemaining;
 
             db.SaveChanges();
         }

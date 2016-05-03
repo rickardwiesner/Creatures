@@ -361,7 +361,6 @@
     <Content Include="Views\Battle\Index.cshtml" />
     <Content Include="Views\Character\Index.cshtml" />
     <Content Include="Views\Character\Select.cshtml" />
-    <Content Include="Views\Ladder\Index.cshtml" />
     <Content Include="Views\Ladder\SearchForUser.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Shared\_ProfilePartial.cshtml" />
