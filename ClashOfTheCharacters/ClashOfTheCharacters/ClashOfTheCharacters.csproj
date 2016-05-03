@@ -222,6 +222,7 @@
     <Compile Include="Services\TravelService.cs" />
     <Compile Include="Services\WildBattleService.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\ProfilePartialViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
   </ItemGroup>
@@ -371,6 +372,7 @@
     <Content Include="Views\Map\Index.cshtml" />
     <Content Include="Views\Map\Travel.cshtml" />
     <Content Include="Views\Map\Travelling.cshtml" />
+    <Content Include="Views\Home\Characters.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
