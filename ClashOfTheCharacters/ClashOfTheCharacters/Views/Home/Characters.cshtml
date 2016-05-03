@@ -1,0 +1,38 @@
+﻿@*@model ClashOfTheCharacters.ViewModels.UserViewModel*@
+@model ClashOfTheCharacters.Models.Character
+@using ClashOfTheCharacters.Helpers
+
+@{
+	ViewBag.Title = "Characters";
+}
+
+<h2>Characters</h2>
+<hr />
+<div class="container">
+	<div class="row">
+		<div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3">
+			<div class="col-md-12 gamecard">
+				<div class="col-md-9 col-xs-9">
+					<h3><strong></strong></h3>
+				</div>
+				<div class="col-md-3 col-xs-3">
+					<img class="gamecard-element" src="@Helper.GetElementUrl(Model.Element)" />
+				</div>
+				<img class="img-responsive gamecard-image" src="@Url.Content(Model.ImageUrl)" alt="@Html.DisplayFor(model => model.Id)" />
+				<div class="gamecard-xpbar">
+					<div></div>
+				</div>
+				<p>Name: @Html.DisplayFor(model => model.Name)</p>
+				<p>Element: @Html.DisplayFor(model => model.Element)</p>
+				<p>Worth: @Html.DisplayFor(model => model.Price) </p>
+				<p>Attack: @Html.DisplayFor(model => model.BaseAttack) </p>
+				<p>Defense: @Html.DisplayFor(model => model.BaseDefense) </p>
+				<p>Hp:  @Html.DisplayFor(model => model.BaseHp)</p>
+				<p>AttackMultiplayer:  @Html.DisplayFor(model => model.AttackMultiplier) </p>
+				<p>DefenseMultiplayer:  @Html.DisplayFor(model => model.DefenseMultiplier) </p>
+				<p>HpMultiplier:  @Html.DisplayFor(model => model.HpMultiplier) </p>
+			</div>
+		</div>
+
+	</div>
+	<p>

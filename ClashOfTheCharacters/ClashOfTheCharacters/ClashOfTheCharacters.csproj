@@ -204,6 +204,7 @@
     <Compile Include="Models\Character.cs" />
     <Compile Include="Models\Competitor.cs" />
     <Compile Include="Models\CurrentLand.cs" />
+    <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Land.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -363,6 +364,7 @@
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Land\Index.cshtml" />
     <Content Include="Views\Land\Battle.cshtml" />
+    <Content Include="Views\Home\Characters.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,105 +1,126 @@
-﻿@model IEnumerable<ApplicationUser>
+﻿@model ClashOfTheCharacters.ViewModels.HomeViewModel
 @using ClashOfTheCharacters.Helpers;
 @using ClashOfTheCharacters.Models;
 
 @{
-    ViewBag.Title = "Home Page";
-
-    <link href="~/Content/temp-home.css" rel="stylesheet" />
+	ViewBag.Title = "Home Page";
+	<link href="~/Content/temp-home.css" rel="stylesheet" />
+	Random rnd = new Random();
+	int r = rnd.Next(0, Model.Characters.Count());
 }
 
 @if (!Request.IsAuthenticated)
 {
-    <div class="jumbotron">
-        <div class="row">
-            <div class="col-md-6">
-                <img class="img-responsive" src="http://pngimg.com/upload/dragon_PNG992.png" />
-            </div>
-            <div class="col-md-6">
-                <h1>Join The Battle Today!</h1>
-                <h3>Build your team of mythical creatures and compete against @Model.Count() other members of becoming the best trainer.</h3>
-                @Html.ActionLink("Sign Up", "Register", "Account", null, new { @class = "btn btn-lg btn-danger" })
-                <h5>Already a member?</h5>
-                @Html.ActionLink("Log In", "Login", "Account", null, new { @class = "btn btn-default" })
-            </div>
-        </div>
-    </div>
-}
+	<!-- container -->
+	<div class="container">
+		<div class="jumbotron">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="img-thumbnail">
+						<img class="img-responsive" src="@Url.Content(Model.Characters.ElementAt(r).ImageUrl)" alt="@Html.DisplayFor(model => model.Characters.ElementAt(r).Element)" />
+					</div>
+				</div>
+				<div class="col-md-6">
+					<h1>Join The Battle Today!</h1>
+					<h3>Build your team of mythical creatures and compete against @Model.Characters.Count() other members of becoming the best trainer.</h3>
+					@Html.ActionLink("Sign Up", "Register", "Account", null, new { @class = "btn btn-lg btn-danger" })
+					<h5>Already a member?</h5>
+					@Html.ActionLink("Log In", "Login", "Account", null, new { @class = "btn btn-default" })
+				</div>
+			</div>
+		</div>
+		<hr />
+		<!--  row of columns -->
+
+		@{
+				for (int i = 0; i < 4; i++)
+				{
+				<div class="col-md-3 ">
+					<div class="col-md-12 gamecard">
+						<div class="text-center"><h3>@Model.Characters.ElementAt(i).Name</h3></div>
+						<a href="@Url.Content("~/Home/Characters/" + Model.Characters.ElementAt(i).Id.ToString())">
+							<img class="img-responsive gamecard-image" src="@Url.Content(Model.Characters.ElementAt(i).ImageUrl)" alt="@Html.DisplayFor(model => model.Characters.ElementAt(i).Element)" />
+						</a>
+						<br />
+					</div>
+				</div>
+				}
+		}
+	</div><!--  End div row of columns -->
+			<hr />
+			}
 
 <h2 class="text-center">Top 5</h2>
 <table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Username</th>
-            <th>Ladder Points</th>
-            <th class="text-center">Team</th>
-            <th class="text-right">Online</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var user in Model.OrderByDescending(u => u.LadderPoints).Take(5))
-        {
-            <tr>
+	<thead>
+		<tr>
+			<th>Username</th>
+			<th>Ladder Points</th>
+			<th class="text-center">Team</th>
+			<th class="text-right">Online</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var user in Model.Users.OrderByDescending(u => u.LadderPoints).Take(5))
+		{
+			<tr>
 
-                <td><h5>@user.UserName</h5></td>
-                <td><h5>@user.LadderPoints</h5></td>
-                <td>
-                    @*@*Hover Dropdown*@
-                    <div class="dropdown center-block">
-                        <a class="dropdown-toggle" data-toggle="dropdown">
-                            <span class="fa fa-users"></span>
-                        </a>
+				<td><h5>@user.UserName</h5></td>
+				<td><h5>@user.LadderPoints</h5></td>
+				<td>
+					@*@*Hover Dropdown*@
+					<div class="dropdown center-block">
+						<a class="dropdown-toggle" data-toggle="dropdown">
+							<span class="fa fa-users"></span>
+						</a>
 
-                        <div class="container-fluid dropdown-menu">
+						<div class="container-fluid dropdown-menu">
 
-                            @for (int i = 0; i < 6; i++)
-                            {
-                                var teamMember = user.TeamMembers.FirstOrDefault(tm => tm.Slot == i + 1);
+							@for (int i = 0; i < 6; i++)
+							{
+								var teamMember = user.TeamMembers.FirstOrDefault(tm => tm.Slot == i + 1);
 
-                                <div class="col-md-4 col-xs-4">
-                                    <div class="col-md-12 gamecard-xs">
-                                        <p>
-                                            @(teamMember != null ? "Lvl: " + teamMember.Level.ToString() : "Empty")
-                                            @if (teamMember != null)
-                                            {
-                                                <span>
-                                                    <img class="gamecard-element-xs" src="@Helper.GetElementUrl(teamMember.Character.Element)" />
-                                                </span>
-                                            }
-                                        </p>
-                                        <img class="img-responsive" src="@(teamMember != null ? teamMember.Character.ImageUrl : "/Images/Other/concrete.jpg")" />
-                                        <p>Dmg: @(teamMember != null ? teamMember.Damage.ToString() : "")</p>
-                                        <p>Def: @(teamMember != null ? teamMember.Defense.ToString() : "")</p>
-                                        <p>Hp: @(teamMember != null ? teamMember.Hp.ToString() : "")</p>
-                                    </div>
-                                </div>
+								<div class="col-md-4 col-xs-4">
+									<div class="col-md-12 gamecard-xs">
+										<p>
+											@(teamMember != null ? "Lvl: " + teamMember.Level.ToString() : "Empty")
+											@if (teamMember != null)
+											{
+												<span>
+													<img class="gamecard-element-xs" src="@Helper.GetElementUrl(teamMember.Character.Element)" />
+												</span>
+											}
+										</p>
+										<img class="img-responsive" src="@(teamMember != null ? teamMember.Character.ImageUrl : "/Images/Other/concrete.jpg")" />
+										<p>Dmg: @(teamMember != null ? teamMember.Damage.ToString() : "")</p>
+										<p>Def: @(teamMember != null ? teamMember.Defense.ToString() : "")</p>
+										<p>Hp: @(teamMember != null ? teamMember.Hp.ToString() : "")</p>
+									</div>
+								</div>
 
-                                if (i == 2)
-                                {
-                                    <div class="clearfix visible-xs"></div>
-                                    <div class="clearfix visible-sm"></div>
-                                                    <div class="clearfix visible-md"></div>
-                                                    <div class="clearfix visible-lg"></div>
-                                }
-                            }
-                        </div>
-                    </div>
-                </td>
-                <td class="text-right">
-                    @if (user.IsOnline)
-                    {
-                        <span class="fa fa-circle text-success fa-sm-table"></span>
-                    }
-                    else
-                    {
-                        <span class="fa fa-circle-o fa-sm-table"></span>
-                    }
-                </td>
-            </tr>
-        }
+								if (i == 2)
+								{
+									<div class="clearfix visible-xs"></div>
+									<div class="clearfix visible-sm"></div>
+									<div class="clearfix visible-md"></div>
+													<div class="clearfix visible-lg"></div>
+								}
+							}
+						</div>
+					</div>
+				</td>
+				<td class="text-right">
+					@if (user.IsOnline)
+					{
+						<span class="fa fa-circle text-success fa-sm-table"></span>
+					}
+					else
+					{
+						<span class="fa fa-circle-o fa-sm-table"></span>
+					}
+				</td>
+			</tr>
+		}
 
-    </tbody>
+	</tbody>
 </table>
-
-
-
