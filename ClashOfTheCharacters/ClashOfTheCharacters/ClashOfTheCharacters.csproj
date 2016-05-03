@@ -187,6 +187,7 @@
     <Compile Include="Controllers\LandController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MapController.cs" />
+    <Compile Include="Controllers\Shopping.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -224,6 +225,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\ProfilePartialViewModel.cs" />
+    <Compile Include="ViewModels\SellShopView.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -371,7 +373,8 @@
     <Content Include="Views\Map\Index.cshtml" />
     <Content Include="Views\Map\Travel.cshtml" />
     <Content Include="Views\Map\Travelling.cshtml" />
-    <Content Include="Views\Ladder\Index.cshtml" />
+    <Content Include="Views\Home\Characters.cshtml" />
+    <Content Include="Views\Shopping\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,218 @@
+﻿@model ClashOfTheCharacters.Models.SellShopView
+
+@{
+    ViewBag.Title = "Shopping";
+}
+<div class="row">
+    @foreach (var item in Model.ShoppingItems)
+    {
+
+        <div class="col-md-4 col-sm-4 col-xs-6">
+            <div class="col-md-12 col-sm-12 col-xs-12 gamecard">
+                <h4>
+                    <strong>@Html.DisplayFor(modelItem => item.Name)</strong>
+                    <span> @Html.DisplayFor(modelItem => item.Element)</span>
+                    
+                        <span> <div class="btn-group gamecard-element">
+    <a  class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="sr-only">Toggle Dropdown</span>
+        <span class="glyphicon glyphicon-list"></span>
+    </a>
+    <div class="dropdown-menu">
+        @if (ViewBag.Gold >= item.Price)
+                {
+                    using (Html.BeginForm("Buy", "Shopping", FormMethod.Post))
+                    {
+                @Html.AntiForgeryToken()
+                @Html.Hidden("id", item.Id)
+                <div class="dropdown-item">
+                    <input type="submit" value="Buy" class="btn btn-sm btn-primary"  />
+                </div>
+            }
+            @ViewBag.Price
+
+        }
+        else
+        {
+            <p class="dropdown-item">not enough gold</p>
+        }
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="#">Separated link</a>
+    </div>
+</div></span>
+                </h4>
+                <img class="img-responsive gamecard-image" src="@Html.DisplayFor(modelItem => item.ImageUrl)" : "/Images/Characters/emptyslot.jpg") />
+
+                <div class="clearfix visible-lg"></div>
+                <div class="clearfix visible-sm"></div>
+                <div class="clearfix visible-md"></div>
+                <div class="clearfix visible-xs"></div>
+
+                <div class="col-md-6 col-sm-6 col-xs-6 text-center">
+                    <h5>Stats</h5>
+                    <p>Price: </p>
+                    <p>Attack: </p>
+                    <p>Defense: </p>
+                    <p>Hp</p>
+                   
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6 text-center">
+                    <h5>History</h5>
+                    <p>@Html.DisplayFor(modelItem => item.Price)</p>
+                    <p>@Html.DisplayFor(modelItem => item.BaseAttack)</p>
+                    <p>@Html.DisplayFor(modelItem => item.BaseDefense)</p>
+                    <p>@Html.DisplayFor(modelItem => item.BaseHp)</p>
+                </div>
+            </div>
+            @*</a>*@
+        </div>
+    }
+</div>   
+
+<h2>Shopping</h2>
+
+
+<div class="row">
+    @foreach (var item in Model.SellItems)
+    {
+
+        <div class="col-md-4 col-sm-4 col-xs-6">
+            <div class="col-md-12 col-sm-12 col-xs-12 gamecard">
+                <h4>
+                    <strong>@Html.DisplayFor(modelItem => item.Name)</strong>
+                    <span> @Html.DisplayFor(modelItem => item.Element)</span>
+
+                    <span>
+                        <div class="btn-group gamecard-element">
+                            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="sr-only">Toggle Dropdown</span>
+                                <span class="glyphicon glyphicon-list"></span>
+                            </a>
+                            <div class="dropdown-menu">
+                                @if (ViewBag.Gold >= item.Price)
+                {
+                    using (Html.BeginForm("Sell", "Shopping", FormMethod.Post))
+                    {
+                                        @Html.AntiForgeryToken()
+                                        @Html.Hidden("id", item.Id)
+                                        <div class="dropdown-item">
+                                            <input type="submit" value="Sell" class="btn btn-sm btn-primary" />
+                                        </div>
+                                    }
+                                    @ViewBag.Price
+
+                                }
+                                else
+                                {
+                                    <p class="dropdown-item">Your Can not sell </p>
+                                }
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Separated link</a>
+                            </div>
+                        </div>
+                    </span>
+                </h4>
+                <img class="img-responsive gamecard-image" src="@Html.DisplayFor(modelItem => item.ImageUrl)"
+                     "/Images/Characters/emptyslot.jpg" ) />
+
+                <div class="clearfix visible-lg"></div>
+                <div class="clearfix visible-sm"></div>
+                <div class="clearfix visible-md"></div>
+                <div class="clearfix visible-xs"></div>
+
+                <div class="col-md-6 col-sm-6 col-xs-6 text-center">
+                    <h5>Stats</h5>
+                    <p>Price: </p>
+                    <p>Attack: </p>
+                    <p>Defense: </p>
+                    <p>Hp</p>
+
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6 text-center">
+                    <h5>History</h5>
+                    <p>@Html.DisplayFor(modelItem => item.Price)</p>
+                    <p>@Html.DisplayFor(modelItem => item.BaseAttack)</p>
+                    <p>@Html.DisplayFor(modelItem => item.BaseDefense)</p>
+                    <p>@Html.DisplayFor(modelItem => item.BaseHp)</p>
+                </div>
+            </div>
+            @*</a>*@
+        </div>
+    }
+</div>
+ <h2>Shopping</h2>
+
+    @if (ViewBag.NotEnoughMoney != null)
+    {
+        <p class="danger">Not Enough Gold</p>
+        <p>@ViewBag.NotEnoughMoney</p>
+    }
+
+    
+
+@*<table class="table">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Element
+        </th>
+        <th>
+            Image
+        </th>
+        <th>
+            Price
+        </th>
+        <th>
+            Attack
+        </th>
+        <th>
+            Defense
+        </th>
+        <th>
+            Hp
+        </th>
+        <th></th>
+    </tr>
+    <h2>Sell your characters</h2>
+    @foreach (var item in Model.SellItems)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Element)
+            </td>
+            <td>
+                <img src="@Html.DisplayFor(modelItem => item.ImageUrl)" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BaseAttack)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BaseDefense)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BaseHp)
+            </td>
+            <td>
+                
+                @using (Html.BeginForm("Sell", "Shopping", FormMethod.Post))
+                    {
+                    @Html.AntiForgeryToken()
+                    @Html.Hidden("id", item.Id)
+                    <div class="form-actions no-color">
+                        <input type="submit" value="Sell" class="btn btn-default" />
+                    </div>
+                    }
+                @ViewBag.Price
+            </td>
+        </tr>
+    }
+
+</table>*@
