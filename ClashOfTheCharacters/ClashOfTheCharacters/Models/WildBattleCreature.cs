@@ -33,8 +33,8 @@ namespace ClashOfTheCharacters.Models
 
         public bool Alive { get { return Hp > 0; } }
 
-        public int Damage { get { return Convert.ToInt32(Level * TeamMember.Character.AttackMultiplier + TeamMember.Character.BaseAttack); } }
+        public int Damage { get { return Convert.ToInt32(Level * Character.AttackMultiplier + Character.BaseAttack); } }
 
-        public int Defense { get { return Convert.ToInt32(Level * TeamMember.Character.DefenseMultiplier + TeamMember.Character.BaseDefense); } }
+        public int Defense { get { return Convert.ToInt32(Level * Character.DefenseMultiplier + Character.BaseDefense); } }
     }
 }

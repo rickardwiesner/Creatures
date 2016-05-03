@@ -40,7 +40,10 @@ namespace ClashOfTheCharacters.Controllers
                 return RedirectToAction("Index", "Map");
             }
 
-            wildBattleService.InitializeBattle(userId);
+            if (!db.WildBattles.Any(wb => wb.UserId == userId))
+            {
+                wildBattleService.InitializeBattle(userId);
+            }
 
             return View(db.WildBattles.First(wb => wb.UserId == userId));
         }
@@ -52,7 +55,6 @@ namespace ClashOfTheCharacters.Controllers
             var wildBattle = db.WildBattles.First(wb => wb.UserId == userId);
 
             wildBattleService.Attack(userId);
-            wildBattleService.Defend(userId);
 
             return RedirectToAction("Battle");
         }

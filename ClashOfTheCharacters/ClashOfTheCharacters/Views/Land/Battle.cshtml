@@ -6,14 +6,14 @@
 
 @foreach (var battleCreature in Model.WildBattleCreatures.Where(wbc => wbc.UserId != null))
 {
-    <h2>@battleCreature.Character.Name</h2>
+    <h2>@battleCreature.Character.Name - Hp: @battleCreature.Hp</h2>
 }
 
 <hr />
 
 @foreach (var battleCreature in Model.WildBattleCreatures.Where(wbc => wbc.UserId == null))
 {
-    <h2>@battleCreature.Character.Name</h2>
+    <h2>@battleCreature.Character.Name - Hp: @battleCreature.Hp</h2>
 }
 
 <form action="/Land/Attack" method="post">

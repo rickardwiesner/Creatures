@@ -15,6 +15,8 @@ namespace ClashOfTheCharacters.Models
         public int StageId { get; set; }
         public virtual Stage Stage { get; set; }
 
+        public bool Won { get; set; }
+
         public virtual ICollection<WildBattleCreature> WildBattleCreatures { get; set; }
     }
 }
