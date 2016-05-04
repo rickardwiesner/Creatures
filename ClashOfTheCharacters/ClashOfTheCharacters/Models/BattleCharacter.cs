@@ -9,8 +9,10 @@ namespace ClashOfTheCharacters.Models
     {
         public int Id { get; set; }
 
-        public int TeamMemberId { get; set; }
-        public virtual TeamMember TeamMember { get; set; }
+        //public int TeamMemberId { get; set; }
+        //public virtual TeamMember TeamMember { get; set; }
+        public int CharacterId { get; set; }
+        public virtual Character Character { get; set; }
 
         public int CompetitorId { get; set; }
         public virtual Competitor Competitor { get; set; }
@@ -27,8 +29,8 @@ namespace ClashOfTheCharacters.Models
 
         public bool Alive { get { return Hp > 0; } }
 
-        public int Damage { get { return Convert.ToInt32(Level * TeamMember.Character.AttackMultiplier + TeamMember.Character.BaseAttack); } }
+        public int Damage { get { return Convert.ToInt32(Level * Character.AttackMultiplier + Character.BaseAttack); } }
 
-        public int Defense { get { return Convert.ToInt32(Level * TeamMember.Character.DefenseMultiplier + TeamMember.Character.BaseDefense); } }
+        public int Defense { get { return Convert.ToInt32(Level * Character.DefenseMultiplier + Character.BaseDefense); } }
     }
 }

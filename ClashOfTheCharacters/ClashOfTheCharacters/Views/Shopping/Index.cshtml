@@ -2,10 +2,12 @@
 
 @{
     ViewBag.Title = "Shopping";
+    int counter = 0;
 }
 <div class="row">
     @foreach (var item in Model.ShoppingItems)
     {
+        counter++;
 
         <div class="col-md-4 col-sm-4 col-xs-6">
             <div class="col-md-12 col-sm-12 col-xs-12 gamecard">
@@ -19,29 +21,34 @@
         <span class="glyphicon glyphicon-list"></span>
     </a>
     <div class="dropdown-menu">
-        @if (ViewBag.Gold >= item.Price)
-                {
-                    using (Html.BeginForm("Buy", "Shopping", FormMethod.Post))
-                    {
+        @if (Model.Gold >= item.Price && !Model.Travelling)
+        {
+            using (Html.BeginForm("Buy", "Shopping", FormMethod.Post))
+            {
                 @Html.AntiForgeryToken()
                 @Html.Hidden("id", item.Id)
                 <div class="dropdown-item">
                     <input type="submit" value="Buy" class="btn btn-sm btn-primary"  />
                 </div>
             }
-            @ViewBag.Price
-
         }
+
+        else if (Model.Travelling)
+        {
+            <p class="dropdown-item">Can't trade while travelling</p>
+        }
+
         else
         {
-            <p class="dropdown-item">not enough gold</p>
+            <p class="dropdown-item">Not enough gold</p>
         }
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="#">Separated link</a>
+
+        @*<div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="#">Separated link</a>*@
     </div>
-</div></span>
+        </div></span>
                 </h4>
-                <img class="img-responsive gamecard-image" src="@Html.DisplayFor(modelItem => item.ImageUrl)" : "/Images/Characters/emptyslot.jpg") />
+                <img class="img-responsive gamecard-image" src="@Html.DisplayFor(modelItem => item.ImageUrl)") />
 
                 <div class="clearfix visible-lg"></div>
                 <div class="clearfix visible-sm"></div>
@@ -49,7 +56,6 @@
                 <div class="clearfix visible-xs"></div>
 
                 <div class="col-md-6 col-sm-6 col-xs-6 text-center">
-                    <h5>Stats</h5>
                     <p>Price: </p>
                     <p>Attack: </p>
                     <p>Defense: </p>
@@ -57,7 +63,6 @@
                    
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-6 text-center">
-                    <h5>History</h5>
                     <p>@Html.DisplayFor(modelItem => item.Price)</p>
                     <p>@Html.DisplayFor(modelItem => item.BaseAttack)</p>
                     <p>@Html.DisplayFor(modelItem => item.BaseDefense)</p>
@@ -66,15 +71,27 @@
             </div>
             @*</a>*@
         </div>
+
+        if (counter % 3 == 0)
+        {
+            <div class="clearfix visible-sm"></div>
+            <div class="clearfix visible-md"></div>
+            <div class="clearfix visible-lg"></div>
+        }
+
+        if (counter % 2 == 0)
+        {
+            <div class="clearfix visible-xs"></div>
+        }
     }
 </div>   
 
-<h2>Shopping</h2>
-
+<h2>Sell</h2>
 
 <div class="row">
     @foreach (var item in Model.SellItems)
     {
+        counter++;
 
         <div class="col-md-4 col-sm-4 col-xs-6">
             <div class="col-md-12 col-sm-12 col-xs-12 gamecard">
@@ -89,31 +106,34 @@
                                 <span class="glyphicon glyphicon-list"></span>
                             </a>
                             <div class="dropdown-menu">
-                                @if (ViewBag.Gold >= item.Price)
-                {
-                    using (Html.BeginForm("Sell", "Shopping", FormMethod.Post))
-                    {
+                                @if (Model.SellItems.Count > 1 && !Model.Travelling)
+                                {
+                                    using (Html.BeginForm("Sell", "Shopping", FormMethod.Post))
+                                    {
                                         @Html.AntiForgeryToken()
                                         @Html.Hidden("id", item.Id)
                                         <div class="dropdown-item">
                                             <input type="submit" value="Sell" class="btn btn-sm btn-primary" />
                                         </div>
                                     }
-                                    @ViewBag.Price
-
                                 }
+
+                                else if (Model.Travelling)
+                                {
+                                    <p class="dropdown-item">Can't trade while travelling</p>
+                                }
+
                                 else
                                 {
-                                    <p class="dropdown-item">Your Can not sell </p>
+                                    <p class="dropdown-item">Need to have at least one creature</p>
                                 }
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Separated link</a>
+                                @*<div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Separated link</a>*@
                             </div>
                         </div>
                     </span>
                 </h4>
-                <img class="img-responsive gamecard-image" src="@Html.DisplayFor(modelItem => item.ImageUrl)"
-                     "/Images/Characters/emptyslot.jpg" ) />
+                <img class="img-responsive gamecard-image" src="@Html.DisplayFor(modelItem => item.ImageUrl)"/>
 
                 <div class="clearfix visible-lg"></div>
                 <div class="clearfix visible-sm"></div>
@@ -121,7 +141,6 @@
                 <div class="clearfix visible-xs"></div>
 
                 <div class="col-md-6 col-sm-6 col-xs-6 text-center">
-                    <h5>Stats</h5>
                     <p>Price: </p>
                     <p>Attack: </p>
                     <p>Defense: </p>
@@ -129,7 +148,6 @@
 
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-6 text-center">
-                    <h5>History</h5>
                     <p>@Html.DisplayFor(modelItem => item.Price)</p>
                     <p>@Html.DisplayFor(modelItem => item.BaseAttack)</p>
                     <p>@Html.DisplayFor(modelItem => item.BaseDefense)</p>
@@ -138,81 +156,19 @@
             </div>
             @*</a>*@
         </div>
+
+        if (counter % 3 == 0)
+        {
+            <div class="clearfix visible-sm"></div>
+            <div class="clearfix visible-md"></div>
+            <div class="clearfix visible-lg"></div>
+        }
+
+        if (counter % 2 == 0)
+        {
+            <div class="clearfix visible-xs"></div>
+        }
     }
 </div>
- <h2>Shopping</h2>
 
-    @if (ViewBag.NotEnoughMoney != null)
-    {
-        <p class="danger">Not Enough Gold</p>
-        <p>@ViewBag.NotEnoughMoney</p>
-    }
-
-    
-
-@*<table class="table">
-    <tr>
-        <th>
-            Name
-        </th>
-        <th>
-            Element
-        </th>
-        <th>
-            Image
-        </th>
-        <th>
-            Price
-        </th>
-        <th>
-            Attack
-        </th>
-        <th>
-            Defense
-        </th>
-        <th>
-            Hp
-        </th>
-        <th></th>
-    </tr>
-    <h2>Sell your characters</h2>
-    @foreach (var item in Model.SellItems)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Element)
-            </td>
-            <td>
-                <img src="@Html.DisplayFor(modelItem => item.ImageUrl)" />
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BaseAttack)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BaseDefense)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BaseHp)
-            </td>
-            <td>
-                
-                @using (Html.BeginForm("Sell", "Shopping", FormMethod.Post))
-                    {
-                    @Html.AntiForgeryToken()
-                    @Html.Hidden("id", item.Id)
-                    <div class="form-actions no-color">
-                        <input type="submit" value="Sell" class="btn btn-default" />
-                    </div>
-                    }
-                @ViewBag.Price
-            </td>
-        </tr>
-    }
-
-</table>*@
+   

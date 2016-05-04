@@ -291,6 +291,7 @@
     <Content Include="Images\Map\pollution.png" />
     <Content Include="Images\Map\water.png" />
     <Content Include="Images\Other\concrete.jpg" />
+    <Content Include="Images\Other\forest.jpg" />
     <Content Include="Images\Other\gamecard.jpg" />
     <Content Include="Images\Other\map.jpg" />
     <Content Include="Images\Other\noprofilepicture.jpg" />
@@ -377,6 +378,7 @@
     <Content Include="Views\Map\Travelling.cshtml" />
     <Content Include="Views\Home\Characters.cshtml" />
     <Content Include="Views\Shopping\Index.cshtml" />
+    <Content Include="Views\Ladder\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

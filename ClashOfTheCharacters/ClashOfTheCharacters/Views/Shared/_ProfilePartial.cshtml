@@ -234,7 +234,7 @@
                                             <h4>Ladder Points @(challenger.RankingPointsEarned > 0 ? "Earned: " + challenger.RankingPointsEarned : "Lost: " + challenger.RankingPointsEarned)</h4>
                                             @foreach (var battleCharacter in challenger.BattleCharacters.Where(bc => bc.XpEarned > 0).OrderBy(bc => bc.Slot))
                                             {
-                                                <h5>@(battleCharacter.TeamMember.Character.Name) Earned: @(battleCharacter.XpEarned)Xp</h5>
+                                                <h5>@(battleCharacter.Character.Name) Earned: @(battleCharacter.XpEarned)Xp</h5>
                                             }
                                         </div>
                                         <div class="col-md-6 text-right">
@@ -244,7 +244,7 @@
                                             <h4>Ladder Points @(receiver.RankingPointsEarned > 0 ? "Earned:" + receiver.RankingPointsEarned : "Lost:" + receiver.RankingPointsEarned)</h4>
                                             @foreach (var battleCharacter in receiver.BattleCharacters.Where(bc => bc.XpEarned > 0).OrderBy(bc => bc.Slot))
                                             {
-                                                <h5>@(battleCharacter.TeamMember.Character.Name) Earned: @(battleCharacter.XpEarned)xp</h5>
+                                                <h5>@(battleCharacter.Character.Name) Earned: @(battleCharacter.XpEarned)xp</h5>
                                             }
                                         </div>
 
@@ -259,11 +259,11 @@
                                                 <div class="col-md-12 gamecard margin-bottom-20">
                                                     <div class="col-md-12 col-xs-12">
                                                         <h3>
-                                                            <strong>@attack.Attacker.TeamMember.Character.Name</strong><span> (@attack.Attacker.Competitor.User.UserName)</span>
-                                                            <span><img class="gamecard-element" src="@Helper.GetElementUrl(attack.Attacker.TeamMember.Character.Element)" /></span>
+                                                            <strong>@attack.Attacker.Character.Name</strong><span> (@attack.Attacker.Competitor.User.UserName)</span>
+                                                            <span><img class="gamecard-element" src="@Helper.GetElementUrl(attack.Attacker.Character.Element)" /></span>
                                                         </h3>
                                                     </div>
-                                                    <img class="img-responsive gamecard-image" src="@attack.Attacker.TeamMember.Character.ImageUrl" />
+                                                    <img class="img-responsive gamecard-image" src="@attack.Attacker.Character.ImageUrl" />
                                                     <div class="gamecard-hpbar">
                                                         <div style="width: @Helper.GetPercentage(attack.AttackerHpRemaining, attack.Attacker.MaxHp)%"></div>
                                                     </div>
@@ -275,7 +275,7 @@
                                             </div>
                                             <div class="text-center col-md-4 col-sm-4 attack-info">
 
-                                                <h3 class="text-danger">@(attack.Attacker.TeamMember.Character.Name) dealt @(attack.Damage) damage to @(attack.Defender.TeamMember.Character.Name)</h3>
+                                                <h3 class="text-danger">@(attack.Attacker.Character.Name) dealt @(attack.Damage) damage to @(attack.Defender.Character.Name)</h3>
                                                 <h4>The attack was @Helper.GetEffect(attack.Effect).ToLower()</h4>
 
                                             </div>
@@ -283,11 +283,11 @@
                                                 <div class="col-md-12 gamecard">
                                                     <div class="col-md-12 col-xs-12">
                                                         <h3>
-                                                            <strong>@attack.Defender.TeamMember.Character.Name</strong><span> (@attack.Defender.Competitor.User.UserName)</span>
-                                                            <span><img class="gamecard-element" src="@Helper.GetElementUrl(attack.Defender.TeamMember.Character.Element)" /></span>
+                                                            <strong>@attack.Defender.Character.Name</strong><span> (@attack.Defender.Competitor.User.UserName)</span>
+                                                            <span><img class="gamecard-element" src="@Helper.GetElementUrl(attack.Defender.Character.Element)" /></span>
                                                         </h3>
                                                     </div>
-                                                    <img class="img-responsive gamecard-image" src="@attack.Defender.TeamMember.Character.ImageUrl" />
+                                                    <img class="img-responsive gamecard-image" src="@attack.Defender.Character.ImageUrl" />
                                                     <div class="gamecard-hpbar">
                                                         <div style="width: @Helper.GetPercentage(attack.DefenderHpRemaining, attack.Defender.MaxHp)%"></div>
                                                     </div>

@@ -1,3 +1,34 @@
 ﻿.stage-unavailable {
    opacity: 0.5;
 }
+
+.land {
+    background-image: url('../Images/Other/forest.jpg');
+    background-size: cover;
+    height: 550px;
+}
+
+.land h2 {
+    font-family: Gabriola;
+    font-size: 50px;
+    color: #a8602d;
+}
+
+.land h4 {
+    font-family: Gabriola;
+    font-size: 25px;
+    margin-bottom: 0;
+    margin-top: 20px;
+}
+
+.land a > span:hover {
+    color: #a8602d;
+}
+
+.land a > span {
+    color: #a8602d;
+}
+
+.land span {
+    position: absolute;
+}

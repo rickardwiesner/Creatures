@@ -72,6 +72,36 @@ namespace ClashOfTheCharacters.Models
             return new ApplicationDbContext();
         }
 
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+    //        modelBuilder.Entity<BattleCharacter>()  //Lag->Medlemmar
+    //            .HasMany(bc => bc.Attacks)
+    //            .WithRequired(a => a.Attacker)
+    //            .WillCascadeOnDelete(true);
+
+    //        modelBuilder.Entity<BattleCharacter>()  //Lag->Medlemmar
+    //.HasMany(bc => bc.Defends)
+    //.WithRequired(d => d.Defender)
+    //.WillCascadeOnDelete(true);
+
+            //modelBuilder.Entity<BattleCharacter>()  //Lag->Medlemmar
+            //    .HasMany(tm => tm.Attacks)
+            //    .
+            //    .WillCascadeOnDelete(true);
+
+            //modelBuilder.Entity<MatchModel>()  //Match->Lag1
+            //    .HasRequired(m => m.Lag1)
+            //    .WithMany()
+            //    .WillCascadeOnDelete(false);
+
+            //modelBuilder.Entity<MatchModel>()  //Match->Lag2
+            //    .HasRequired(m => m.Lag2)
+            //    .WithMany()
+            //    .WillCascadeOnDelete(false);
+
+            base.OnModelCreating(modelBuilder);
+        }
+
         public DbSet<Character> Characters { get; set; }
         public DbSet<TeamMember> TeamMembers { get; set; }
         public DbSet<Challenge> Challenges { get; set; }
