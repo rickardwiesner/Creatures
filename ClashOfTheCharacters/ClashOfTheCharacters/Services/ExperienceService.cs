@@ -93,6 +93,7 @@ namespace ClashOfTheCharacters.Services
 
                 user.Level++;
                 user.Xp = xp - remaingXp;
+                //Kolla så att användaren inte går upp ytterligare en level på nåt sjukt sätt.
             }
 
             else

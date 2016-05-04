@@ -75,6 +75,11 @@ namespace ClashOfTheCharacters.Controllers
             var userId = User.Identity.GetUserId();
             var user = db.Users.Find(userId);
 
+            if (user.TeamMembers.Count == 0)
+            {
+                return RedirectToAction("Select", "Character");
+            }
+
             int index = 0;
 
             foreach (var u in db.Users.OrderByDescending(u => u.LadderPoints))

@@ -4,15 +4,34 @@
     ViewBag.Title = "Land";
 }
 
-<div class="row map">
+<div class="row map margin-bottom-20">
+    <div class="text-center margin-bottom-20">
+        <h2>
+            The Land Of @Model.Land.Element
+        </h2>
+    </div>
+
     @foreach (var stage in Model.Land.Stages.OrderBy(s => s.Index))
     {
-        <div class="col-md-3 col-xs-3">
-            <h4>Stage: @stage.Index</h4>
-            <a @Html.AttributeEncode(Model.CurrentStageIndex == stage.Index ? "href=/Land/Battle/" + Model.Id : "")>
-                <img class="img-responsive @Html.AttributeEncode(Model.CurrentStageIndex == stage.Index ? "" : "stage-unavailable")" />
-            </a>
+        <div class="text-center">
+            <h4>Level: @stage.Index</h4>
+            @if (Model.CurrentStageIndex == stage.Index)
+            {
+                <a href="/Land/Battle/@Model.Id" )>
+                    <span class="fa fa-4x fa-exclamation-circle text-danger"></span>
+                </a>
+            }
+
+            else if (Model.CurrentStageIndex > stage.Index)
+            {
+                <span class="fa fa-4x fa-check-circle text-success"></span>
+            }
+
+            else
+            {
+                <span class="fa fa-4x fa-question-circle"></span>
+            }
+
         </div>
     }
 </div>
-

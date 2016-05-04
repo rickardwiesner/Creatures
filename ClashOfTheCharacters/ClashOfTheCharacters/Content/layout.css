@@ -27,3 +27,20 @@ a:hover, a:focus {
 .table > tbody > tr > td {
     vertical-align: middle;
 }
+
+.form-block {
+    width: 100%;
+}
+
+.btn-custom {
+    background-color: #fff0e5;
+    border: 1px solid black;
+}
+
+.btn-custom:hover {
+    background-color: #f0d2bb;
+}
+
+.btn-custom:focus {
+    background-color: #f0d2bb;
+}

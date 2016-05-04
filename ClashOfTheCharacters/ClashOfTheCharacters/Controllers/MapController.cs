@@ -1,5 +1,6 @@
 ﻿using ClashOfTheCharacters.Helpers;
 using ClashOfTheCharacters.Models;
+using ClashOfTheCharacters.Services;
 using ClashOfTheCharacters.ViewModels;
 using Microsoft.AspNet.Identity;
 using System;
@@ -58,7 +59,13 @@ namespace ClashOfTheCharacters.Controllers
                 return RedirectToAction("Index");
             }
 
+            if (user.Stamina == user.MaxStamina)
+            {
+                user.LastStaminaTime = DateTimeOffset.Now;
+            }
+
             user.Stamina -= land.Cost;
+
             var travel = new Travel { UserId = userId, LandId = landId, ArrivalTime = DateTimeOffset.Now.AddHours(land.Hours) };
             db.Travels.Add(travel);
             db.SaveChanges();
@@ -70,10 +77,14 @@ namespace ClashOfTheCharacters.Controllers
         {
             var userId = User.Identity.GetUserId();
 
+            var travelService = new TravelService();
+            travelService.CheckArrivalTime(userId);
+
             if (!db.Travels.Any(t => t.UserId == userId))
             {
                 return RedirectToAction("Index");
             }
+
 
             var travel = db.Travels.First(t => t.UserId == userId);
             return View(travel);

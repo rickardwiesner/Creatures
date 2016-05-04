@@ -48,6 +48,8 @@ namespace ClashOfTheCharacters.Models
         public virtual ICollection<TeamMember> TeamMembers { get; set; }
 
         public virtual ICollection<UnlockedLand> UnlockedLands { get; set; }
+
+        public virtual ICollection<ClearedLand> ClearedLands { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -82,6 +84,7 @@ namespace ClashOfTheCharacters.Models
         public DbSet<Travel> Travels { get; set; }
         public DbSet<UnlockedLand> UnlockedLands { get; set; }
         public DbSet<CurrentLand> CurrentLands { get; set; }
+        public DbSet<ClearedLand> ClearedLands { get; set; }
         public DbSet<Stage> Stages { get; set; }
         public DbSet<WildBattle> WildBattles { get; set; }
         public DbSet<WildBattleCreature> WildBattleCreatures { get; set; }

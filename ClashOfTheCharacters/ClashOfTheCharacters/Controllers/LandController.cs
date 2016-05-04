@@ -52,7 +52,6 @@ namespace ClashOfTheCharacters.Controllers
         public ActionResult Attack()
         {
             var userId = User.Identity.GetUserId();
-            var wildBattle = db.WildBattles.First(wb => wb.UserId == userId);
 
             wildBattleService.Attack(userId);
 
@@ -63,11 +62,18 @@ namespace ClashOfTheCharacters.Controllers
         public ActionResult Capture()
         {
             var userId = User.Identity.GetUserId();
-            var wildBattle = db.WildBattles.First(wb => wb.UserId == userId);
-
-
 
             return RedirectToAction("Battle");
+        }
+
+        [HttpPost]
+        public ActionResult Finish()
+        {
+            var userId = User.Identity.GetUserId();
+
+            wildBattleService.FinishBattle(userId);
+
+            return RedirectToAction("Index");
         }
     }
 }
