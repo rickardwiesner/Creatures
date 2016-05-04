@@ -9,6 +9,6 @@ namespace ClashOfTheCharacters.ViewModels
     public class HomeViewModel
     {
         public ICollection<ApplicationUser> Users { get; set; }
-        public ICollection<Character> Characters { get; set; }
+        public ICollection<Creature> Characters { get; set; }
     }
 }

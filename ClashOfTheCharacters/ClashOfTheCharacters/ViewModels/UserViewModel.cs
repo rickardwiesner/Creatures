@@ -22,9 +22,9 @@ namespace ClashOfTheCharacters.ViewModels
 
         public int TotalGoldEarned { get; set; }
 
-        public TeamMember MostUsedCharacter { get; set; }
+        public UserCreature MostUsedCreature { get; set; }
 
-        public TeamMember MostValuedCharacter { get; set; }
+        public UserCreature MostValuableCreature { get; set; }
 
     }
 }

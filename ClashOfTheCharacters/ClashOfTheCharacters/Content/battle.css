@@ -53,7 +53,7 @@ h3 span {
     font-size: 12px;
 }
 
-.dropdown-menu {
+.dropdown-hover .dropdown-menu {
     left: -50px;
     min-width: 200px;
     padding: 0px;

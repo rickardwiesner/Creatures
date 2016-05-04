@@ -1,0 +1,53 @@
+﻿@using ClashOfTheCharacters.Helpers;
+@using ClashOfTheCharacters.Models;
+
+@model IEnumerable<Creature>
+
+@{
+    ViewBag.Title = "Select";
+    int counter = 0;
+}
+
+<h3 class="text-center">Select Your First Character</h3>
+<hr />
+    <div class="row">
+        @foreach (var creature in Model)
+        {
+            counter++;
+
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <form method="post">
+                    <input hidden name="creatureId" value="@creature.Id" />
+                    <button type="submit" class="btn-none">
+                        <div class="col-md-12 col-sm-12 col-xs-12 gamecard gamecard-select">
+                            <h4>
+                                <strong>@creature.Name</strong>
+                                <span> Lvl: 5</span>
+                                <span><img class="gamecard-element" src="@Helper.GetElementUrl(creature.Element)" /></span>
+                            </h4>
+                            <img class="img-responsive gamecard-image" src=@creature.ImageUrl />
+                            <div class="col-md-6 col-sm-6 col-xs-6 text-center margin-top-20">
+                                <h5>Base Stats</h5>
+                                <p>Dmg: @creature.BaseAttack</p>
+                                <p>Def: @creature.BaseDefense</p>
+                                <p>Hp: @creature.BaseHp</p>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-6 text-center margin-top-20">
+                                <h5>Growth</h5>
+                                <p>Dmg: @creature.AttackMultiplier</p>
+                                <p>Def: @creature.DefenseMultiplier</p>
+                                <p>Hp: @creature.HpMultiplier</p>
+                            </div>
+                        </div>
+                    </button>
+                </form>
+            </div>
+
+            if (counter == 2)
+            {
+                <div class="clearfix visible-lg"></div>
+                <div class="clearfix visible-sm"></div>
+                <div class="clearfix visible-md"></div>
+            }
+        }
+    </div>

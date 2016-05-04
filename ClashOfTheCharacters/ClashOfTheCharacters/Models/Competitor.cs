@@ -27,6 +27,6 @@ namespace ClashOfTheCharacters.Models
         public int BattleId { get; set; }
         public virtual Battle Battle { get; set; }
 
-        public virtual ICollection<BattleCharacter> BattleCharacters { get; set; }
+        public virtual ICollection<BattleCreature> BattleCharacters { get; set; }
     }
 }

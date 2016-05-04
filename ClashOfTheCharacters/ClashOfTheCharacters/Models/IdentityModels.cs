@@ -39,17 +39,25 @@ namespace ClashOfTheCharacters.Models
 
         public bool Admin { get; set; }
 
+        public int Battles { get; set; }
+
+        public int Wins { get; set; }
+
+        public int Losses { get; set; }
+
         public DateTimeOffset LastActive { get; set; }
 
         public DateTimeOffset LastStaminaTime { get; set; }
 
         public bool IsOnline { get { return (DateTimeOffset.Now - LastActive).TotalMinutes < 30; } }
 
-        public virtual ICollection<TeamMember> TeamMembers { get; set; }
+        public virtual ICollection<UserCreature> UserCreatures { get; set; }
 
         public virtual ICollection<UnlockedLand> UnlockedLands { get; set; }
 
         public virtual ICollection<ClearedLand> ClearedLands { get; set; }
+
+        public virtual ICollection<UserItem> UserItems { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -72,52 +80,38 @@ namespace ClashOfTheCharacters.Models
             return new ApplicationDbContext();
         }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-    //        modelBuilder.Entity<BattleCharacter>()  //Lag->Medlemmar
-    //            .HasMany(bc => bc.Attacks)
-    //            .WithRequired(a => a.Attacker)
-    //            .WillCascadeOnDelete(true);
+        //protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<TeamCreature>()
+        //        .HasRequired(m => m.User)
+        //        .WithMany(uc => uc.UserCreatures)
+        //        .WillCascadeOnDelete(true);
 
-    //        modelBuilder.Entity<BattleCharacter>()  //Lag->Medlemmar
-    //.HasMany(bc => bc.Defends)
-    //.WithRequired(d => d.Defender)
-    //.WillCascadeOnDelete(true);
+        //    modelBuilder.Entity<ApplicationUser>()
+        //        .HasMany(m => m.TeamCreatures)
+        //        .WithRequired(uc => uc.User)
+        //        .WillCascadeOnDelete(true);
 
-            //modelBuilder.Entity<BattleCharacter>()  //Lag->Medlemmar
-            //    .HasMany(tm => tm.Attacks)
-            //    .
-            //    .WillCascadeOnDelete(true);
+        //    base.OnModelCreating(modelBuilder);
+        //}
 
-            //modelBuilder.Entity<MatchModel>()  //Match->Lag1
-            //    .HasRequired(m => m.Lag1)
-            //    .WithMany()
-            //    .WillCascadeOnDelete(false);
 
-            //modelBuilder.Entity<MatchModel>()  //Match->Lag2
-            //    .HasRequired(m => m.Lag2)
-            //    .WithMany()
-            //    .WillCascadeOnDelete(false);
-
-            base.OnModelCreating(modelBuilder);
-        }
-
-        public DbSet<Character> Characters { get; set; }
-        public DbSet<TeamMember> TeamMembers { get; set; }
+        public DbSet<Creature> Creatures { get; set; }
+        public DbSet<UserCreature> UserCreatures { get; set; }
         public DbSet<Challenge> Challenges { get; set; }
         public DbSet<Battle> Battles { get; set; }
         public DbSet<Attack> Attacks { get; set; }
-        //public DbSet<BattleReward> BattleRewards { get; set; }
         public DbSet<Competitor> Competitors { get; set; }
-        public DbSet<BattleCharacter> BattleCharacters { get; set; }
+        public DbSet<BattleCreature> BattleCreatures { get; set; }
         public DbSet<Land> Lands { get; set; }
         public DbSet<Travel> Travels { get; set; }
         public DbSet<UnlockedLand> UnlockedLands { get; set; }
         public DbSet<CurrentLand> CurrentLands { get; set; }
         public DbSet<ClearedLand> ClearedLands { get; set; }
-        public DbSet<Stage> Stages { get; set; }
         public DbSet<WildBattle> WildBattles { get; set; }
         public DbSet<WildBattleCreature> WildBattleCreatures { get; set; }
         public DbSet<WildBattleAction> WildBattleActions { get; set; }
+        public DbSet<Item> Items { get; set; }
+        public DbSet<UserItem> UserItems { get; set; }
     }
 }

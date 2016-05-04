@@ -107,37 +107,37 @@ namespace ClashOfTheCharacters.Services
 
         float CalculateDamage(int attackerId, int defenderId)
         {
-            var attacker = db.BattleCharacters.Find(attackerId);
-            var defender = db.BattleCharacters.Find(defenderId);
+            var attacker = db.BattleCreatures.Find(attackerId);
+            var defender = db.BattleCreatures.Find(defenderId);
 
             float elementBonus = 1;
             effect = Effect.Normal;
 
-            if (attacker.Character.Element == Element.Gravity && defender.Character.Element != Element.Gravity)
+            if (attacker.Creature.Element == Element.Gravity && defender.Creature.Element != Element.Gravity)
             {
                 elementBonus = 1.25f;
                 effect = Effect.GravityAttack;
             }
 
-            else if ((int)defender.Character.Element - (int)attacker.Character.Element == -2 || (int)defender.Character.Element - (int)attacker.Character.Element == 6)
+            else if ((int)defender.Creature.Element - (int)attacker.Creature.Element == -2 || (int)defender.Creature.Element - (int)attacker.Creature.Element == 6)
             {
                 elementBonus = 0.5f;
                 effect = Effect.VeryBad;
             }
 
-            else if ((int)defender.Character.Element - (int)attacker.Character.Element == -1 || attacker.Character.Element == Element.Fire && defender.Character.Element == Element.Pollution)
+            else if ((int)defender.Creature.Element - (int)attacker.Creature.Element == -1 || attacker.Creature.Element == Element.Fire && defender.Creature.Element == Element.Pollution)
             {
                 elementBonus = 0.75f;
                 effect = Effect.Bad;
             }
 
-            else if ((int)defender.Character.Element - (int)attacker.Character.Element == 1 || attacker.Character.Element == Element.Pollution && defender.Character.Element == Element.Fire)
+            else if ((int)defender.Creature.Element - (int)attacker.Creature.Element == 1 || attacker.Creature.Element == Element.Pollution && defender.Creature.Element == Element.Fire)
             {
                 elementBonus = 1.5f;
                 effect = Effect.Good;
             }
 
-            else if ((int)defender.Character.Element - (int)attacker.Character.Element == 2 || (int)defender.Character.Element - (int)attacker.Character.Element == -6)
+            else if ((int)defender.Creature.Element - (int)attacker.Creature.Element == 2 || (int)defender.Creature.Element - (int)attacker.Creature.Element == -6)
             {
                 elementBonus = 2.0f;
                 effect = Effect.VeryGood;
@@ -157,7 +157,7 @@ namespace ClashOfTheCharacters.Services
                 random = 2;
             }
 
-            return (((2 * (float)attacker.Level + 10) / 250) * ((float)attacker.Damage / (float)defender.Defense) * (float)attacker.Character.BaseAttack + 2) * (1.5f * elementBonus * (random * 2));
+            return (((2 * (float)attacker.Level + 10) / 250) * ((float)attacker.Damage / (float)defender.Defense) * (float)attacker.Creature.BaseAttack + 2) * (1.5f * elementBonus * (random * 2));
         }
 
         void AddCompetitors()
@@ -177,29 +177,29 @@ namespace ClashOfTheCharacters.Services
         {
             var battle = db.Battles.Find(battleId);
 
-            foreach (var teamMember in battle.Challenge.Challenger.TeamMembers.OrderBy(tm => tm.Slot).ToList())
+            foreach (var userCreature in battle.Challenge.Challenger.UserCreatures.Where(uc => uc.InSquad).OrderBy(tm => tm.Slot).ToList())
             {
-                db.BattleCharacters.Add(new BattleCharacter
+                db.BattleCreatures.Add(new BattleCreature
                 {
                     CompetitorId = battle.Competitors.First(c => c.Challenger).Id,
-                    CharacterId = teamMember.CharacterId,
-                    Level = teamMember.Level,
-                    Hp = teamMember.Hp,
-                    MaxHp = teamMember.Hp,
-                    Slot = teamMember.Slot
+                    CreatureId = userCreature.CreatureId,
+                    Level = userCreature.Level,
+                    Hp = userCreature.Hp,
+                    MaxHp = userCreature.Hp,
+                    Slot = userCreature.Slot
                 });
             }
 
-            foreach (var teamMember in battle.Challenge.Receiver.TeamMembers.OrderBy(tm => tm.Slot).ToList())
+            foreach (var userCreature in battle.Challenge.Receiver.UserCreatures.Where(uc => uc.InSquad).OrderBy(tm => tm.Slot).ToList())
             {
-                db.BattleCharacters.Add(new BattleCharacter
+                db.BattleCreatures.Add(new BattleCreature
                 {
                     CompetitorId = battle.Competitors.First(c => !c.Challenger).Id,
-                    CharacterId = teamMember.CharacterId,
-                    Level = teamMember.Level,
-                    Hp = teamMember.Hp,
-                    MaxHp = teamMember.Hp,
-                    Slot = teamMember.Slot
+                    CreatureId = userCreature.CreatureId,
+                    Level = userCreature.Level,
+                    Hp = userCreature.Hp,
+                    MaxHp = userCreature.Hp,
+                    Slot = userCreature.Slot
                 });
             }
 

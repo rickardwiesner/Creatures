@@ -17,7 +17,7 @@ namespace ClashOfTheCharacters.Controllers
         // GET: Admin
         public ActionResult Index()
         {
-            return View(db.Characters.ToList());
+            return View(db.Creatures.ToList());
         }
 
         // GET: Admin/Details/5
@@ -27,7 +27,7 @@ namespace ClashOfTheCharacters.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Character character = db.Characters.Find(id);
+            Creature character = db.Creatures.Find(id);
             if (character == null)
             {
                 return HttpNotFound();
@@ -46,11 +46,11 @@ namespace ClashOfTheCharacters.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Element,ImageUrl,Price,BaseAttack,BaseDefense,BaseHp,AttackMultiplier,DefenseMultiplier,HpMultiplier")] Character character)
+        public ActionResult Create([Bind(Include = "Id,Name,Element,ImageUrl,Price,BaseAttack,BaseDefense,BaseHp,AttackMultiplier,DefenseMultiplier,HpMultiplier")] Creature character)
         {
             if (ModelState.IsValid)
             {
-                db.Characters.Add(character);
+                db.Creatures.Add(character);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -65,7 +65,7 @@ namespace ClashOfTheCharacters.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Character character = db.Characters.Find(id);
+            Creature character = db.Creatures.Find(id);
             if (character == null)
             {
                 return HttpNotFound();
@@ -78,7 +78,7 @@ namespace ClashOfTheCharacters.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Element,ImageUrl,Price,BaseAttack,BaseDefense,BaseHp,AttackMultiplier,DefenseMultiplier,HpMultiplier")] Character character)
+        public ActionResult Edit([Bind(Include = "Id,Name,Element,ImageUrl,Price,BaseAttack,BaseDefense,BaseHp,AttackMultiplier,DefenseMultiplier,HpMultiplier")] Creature character)
         {
             if (ModelState.IsValid)
             {
@@ -96,7 +96,7 @@ namespace ClashOfTheCharacters.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Character character = db.Characters.Find(id);
+            Creature character = db.Creatures.Find(id);
             if (character == null)
             {
                 return HttpNotFound();
@@ -109,8 +109,8 @@ namespace ClashOfTheCharacters.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Character character = db.Characters.Find(id);
-            db.Characters.Remove(character);
+            Creature character = db.Creatures.Find(id);
+            db.Creatures.Remove(character);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

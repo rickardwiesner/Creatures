@@ -9,7 +9,7 @@
 
 .gamecard-select:hover {
     opacity: 0.6;
-}  
+}
 
 .gamecard h4 {
     font-family: Gabriola;
@@ -61,9 +61,9 @@
     padding: 1px;
 }
 
-.gamecard-xs p {
-    margin: 0;
-}
+    .gamecard-xs p {
+        margin: 0;
+    }
 
 .gamecard-element-xs {
     height: 14px;
@@ -117,6 +117,12 @@
     margin-bottom: 8px;
 }
 
+.gamecard-rarity {
+    height: 30px;
+    width: 30px;
+    float: left;
+}
+
 .gamecard-xpbar {
     background-color: darkblue;
     height: 20px;
@@ -133,7 +139,7 @@
     }
 
 .gamecard-select {
-     padding-bottom: 30px;
+    padding-bottom: 30px;
 }
 
 .btn-select {
@@ -148,6 +154,18 @@
     position: absolute;
     background-color: gray;
     opacity: 0.6;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border: none;
+}
+
+.gamecard-hidden {
+    position: absolute;
+    background-image: url('../Images/Other/questionmark.jpg');
+    background-size: cover;
+    background-position: center;
     width: 100%;
     height: 100%;
     top: 0;

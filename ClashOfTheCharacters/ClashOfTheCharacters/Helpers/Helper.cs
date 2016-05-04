@@ -28,6 +28,31 @@ namespace ClashOfTheCharacters.Helpers
             }
         }
 
+        static public string GetRarityUrl(Rarity rarity)
+        {
+            switch (rarity)
+            {
+                case Rarity.Common:
+                    return "/Images/Rarity/common.png";
+
+                case Rarity.Uncommon:
+                    return "/Images/Rarity/uncommon.png";
+
+                case Rarity.Rare:
+                    return "/Images/Rarity/rare.png";
+
+                case Rarity.Epic:
+                    return "/Images/Rarity/epic.png";
+
+                case Rarity.Legendary:
+                    return "/Images/Rarity/legendary.png";
+
+                default:
+                    return string.Empty;
+
+            }
+        }
+
         static public string GetPercentage(int xp, int maxXp)
         {
             return Convert.ToString(Convert.ToDecimal(xp) / Convert.ToDecimal(maxXp) * 100).Replace(",", ".");
@@ -84,6 +109,12 @@ namespace ClashOfTheCharacters.Helpers
 
                 case Effect.GravityAttack:
                     return "Quite effective";
+
+                case Effect.Success:
+                    return "Was successful";
+
+                case Effect.Fail:
+                    return "Failed";
 
                 default:
                     return "Normal";

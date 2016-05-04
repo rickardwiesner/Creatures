@@ -22,17 +22,17 @@
     }
 }
 
-
 <div class="row margin-bottom-20">
     <div class="col-md-4 col-sm-4 col-xs-12 margin-bottom-20">
 
         <div class="col-md-12 col-sm-12 col-xs-12 gamecard">
             <h4>
-                <strong>@userCreature.Character.Name</strong>
+                <span><img class="gamecard-rarity" src="@Helper.GetRarityUrl(userCreature.Creature.Rarity)" /></span>
+                <strong>@userCreature.Creature.Name</strong>
                 <span> Lvl: @userCreature.Level</span>
-                <span><img class="gamecard-element" src="@Helper.GetElementUrl(userCreature.Character.Element)" /></span>
+                <span><img class="gamecard-element" src="@Helper.GetElementUrl(userCreature.Creature.Element)" /></span>
             </h4>
-            <img class="img-responsive gamecard-image" src=@userCreature.Character.ImageUrl />
+            <img class="img-responsive gamecard-image" src=@userCreature.Creature.ImageUrl />
             <div class="gamecard-hpbar">
                 <div style="width: @Helper.GetPercentage(userCreature.Hp, userCreature.MaxHp)%"></div>
             </div>
@@ -52,40 +52,39 @@
             {
                 counter++;
 
-            <div class="col-md-4 col-xs-4">
-                <div class="col-md-12 gamecard-xs">
-                    @if (battleCreature.Hp == 0)
-                {
-                        <div class="gamecard-dead"></div>
+                <div class="col-md-4 col-xs-4">
+                    <div class="col-md-12 gamecard-xs">
+                        @if (battleCreature.Hp == 0)
+                        {
+                            <div class="gamecard-dead"></div>
                         }
-                    <p>
-                        Lvl: @battleCreature.Level
+                        <p>
+                            Lvl: @battleCreature.Level
 
-                        <span>
-                            <img class="gamecard-element-xs" src="@Helper.GetElementUrl(battleCreature.Character.Element)" />
-                        </span>
+                            <span>
+                                <img class="gamecard-element-xs" src="@Helper.GetElementUrl(battleCreature.Creature.Element)" />
+                            </span>
 
-                    </p>
-                    <img class="img-responsive" src="@battleCreature.Character.ImageUrl" />
-                    <p>Dmg: @battleCreature.Damage</p>
-                    <p>Def: @battleCreature.Defense</p>
-                    <p>Hp: @battleCreature.Hp</p>
+                        </p>
+                        <img class="img-responsive" src="@battleCreature.Creature.ImageUrl" />
+                        <p>Dmg: @battleCreature.Damage</p>
+                        <p>Def: @battleCreature.Defense</p>
+                        <p>Hp: @battleCreature.Hp</p>
+                    </div>
                 </div>
-            </div>
 
                 if (counter == 3)
                 {
-            <div class="clearfix visible-xs"></div>
-            <div class="clearfix visible-sm"></div>
-            <div class="clearfix visible-md"></div>
-            <div class="clearfix visible-lg"></div>
+                    <div class="clearfix visible-xs"></div>
+                    <div class="clearfix visible-sm"></div>
+                    <div class="clearfix visible-md"></div>
+                    <div class="clearfix visible-lg"></div>
                 }
             }
         </div>
 
     </div>
-    <div class="col-md-4 col-sm-4 col-xs-12">
-
+    <div class="col-md-4 col-sm-4 col-xs-12 margin-bottom-20">
 
         @if (!Model.Finished)
         {
@@ -104,12 +103,21 @@
 
         <hr />
 
-
         <div class="div-actions margin-bottom-10">
-            @foreach (var action in Model.WildBattleActions@*.Take(2).Reverse()*@)
+            @foreach (var action in Model.WildBattleActions)
             {
-                <h4 class="text-center @Html.AttributeEncode(action.Attacker.UserId != null ? "text-success" : "text-danger")">@action.Attacker.Character.Name dealt @action.Damage to @action.Defender.Character.Name</h4>
-                <h5 class="text-center @Html.AttributeEncode(action.Attacker.UserId != null ? "text-success" : "text-danger")">The attack was @Helper.GetEffect(action.Effect).ToLower()</h5>
+                if (action.CaptureAttempt)
+                {
+                    <h4 class="text-center">You tried to capture @action.Defender.Creature.Name</h4>
+                    <h5 class="text-center @Html.AttributeEncode(action.CaptureSuccess == true ? "text-success" : "text-danger")">The capture attempt @Helper.GetEffect(action.Effect).ToLower()</h5>
+                }
+
+                else
+                {
+                    <h4 class="text-center @Html.AttributeEncode(action.Attacker.UserId != null ? "text-success" : "text-danger")">@action.Attacker.Creature.Name dealt @action.Damage to @action.Defender.Creature.Name</h4>
+                    <h5 class="text-center @Html.AttributeEncode(action.Attacker.UserId != null ? "text-success" : "text-danger")">The attack was @Helper.GetEffect(action.Effect).ToLower()</h5>
+                }
+
                 <br />
             }
         </div>
@@ -120,30 +128,40 @@
                 <button type="submit" class="btn btn-custom btn-block">Attack</button>
             </form>
 
-            <form role="form" action="/Land/Capture" method="post" class="margin-bottom-10">
-                <button type="submit" class="btn btn-custom btn-block">Capture</button>
-            </form>
+            <button data-toggle="dropdown" class="btn btn-custom btn-block">Capture</button>
+            <ul class="dropdown-menu">
+                @foreach (var item in Model.User.UserItems.Where(ui => ui.InBag))
+                {
+                    <li>
+                        <form role="form" action="/Land/Capture" method="post">
+                            <input hidden name="userItemId" value="@item.Id" />
+                            <button type="submit" class="btn-dropdown">@item.Item.Name (@item.Quantity)</button>
+                        </form>
+                    </li>
+                }
+            </ul>
         }
 
         else
         {
+            <button class="btn btn-custom btn-block margin-bottom-10">Reward</button>
+
             <form role="form" action="/Land/Finish" method="post" class="margin-bottom-10">
                 <button type="submit" class="btn btn-custom btn-block">Finish</button>
             </form>
         }
-
-
 
     </div>
     <div class="col-md-4 col-sm-4 col-xs-12">
 
         <div class="col-md-12 col-sm-12 col-xs-12 gamecard">
             <h4>
-                <strong>@cpuCreature.Character.Name</strong>
+                <span><img class="gamecard-rarity" src="@Helper.GetRarityUrl(cpuCreature.Creature.Rarity)" /></span>
+                <strong>@cpuCreature.Creature.Name</strong>
                 <span> Lvl: @cpuCreature.Level</span>
-                <span><img class="gamecard-element" src="@Helper.GetElementUrl(cpuCreature.Character.Element)" /></span>
+                <span><img class="gamecard-element" src="@Helper.GetElementUrl(cpuCreature.Creature.Element)" /></span>
             </h4>
-            <img class="img-responsive gamecard-image" src=@cpuCreature.Character.ImageUrl />
+            <img class="img-responsive gamecard-image" src=@cpuCreature.Creature.ImageUrl />
             <div class="gamecard-hpbar">
                 <div style="width: @Helper.GetPercentage(cpuCreature.Hp, cpuCreature.MaxHp)%"></div>
             </div>
@@ -165,18 +183,23 @@
                 <div class="col-md-4 col-xs-4">
                     <div class="col-md-12 gamecard-xs">
                         @if (battleCreature.Hp == 0)
-                {
+                        {
                             <div class="gamecard-dead"></div>
+                        }
+
+                        else
+                        {
+                            <div class="gamecard-hidden"></div>
                         }
                         <p>
                             Lvl: @battleCreature.Level
 
                             <span>
-                                <img class="gamecard-element-xs" src="@Helper.GetElementUrl(battleCreature.Character.Element)" />
+                                <img class="gamecard-element-xs" src="@Helper.GetElementUrl(battleCreature.Creature.Element)" />
                             </span>
 
                         </p>
-                        <img class="img-responsive" src="@battleCreature.Character.ImageUrl" />
+                        <img class="img-responsive" src="@battleCreature.Creature.ImageUrl" />
                         <p>Dmg: @battleCreature.Damage</p>
                         <p>Def: @battleCreature.Defense</p>
                         <p>Hp: @battleCreature.Hp</p>
@@ -192,7 +215,6 @@
                 }
             }
         </div>
-
     </div>
 </div>
 

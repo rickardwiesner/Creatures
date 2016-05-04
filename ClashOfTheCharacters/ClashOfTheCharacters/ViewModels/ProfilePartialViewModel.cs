@@ -32,7 +32,7 @@ namespace ClashOfTheCharacters.ViewModels
 
         public int NextStaminaMinutes { get; set; }
 
-        public ICollection<TeamMember> TeamMembers { get; set; }
+        public ICollection<UserCreature> UserCreatures { get; set; }
 
         public ICollection<Battle> RecentBattles { get; set; }
 
