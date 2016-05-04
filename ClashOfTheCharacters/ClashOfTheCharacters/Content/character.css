@@ -140,8 +140,23 @@
     margin-bottom: 20px;
 }
 
+.gamecard-battle-xs .col-md-4 {
+    padding: 2px;
+}
+
+.gamecard-dead {
+    position: absolute;
+    background-color: gray;
+    opacity: 0.6;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border: none;
+}
+
 .gamecard-hpbar {
-    background-color: #5a954a;
+    background-color: #3e6f31;
     height: 20px;
     padding-bottom: 1px;
 }

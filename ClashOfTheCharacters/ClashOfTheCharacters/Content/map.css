@@ -1,6 +1,23 @@
 ﻿.map {
     background-image: url('../Images/Other/map.jpg');
     background-size: cover;
+    padding-bottom: 20px;
+}
+
+.map h2 {
+    font-family: Gabriola;
+    font-size: 50px;
+}
+
+.map h4 {
+    font-family: Gabriola;
+    font-size: 25px;
+    margin-bottom: 0;
+    margin-top: 20px;
+}
+
+.map a > span:hover {
+    color: #a24949;
 }
 
 .map-element-air {
@@ -35,4 +52,9 @@
 
 .map-availability {
     opacity: 0.5;
+}
+
+.div-actions {
+    height: 178px; 
+    overflow-y: auto;
 }

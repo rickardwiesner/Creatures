@@ -1,26 +1,200 @@
-﻿@model ClashOfTheCharacters.Models.WildBattle
+﻿@using ClashOfTheCharacters.Helpers
+
+@model ClashOfTheCharacters.Models.WildBattle
 
 @{
     ViewBag.Title = "Battle";
+    <script src="~/Scripts/scrollbar-bottom.js"></script>
 }
 
-@foreach (var battleCreature in Model.WildBattleCreatures.Where(wbc => wbc.UserId != null))
-{
-    <h2>@battleCreature.Character.Name - Hp: @battleCreature.Hp</h2>
+@{
+    var userCreature = Model.WildBattleCreatures.Where(wbc => wbc.UserId != null && wbc.Alive).OrderBy(wbc => wbc.Slot).FirstOrDefault();
+    var cpuCreature = Model.WildBattleCreatures.Where(wbc => wbc.UserId == null && wbc.Alive).OrderBy(wbc => wbc.Slot).FirstOrDefault();
+
+    if (userCreature == null)
+    {
+        userCreature = Model.WildBattleCreatures.Where(wbc => wbc.UserId != null).OrderByDescending(wbc => wbc.Slot).First();
+    }
+
+    if (cpuCreature == null)
+    {
+        cpuCreature = Model.WildBattleCreatures.Where(wbc => wbc.UserId == null).OrderByDescending(wbc => wbc.Slot).First();
+    }
 }
 
-<hr />
 
-@foreach (var battleCreature in Model.WildBattleCreatures.Where(wbc => wbc.UserId == null))
-{
-    <h2>@battleCreature.Character.Name - Hp: @battleCreature.Hp</h2>
-}
+<div class="row margin-bottom-20">
+    <div class="col-md-4 col-sm-4 col-xs-12 margin-bottom-20">
 
-<form action="/Land/Attack" method="post">
-    <input type="submit" class="btn btn-danger" value="Attack" />
-</form>
+        <div class="col-md-12 col-sm-12 col-xs-12 gamecard">
+            <h4>
+                <strong>@userCreature.Character.Name</strong>
+                <span> Lvl: @userCreature.Level</span>
+                <span><img class="gamecard-element" src="@Helper.GetElementUrl(userCreature.Character.Element)" /></span>
+            </h4>
+            <img class="img-responsive gamecard-image" src=@userCreature.Character.ImageUrl />
+            <div class="gamecard-hpbar">
+                <div style="width: @Helper.GetPercentage(userCreature.Hp, userCreature.MaxHp)%"></div>
+            </div>
+            <p class="text-right">Hp: @userCreature.Hp / @userCreature.MaxHp</p>
+            <p class="margin-top-20">Dmg: @userCreature.Damage</p>
+            <p>Def: @userCreature.Defense</p>
 
-<form action="/Land/Capture" method="post">
-    <input type="submit" class="btn btn-default" value="Capture" />
-</form>
+        </div>
+
+        <div class="col-md-12 gamecard-battle-xs">
+
+            @{
+                int counter = 0;
+            }
+
+            @foreach (var battleCreature in Model.WildBattleCreatures.Where(wbc => wbc.UserId != null).Except(Model.WildBattleCreatures.Where(wbc => wbc.Id == userCreature.Id)).OrderBy(wbc => wbc.Slot).OrderByDescending(wbc => wbc.Alive))
+            {
+                counter++;
+
+            <div class="col-md-4 col-xs-4">
+                <div class="col-md-12 gamecard-xs">
+                    @if (battleCreature.Hp == 0)
+                {
+                        <div class="gamecard-dead"></div>
+                        }
+                    <p>
+                        Lvl: @battleCreature.Level
+
+                        <span>
+                            <img class="gamecard-element-xs" src="@Helper.GetElementUrl(battleCreature.Character.Element)" />
+                        </span>
+
+                    </p>
+                    <img class="img-responsive" src="@battleCreature.Character.ImageUrl" />
+                    <p>Dmg: @battleCreature.Damage</p>
+                    <p>Def: @battleCreature.Defense</p>
+                    <p>Hp: @battleCreature.Hp</p>
+                </div>
+            </div>
+
+                if (counter == 3)
+                {
+            <div class="clearfix visible-xs"></div>
+            <div class="clearfix visible-sm"></div>
+            <div class="clearfix visible-md"></div>
+            <div class="clearfix visible-lg"></div>
+                }
+            }
+        </div>
+
+    </div>
+    <div class="col-md-4 col-sm-4 col-xs-12">
+
+
+        @if (!Model.Finished)
+        {
+            <h3 class="text-center">Your Turn</h3>
+        }
+
+        else if (Model.Won)
+        {
+            <h3 class="text-center">You Won!</h3>
+        }
+
+        else
+        {
+            <h3 class="text-center">You Lost!</h3>
+        }
+
+        <hr />
+
+
+        <div class="div-actions margin-bottom-10">
+            @foreach (var action in Model.WildBattleActions@*.Take(2).Reverse()*@)
+            {
+                <h4 class="text-center @Html.AttributeEncode(action.Attacker.UserId != null ? "text-success" : "text-danger")">@action.Attacker.Character.Name dealt @action.Damage to @action.Defender.Character.Name</h4>
+                <h5 class="text-center @Html.AttributeEncode(action.Attacker.UserId != null ? "text-success" : "text-danger")">The attack was @Helper.GetEffect(action.Effect).ToLower()</h5>
+                <br />
+            }
+        </div>
+
+        @if (!Model.Finished)
+        {
+            <form role="form" action="/Land/Attack" method="post" class="margin-bottom-10">
+                <button type="submit" class="btn btn-custom btn-block">Attack</button>
+            </form>
+
+            <form role="form" action="/Land/Capture" method="post" class="margin-bottom-10">
+                <button type="submit" class="btn btn-custom btn-block">Capture</button>
+            </form>
+        }
+
+        else
+        {
+            <form role="form" action="/Land/Finish" method="post" class="margin-bottom-10">
+                <button type="submit" class="btn btn-custom btn-block">Finish</button>
+            </form>
+        }
+
+
+
+    </div>
+    <div class="col-md-4 col-sm-4 col-xs-12">
+
+        <div class="col-md-12 col-sm-12 col-xs-12 gamecard">
+            <h4>
+                <strong>@cpuCreature.Character.Name</strong>
+                <span> Lvl: @cpuCreature.Level</span>
+                <span><img class="gamecard-element" src="@Helper.GetElementUrl(cpuCreature.Character.Element)" /></span>
+            </h4>
+            <img class="img-responsive gamecard-image" src=@cpuCreature.Character.ImageUrl />
+            <div class="gamecard-hpbar">
+                <div style="width: @Helper.GetPercentage(cpuCreature.Hp, cpuCreature.MaxHp)%"></div>
+            </div>
+            <p class="text-right">Hp: @cpuCreature.Hp / @cpuCreature.MaxHp</p>
+            <p class="margin-top-20">Dmg: @cpuCreature.Damage</p>
+            <p>Def: @cpuCreature.Defense</p>
+        </div>
+
+        <div class="col-md-12 gamecard-battle-xs">
+
+            @{
+                counter = 0;
+            }
+
+            @foreach (var battleCreature in Model.WildBattleCreatures.Where(wbc => wbc.UserId == null).Except(Model.WildBattleCreatures.Where(wbc => wbc.Id == cpuCreature.Id)).OrderBy(wbc => wbc.Slot).OrderByDescending(wbc => wbc.Alive))
+            {
+                counter++;
+
+                <div class="col-md-4 col-xs-4">
+                    <div class="col-md-12 gamecard-xs">
+                        @if (battleCreature.Hp == 0)
+                {
+                            <div class="gamecard-dead"></div>
+                        }
+                        <p>
+                            Lvl: @battleCreature.Level
+
+                            <span>
+                                <img class="gamecard-element-xs" src="@Helper.GetElementUrl(battleCreature.Character.Element)" />
+                            </span>
+
+                        </p>
+                        <img class="img-responsive" src="@battleCreature.Character.ImageUrl" />
+                        <p>Dmg: @battleCreature.Damage</p>
+                        <p>Def: @battleCreature.Defense</p>
+                        <p>Hp: @battleCreature.Hp</p>
+                    </div>
+                </div>
+
+                if (counter == 3)
+                {
+                    <div class="clearfix visible-xs"></div>
+                    <div class="clearfix visible-sm"></div>
+                    <div class="clearfix visible-md"></div>
+                    <div class="clearfix visible-lg"></div>
+                }
+            }
+        </div>
+
+    </div>
+</div>
+
+
 

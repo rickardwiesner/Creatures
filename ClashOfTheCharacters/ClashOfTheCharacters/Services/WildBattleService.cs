@@ -14,12 +14,12 @@ namespace ClashOfTheCharacters.Services
 
         public void InitializeBattle(string userId)
         {
-            var wildBattle = db.WildBattles.FirstOrDefault(wb => wb.UserId == userId);
+            //var wildBattle = db.WildBattles.FirstOrDefault(wb => wb.UserId == userId);
 
-            if (wildBattle != null)
-            {
-                return;
-            }
+            //if (wildBattle != null)
+            //{
+            //    return;
+            //}
 
             var currentLand = db.CurrentLands.First(cl => cl.UserId == userId);
 
@@ -31,8 +31,19 @@ namespace ClashOfTheCharacters.Services
 
             for (int i = 1; i <= numberOfCreatures; i++)
             {
-                var rarity = RandomizeRarity(currentLand.CurrentStageIndex);
-                var creatureId = RandomizeCreatureId(rarity);
+                Rarity rarity = new Rarity();
+
+                for (int j = 0; j < 10; j++)
+                {
+                    rarity = RandomizeRarity(currentLand.CurrentStageIndex, currentLand.Land.Stages.Max(s => s.Index));
+                }
+
+                int creatureId = 0;
+
+                for (int j = 0; j < 10; j++)
+                {
+                    creatureId = RandomizeCreatureId(rarity);
+                }
 
                 var creature = db.Characters.Find(creatureId);
 
@@ -92,7 +103,9 @@ namespace ClashOfTheCharacters.Services
 
             if (cpuCreature.Hp == 0 && !wildBattle.WildBattleCreatures.Any(wbc => wbc.UserId == null && wbc.Alive))
             {
-                //winner
+                wildBattle.Finished = true;
+                wildBattle.Won = true;
+
                 db.SaveChanges();
 
                 return;
@@ -105,8 +118,8 @@ namespace ClashOfTheCharacters.Services
 
             }
 
-            damage = Convert.ToInt32(CalculateDamage(userCreature.Id, cpuCreature.Id));
-            hpRemaining = cpuCreature.Hp - damage < 0 ? 0 : cpuCreature.Hp - damage;
+            damage = Convert.ToInt32(CalculateDamage(cpuCreature.Id, userCreature.Id));
+            hpRemaining = userCreature.Hp - damage < 0 ? 0 : userCreature.Hp - damage;
 
             db.WildBattleActions.Add(new WildBattleAction
             {
@@ -118,6 +131,54 @@ namespace ClashOfTheCharacters.Services
             });
 
             userCreature.Hp = hpRemaining;
+
+            if (userCreature.Hp == 0 && !wildBattle.WildBattleCreatures.Any(wbc => wbc.UserId != null && wbc.Alive))
+            {
+                wildBattle.Finished = true;
+            }
+
+            db.SaveChanges();
+        }
+
+        public void FinishBattle(string userId)
+        {
+            var user = db.Users.Find(userId);
+            var wildBattle = db.WildBattles.First(wb => wb.UserId == userId);
+            var currentLand = db.CurrentLands.First(cl => cl.UserId == userId);
+
+            if (wildBattle.Won)
+            {
+                var experienceService = new ExperienceService();
+
+                if (user.ClearedLands.Any(cl => cl.LandId == currentLand.LandId))
+                {
+                    user.Gold += (wildBattle.Stage.GoldReward / 2);
+                    experienceService.AddXp(userId, (wildBattle.Stage.XpReward / 2));
+                }
+
+                else
+                {
+                    user.Gold += wildBattle.Stage.GoldReward;
+                    experienceService.AddXp(userId, wildBattle.Stage.XpReward);
+                }
+
+                if (wildBattle.Stage.Index == currentLand.Land.Stages.Max(s => s.Index))
+                {
+                    if (!db.ClearedLands.Any(cl => cl.UserId == userId && cl.LandId == currentLand.LandId))
+                    {
+                        db.ClearedLands.Add(new ClearedLand { UserId = userId, LandId = currentLand.LandId });
+                    }
+
+                    db.CurrentLands.Remove(currentLand);
+                }
+
+                else
+                {
+                    currentLand.CurrentStageIndex++;
+                }
+            }
+
+            db.WildBattles.Remove(wildBattle);
 
             db.SaveChanges();
         }
@@ -204,34 +265,39 @@ namespace ClashOfTheCharacters.Services
             var creatures = db.Characters.Where(c => c.Rarity == rarity).ToList();
 
             var instance = new Random();
-            var random = instance.Next(creatures.Count());
+            int random = 0;
+
+            for (int i = 0; i < 10; i++)
+            {
+                random = instance.Next(creatures.Count());
+            }
 
             return creatures.ElementAt(random).Id;
         }
 
-        Rarity RandomizeRarity(int stage)
+        Rarity RandomizeRarity(int stage, int maxStage)
         {
             var instance = new Random();
-            var random = instance.Next(101);
+            var random = instance.NextDouble();
 
             Rarity rarity;
 
-            if (random == 0 && stage == 6)
+            if (random <= 0.01 && stage == maxStage)
             {
                 rarity = Rarity.Legendary;
             }
 
-            else if (random <= 5 && stage >= 5)
+            else if (random <= 0.05 && maxStage - stage <= 1)
             {
                 rarity = Rarity.Epic;
             }
 
-            else if (random <= 15 && stage >= 3)
+            else if (random <= 0.15 && maxStage - stage <= 3)
             {
                 rarity = Rarity.Rare;
             }
 
-            else if (random <= 50)
+            else if (random <= 0.5)
             {
                 rarity = Rarity.Uncommon;
             }
