@@ -36,22 +36,24 @@ namespace ClashOfTheCharacters.Models
 
         public int MaxXp { get { return 50 + Level / 2 * 6 * Level; } }
 
-        public int Kills
-        {
-            get
-            {
-                var db = new ApplicationDbContext();
-                return db.Attacks.Count(a => a.Attacker.TeamMemberId == Id && a.DefenderHpRemaining == 0);
-            }
-        }
+        //public int Kills
+        //{
+        //    get
+        //    {
+        //        var db = new ApplicationDbContext();
 
-        public int Deaths
-        {
-            get
-            {
-                var db = new ApplicationDbContext();
-                return db.Attacks.Count(a => a.Defender.TeamMemberId == Id && a.DefenderHpRemaining == 0);
-            }
-        }
+        //        BattleAppearances.First(ba => ba.)
+        //        return db.Attacks.Count(a => a.Attacker.CharacterId == CharacterId && a.DefenderHpRemaining == 0);
+        //    }
+        //}
+
+        //public int Deaths
+        //{
+        //    get
+        //    {
+        //        var db = new ApplicationDbContext();
+        //        return db.Attacks.Count(a => a.Defender.TeamMemberId == Id && a.DefenderHpRemaining == 0);
+        //    }
+        //}
     }
 }

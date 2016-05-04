@@ -59,8 +59,8 @@ namespace ClashOfTheCharacters.Services
 
             db.SaveChanges();
 
-            AddXp(winner.TeamMemberId, winnerXp);
-            AddXp(loser.TeamMemberId, loserXp);
+            AddXp(winner.Competitor.User.TeamMembers.First(tm => tm.CharacterId == winner.CharacterId).Id, winnerXp);
+            AddXp(loser.Competitor.User.TeamMembers.First(tm => tm.CharacterId == winner.CharacterId).Id, loserXp);
         }
 
         public void AddXp(int teamMemberId, int xp)

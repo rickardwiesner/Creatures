@@ -27,7 +27,7 @@ namespace ClashOfTheCharacters.Controllers
 				WonBattles = db.Competitors.Where(c => c.UserId == userId && c.Winner).Count(),
                 LostBattles = db.Competitors.Where(c => c.UserId == userId && !c.Winner).Count(),
                 MostUsedCharacter = user.TeamMembers.OrderByDescending(t => t.BattleAppearances.Count()).First(),
-                MostValuedCharacter = user.TeamMembers.OrderByDescending(t => t.Kills).First(),
+                //MostValuedCharacter = user.TeamMembers.OrderByDescending(t => t.Kills).First(),
                 TotalGoldEarned = db.Competitors.Any(c => c.UserId == userId) ? db.Competitors.Where(c => c.UserId == userId).Sum(c => c.GoldEarned) : 0
             };
 

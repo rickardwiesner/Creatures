@@ -2,9 +2,11 @@
 
 @{
     ViewBag.Title = "Land";
+    int y = 0;
+    int x = 0;
 }
 
-<div class="row map margin-bottom-20">
+<div class="row land margin-bottom-20">
     <div class="text-center margin-bottom-20">
         <h2>
             The Land Of @Model.Land.Element
@@ -13,25 +15,50 @@
 
     @foreach (var stage in Model.Land.Stages.OrderBy(s => s.Index))
     {
-        <div class="text-center">
-            <h4>Level: @stage.Index</h4>
-            @if (Model.CurrentStageIndex == stage.Index)
-            {
-                <a href="/Land/Battle/@Model.Id" )>
-                    <span class="fa fa-4x fa-exclamation-circle text-danger"></span>
-                </a>
-            }
+        switch (stage.Index)
+        {
+            case 1:
+                y = 150;
+                x = 220;
+                break;
 
-            else if (Model.CurrentStageIndex > stage.Index)
-            {
-                <span class="fa fa-4x fa-check-circle text-success"></span>
-            }
+            case 2:
+                y = 220;
+                x = 235;
+                break;
 
-            else
-            {
-                <span class="fa fa-4x fa-question-circle"></span>
-            }
+            case 3:
+                y = 260;
+                x = 300;
+                break;
 
-        </div>
+            case 4:
+                y = 300;
+                x = 370;
+                break;
+
+            case 5:
+                y = 370;
+                x = 415;
+                break;
+
+            case 6:
+                y = 440;
+                x = 440;
+                break;
+
+        }
+
+        if (Model.CurrentStageIndex == stage.Index)
+        {
+            <a href="/Land/Battle/@Model.Id">
+                <span class="fa fa-4x fa-question-circle text-danger" style="@Html.AttributeEncode(string.Format("top: {0}px; left: {1}px", y, x))"></span>
+            </a>
+        }
+
+        else if (Model.CurrentStageIndex > stage.Index)
+        {
+            <span class="fa fa-4x fa-check-circle" style="@Html.AttributeEncode(string.Format("top: {0}px; left: {1}px", y, x))"></span>
+        }
     }
 </div>

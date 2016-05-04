@@ -41,8 +41,8 @@ namespace ClashOfTheCharacters.Services
             while (challengerCompetitor.TotalHp > 0 && receiverCompetitor.TotalHp > 0)
             {
                 //så plockar vi fram första karatären i båda lagen som lever.
-                var challengerCharacter = challengerCompetitor.BattleCharacters.Where(ct => ct.Alive).OrderBy(bc => bc.TeamMember.Slot).First();
-                var receiverCharacter = receiverCompetitor.BattleCharacters.Where(ct => ct.Alive).OrderBy(bc => bc.TeamMember.Slot).First();
+                var challengerCharacter = challengerCompetitor.BattleCharacters.Where(ct => ct.Alive).OrderBy(bc => bc.Slot).First();
+                var receiverCharacter = receiverCompetitor.BattleCharacters.Where(ct => ct.Alive).OrderBy(bc => bc.Slot).First();
 
                 //Så länge båda av dom lever...
                 while (challengerCharacter.Alive && receiverCharacter.Alive)
@@ -113,31 +113,31 @@ namespace ClashOfTheCharacters.Services
             float elementBonus = 1;
             effect = Effect.Normal;
 
-            if (attacker.TeamMember.Character.Element == Element.Gravity && defender.TeamMember.Character.Element != Element.Gravity)
+            if (attacker.Character.Element == Element.Gravity && defender.Character.Element != Element.Gravity)
             {
                 elementBonus = 1.25f;
                 effect = Effect.GravityAttack;
             }
 
-            else if ((int)defender.TeamMember.Character.Element - (int)attacker.TeamMember.Character.Element == -2 || (int)defender.TeamMember.Character.Element - (int)attacker.TeamMember.Character.Element == 6)
+            else if ((int)defender.Character.Element - (int)attacker.Character.Element == -2 || (int)defender.Character.Element - (int)attacker.Character.Element == 6)
             {
                 elementBonus = 0.5f;
                 effect = Effect.VeryBad;
             }
 
-            else if ((int)defender.TeamMember.Character.Element - (int)attacker.TeamMember.Character.Element == -1 || attacker.TeamMember.Character.Element == Element.Fire && defender.TeamMember.Character.Element == Element.Pollution)
+            else if ((int)defender.Character.Element - (int)attacker.Character.Element == -1 || attacker.Character.Element == Element.Fire && defender.Character.Element == Element.Pollution)
             {
                 elementBonus = 0.75f;
                 effect = Effect.Bad;
             }
 
-            else if ((int)defender.TeamMember.Character.Element - (int)attacker.TeamMember.Character.Element == 1 || attacker.TeamMember.Character.Element == Element.Pollution && defender.TeamMember.Character.Element == Element.Fire)
+            else if ((int)defender.Character.Element - (int)attacker.Character.Element == 1 || attacker.Character.Element == Element.Pollution && defender.Character.Element == Element.Fire)
             {
                 elementBonus = 1.5f;
                 effect = Effect.Good;
             }
 
-            else if ((int)defender.TeamMember.Character.Element - (int)attacker.TeamMember.Character.Element == 2 || (int)defender.TeamMember.Character.Element - (int)attacker.TeamMember.Character.Element == -6)
+            else if ((int)defender.Character.Element - (int)attacker.Character.Element == 2 || (int)defender.Character.Element - (int)attacker.Character.Element == -6)
             {
                 elementBonus = 2.0f;
                 effect = Effect.VeryGood;
@@ -157,7 +157,7 @@ namespace ClashOfTheCharacters.Services
                 random = 2;
             }
 
-            return (((2 * (float)attacker.Level + 10) / 250) * ((float)attacker.Damage / (float)defender.Defense) * (float)attacker.TeamMember.Character.BaseAttack + 2) * (1.5f * elementBonus * (random * 2));
+            return (((2 * (float)attacker.Level + 10) / 250) * ((float)attacker.Damage / (float)defender.Defense) * (float)attacker.Character.BaseAttack + 2) * (1.5f * elementBonus * (random * 2));
         }
 
         void AddCompetitors()
@@ -182,7 +182,7 @@ namespace ClashOfTheCharacters.Services
                 db.BattleCharacters.Add(new BattleCharacter
                 {
                     CompetitorId = battle.Competitors.First(c => c.Challenger).Id,
-                    TeamMemberId = teamMember.Id,
+                    CharacterId = teamMember.CharacterId,
                     Level = teamMember.Level,
                     Hp = teamMember.Hp,
                     MaxHp = teamMember.Hp,
@@ -195,7 +195,7 @@ namespace ClashOfTheCharacters.Services
                 db.BattleCharacters.Add(new BattleCharacter
                 {
                     CompetitorId = battle.Competitors.First(c => !c.Challenger).Id,
-                    TeamMemberId = teamMember.Id,
+                    CharacterId = teamMember.CharacterId,
                     Level = teamMember.Level,
                     Hp = teamMember.Hp,
                     MaxHp = teamMember.Hp,
