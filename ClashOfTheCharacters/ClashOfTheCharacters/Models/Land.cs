@@ -16,8 +16,12 @@ namespace ClashOfTheCharacters.Models
 
         public int Hours { get; set; }
 
-        public string ImageUrl { get; set; }
+        public int Levels { get; set; }
 
-        public virtual ICollection<Stage> Stages { get; set; }
+        public int GoldReward { get; set; }
+
+        public int XpReward { get; set; }
+
+        public string ImageUrl { get; set; }
     }
 }

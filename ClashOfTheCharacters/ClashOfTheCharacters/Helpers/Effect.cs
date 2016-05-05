@@ -12,6 +12,8 @@ namespace ClashOfTheCharacters.Helpers
         Bad,
         Good,
         VeryGood,
-        GravityAttack       
+        GravityAttack,
+        Success,
+        Fail
     }
 }

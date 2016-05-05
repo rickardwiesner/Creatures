@@ -180,7 +180,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\BattleController.cs" />
-    <Compile Include="Controllers\CharacterController.cs" />
+    <Compile Include="Controllers\CreatureController.cs" />
     <Compile Include="Controllers\HelpController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LadderController.cs" />
@@ -195,24 +195,30 @@
     <Compile Include="Helpers\Effect.cs" />
     <Compile Include="Helpers\Element.cs" />
     <Compile Include="Helpers\Helper.cs" />
+    <Compile Include="Helpers\ItemType.cs" />
     <Compile Include="Helpers\Rarity.cs" />
+    <Compile Include="Migrations\201605041511127_InitialCreate.cs" />
+    <Compile Include="Migrations\201605041511127_InitialCreate.Designer.cs">
+      <DependentUpon>201605041511127_InitialCreate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Attack.cs" />
     <Compile Include="Models\Battle.cs" />
-    <Compile Include="Models\BattleCharacter.cs" />
+    <Compile Include="Models\BattleCreature.cs" />
     <Compile Include="Models\Challenge.cs" />
-    <Compile Include="Models\Character.cs" />
+    <Compile Include="Models\Creature.cs" />
     <Compile Include="Models\ClearedLand.cs" />
     <Compile Include="Models\Competitor.cs" />
     <Compile Include="Models\CurrentLand.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Item.cs" />
     <Compile Include="Models\Land.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\Stage.cs" />
-    <Compile Include="Models\TeamMember.cs" />
     <Compile Include="Models\Travel.cs" />
     <Compile Include="Models\UnlockedLand.cs" />
+    <Compile Include="Models\UserCreature.cs" />
+    <Compile Include="Models\UserItem.cs" />
     <Compile Include="Models\WildBattle.cs" />
     <Compile Include="Models\WildBattleAction.cs" />
     <Compile Include="Models\WildBattleCreature.cs" />
@@ -225,6 +231,7 @@
     <Compile Include="Services\WildBattleService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
+    <Compile Include="ViewModels\LadderViewModel.cs" />
     <Compile Include="ViewModels\ProfilePartialViewModel.cs" />
     <Compile Include="ViewModels\SellShopView.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
@@ -280,6 +287,8 @@
     <Content Include="Images\Elements\water.png" />
     <Content Include="Images\Help\element_effect.png" />
     <Content Include="Images\Help\ScoreCount.PNG" />
+    <Content Include="Images\Land\attack.png" />
+    <Content Include="Images\Land\bag.PNG" />
     <Content Include="Images\Land\wild-creature-fire.png" />
     <Content Include="Images\Map\air.png" />
     <Content Include="Images\Map\darkness.png" />
@@ -295,7 +304,13 @@
     <Content Include="Images\Other\gamecard.jpg" />
     <Content Include="Images\Other\map.jpg" />
     <Content Include="Images\Other\noprofilepicture.jpg" />
+    <Content Include="Images\Other\questionmark.jpg" />
     <Content Include="Images\Other\village.gif" />
+    <Content Include="Images\Rarity\common.png" />
+    <Content Include="Images\Rarity\epic.png" />
+    <Content Include="Images\Rarity\legendary.png" />
+    <Content Include="Images\Rarity\rare.png" />
+    <Content Include="Images\Rarity\uncommon.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="fonts\FontAwesome.otf" />
@@ -362,9 +377,6 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Battle\Index.cshtml" />
-    <Content Include="Views\Character\Index.cshtml" />
-    <Content Include="Views\Character\Select.cshtml" />
-    <Content Include="Views\Ladder\SearchForUser.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Shared\_ProfilePartial.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
@@ -379,6 +391,8 @@
     <Content Include="Views\Home\Characters.cshtml" />
     <Content Include="Views\Shopping\Index.cshtml" />
     <Content Include="Views\Ladder\Index.cshtml" />
+    <Content Include="Views\Creature\Index.cshtml" />
+    <Content Include="Views\Creature\Select.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -392,8 +406,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201605021146586_InitialCreate.resx">
-      <DependentUpon>201605021146586_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201605041511127_InitialCreate.resx">
+      <DependentUpon>201605041511127_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

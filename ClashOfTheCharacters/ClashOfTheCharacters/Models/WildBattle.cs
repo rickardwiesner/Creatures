@@ -12,8 +12,8 @@ namespace ClashOfTheCharacters.Models
         public string UserId { get; set; }
         public virtual ApplicationUser User { get; set; }
 
-        public int StageId { get; set; }
-        public virtual Stage Stage { get; set; }
+        public int LandId { get; set; }
+        public virtual Land Land { get; set; }
 
         public bool Won { get; set; }
 

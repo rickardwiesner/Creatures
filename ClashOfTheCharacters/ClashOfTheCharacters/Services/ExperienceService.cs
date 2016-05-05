@@ -12,8 +12,8 @@ namespace ClashOfTheCharacters.Services
 
         public void CalculateXp(int challengerCharacterId, int receiverCharacterId, bool challengerCharacterWon)
         {
-            var winner = challengerCharacterWon ? db.BattleCharacters.Find(challengerCharacterId) : db.BattleCharacters.Find(receiverCharacterId);
-            var loser = challengerCharacterWon ? db.BattleCharacters.Find(receiverCharacterId) : db.BattleCharacters.Find(challengerCharacterId);
+            var winner = challengerCharacterWon ? db.BattleCreatures.Find(challengerCharacterId) : db.BattleCreatures.Find(receiverCharacterId);
+            var loser = challengerCharacterWon ? db.BattleCreatures.Find(receiverCharacterId) : db.BattleCreatures.Find(challengerCharacterId);
 
             int levelDifference = winner.Level - loser.Level;
 
@@ -57,27 +57,95 @@ namespace ClashOfTheCharacters.Services
             winner.XpEarned += winnerXp;
             loser.XpEarned += loserXp;
 
-            db.SaveChanges();
+            var winnerUserCreature = winner.Competitor.User.UserCreatures.Where(uc => uc.InSquad).First(tm => tm.CreatureId == winner.CreatureId);
+            winnerUserCreature.Battles++;
+            winnerUserCreature.Kills++;
 
-            AddXp(winner.Competitor.User.TeamMembers.First(tm => tm.CharacterId == winner.CharacterId).Id, winnerXp);
-            AddXp(loser.Competitor.User.TeamMembers.First(tm => tm.CharacterId == winner.CharacterId).Id, loserXp);
+            var loserUserCreature = loser.Competitor.User.UserCreatures.Where(uc => uc.InSquad).First(tm => tm.CreatureId == loser.CreatureId);
+            loserUserCreature.Battles++;
+            loserUserCreature.Deaths++;
+
+            db.SaveChanges();
+            
+            AddXp(winnerUserCreature.Id, winnerXp);
+            AddXp(loserUserCreature.Id, loserXp);
         }
 
-        public void AddXp(int teamMemberId, int xp)
+        public void CalculateWildXp(int wildBattleCreatureId, int opponentCreatureLevel, bool won)
         {
-            var teamMember = db.TeamMembers.Find(teamMemberId);
+            var wildBattleCreature = db.WildBattleCreatures.Find(wildBattleCreatureId);
+            var levelDifference = wildBattleCreature.Level - opponentCreatureLevel;
+            var xp = 0;
 
-            if (teamMember.Xp + xp >= teamMember.MaxXp)
+            if (levelDifference < -10)
             {
-                int remaingXp = teamMember.MaxXp - teamMember.Xp;
+                xp = won ? 24 : 4;
+            }
 
-                teamMember.Level++;
-                teamMember.Xp = xp - remaingXp;
+            else if (levelDifference < -5)
+            {
+                xp = won ? 22 : 4;
+            }
+
+            else if (levelDifference < -1)
+            {
+                xp = won ? 20 : 6;
+            }
+
+            else if (levelDifference < 2)
+            {
+                xp = won ? 18 : 6;
+            }
+
+            else if (levelDifference < 6)
+            {
+                xp = won ? 16 : 8;
+            }
+
+            else if (levelDifference < 10)
+            {
+                xp = won ? 14 : 8;
             }
 
             else
             {
-                teamMember.Xp += xp;
+                xp = won ? 12 : 8;
+            }
+
+            var userCreature = wildBattleCreature.User.UserCreatures.Where(uc => uc.InSquad).First(uc => uc.CreatureId == wildBattleCreature.CreatureId);
+            userCreature.Battles++;
+
+            if (won)
+            {
+                userCreature.Kills++;
+            }
+
+            else
+            {
+                userCreature.Deaths++;
+            }
+
+            wildBattleCreature.XpEarned += xp;
+            db.SaveChanges();
+
+            AddXp(userCreature.Id, xp);
+        }
+
+        public void AddXp(int userCreatureId, int xp)
+        {
+            var userCreature = db.UserCreatures.Find(userCreatureId);
+
+            if (userCreature.Xp + xp >= userCreature.MaxXp)
+            {
+                int remaingXp = userCreature.MaxXp - userCreature.Xp;
+
+                userCreature.Level++;
+                userCreature.Xp = xp - remaingXp;
+            }
+
+            else
+            {
+                userCreature.Xp += xp;
             }
 
             db.SaveChanges();

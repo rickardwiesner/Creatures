@@ -7,7 +7,7 @@
     ViewBag.Title = "Battle";
 
     IEnumerable<Challenge> challenges = ViewBag.Challenges;
-    //IEnumerable<Battle> battles = ViewBag.Battles;
+    IEnumerable<Battle> activeBattles = ViewBag.ActiveBattles;
 
     var userStamina = ViewBag.Stamina;
     var userId = ViewBag.UserId;
@@ -17,7 +17,6 @@
     <script src="~/Scripts/fancybox-custom.js"></script>
     
 }
-
 
     <div class="row">
         <div class="container col-md-12">
@@ -41,32 +40,32 @@
                                 <td><h5 class="text-center">@challenge.Challenger.LadderPoints</h5></td>
                                 <td>
                                     @*@*Hover Dropdown*@
-                                    <div class="dropdown center-block">
+                                    <div class="dropdown center-block dropdown-hover">
                                         <a class="dropdown-toggle" data-toggle="dropdown">
                                             <span class="fa fa-users"></span>
                                         </a>
 
-                                        <div class="container-fluid dropdown-menu">
+                                        <div class="container-fluid dropdown-menu dropdown-menu-hover">
 
                                             @for (int i = 0; i < 6; i++)
                                             {
-                                                var teamMember = challenge.Challenger.TeamMembers.FirstOrDefault(tm => tm.Slot == i + 1);
+                                                var userCreature = challenge.Challenger.UserCreatures.Where(uc => uc.InSquad).FirstOrDefault(uc => uc.Slot == i + 1);
 
                                                 <div class="col-md-4 col-xs-4">
                                                     <div class="col-md-12 gamecard-xs">
                                                         <p>
-                                                            @(teamMember != null ? "Lvl: " + teamMember.Level.ToString() : "Empty")
-                                                            @if (teamMember != null)
+                                                            @(userCreature != null ? "Lvl: " + userCreature.Level.ToString() : "Empty")
+                                                            @if (userCreature != null)
                                                             {
                                                                 <span>
-                                                                    <img class="gamecard-element-xs" src="@Helper.GetElementUrl(teamMember.Character.Element)" />
+                                                                    <img class="gamecard-element-xs" src="@Helper.GetElementUrl(userCreature.Creature.Element)" />
                                                                 </span>
                                                             }
                                                         </p>
-                                                        <img class="img-responsive" src="@(teamMember != null ? teamMember.Character.ImageUrl : "/Images/Other/concrete.jpg")" />
-                                                        <p>Dmg: @(teamMember != null ? teamMember.Damage.ToString() : "")</p>
-                                                        <p>Def: @(teamMember != null ? teamMember.Defense.ToString() : "")</p>
-                                                        <p>Hp: @(teamMember != null ? teamMember.Hp.ToString() : "")</p>
+                                                        <img class="img-responsive" src="@(userCreature != null ? userCreature.Creature.ImageUrl : "/Images/Other/concrete.jpg")" />
+                                                        <p>Dmg: @(userCreature != null ? userCreature.Damage.ToString() : "")</p>
+                                                        <p>Def: @(userCreature != null ? userCreature.Defense.ToString() : "")</p>
+                                                        <p>Hp: @(userCreature != null ? userCreature.Hp.ToString() : "")</p>
                                                     </div>
                                                 </div>
 
@@ -108,32 +107,32 @@
                                 <td><h5 class="text-center">@challenge.Receiver.LadderPoints</h5></td>
                                 <td>
                                     @*@*Hover Dropdown*@
-                                    <div class="dropdown center-block">
+                                    <div class="dropdown center-block dropdown-hover">
                                         <a class="dropdown-toggle" data-toggle="dropdown">
                                             <span class="fa fa-users"></span>
                                         </a>
 
-                                        <div class="container-fluid dropdown-menu">
+                                        <div class="container-fluid dropdown-menu dropdown-menu-hover">
 
                                             @for (int i = 0; i < 6; i++)
                                             {
-                                                var teamMember = challenge.Receiver.TeamMembers.FirstOrDefault(tm => tm.Slot == i + 1);
+                                                var userCreature = challenge.Receiver.UserCreatures.Where(uc => uc.InSquad).FirstOrDefault(uc => uc.Slot == i + 1);
 
                                                 <div class="col-md-4 col-xs-4">
                                                     <div class="col-md-12 gamecard-xs">
                                                         <p>
-                                                            @(teamMember != null ? "Lvl: " + teamMember.Level.ToString() : "Empty")
-                                                            @if (teamMember != null)
+                                                            @(userCreature != null ? "Lvl: " + userCreature.Level.ToString() : "Empty")
+                                                            @if (userCreature != null)
                                                             {
                                                                 <span>
-                                                                    <img class="gamecard-element-xs" src="@Helper.GetElementUrl(teamMember.Character.Element)" />
+                                                                    <img class="gamecard-element-xs" src="@Helper.GetElementUrl(userCreature.Creature.Element)" />
                                                                 </span>
                                                             }
                                                         </p>
-                                                        <img class="img-responsive" src="@(teamMember != null ? teamMember.Character.ImageUrl : "/Images/Other/concrete.jpg")" />
-                                                        <p>Dmg: @(teamMember != null ? teamMember.Damage.ToString() : "")</p>
-                                                        <p>Def: @(teamMember != null ? teamMember.Defense.ToString() : "")</p>
-                                                        <p>Hp: @(teamMember != null ? teamMember.Hp.ToString() : "")</p>
+                                                        <img class="img-responsive" src="@(userCreature != null ? userCreature.Creature.ImageUrl : "/Images/Other/concrete.jpg")" />
+                                                        <p>Dmg: @(userCreature != null ? userCreature.Damage.ToString() : "")</p>
+                                                        <p>Def: @(userCreature != null ? userCreature.Defense.ToString() : "")</p>
+                                                        <p>Hp: @(userCreature != null ? userCreature.Hp.ToString() : "")</p>
                                                     </div>
                                                 </div>
 
@@ -174,32 +173,32 @@
                                 <td><h5 class="text-center">@user.LadderPoints</h5></td>   
                                 <td>
                                     @*@*Hover Dropdown*@                     
-                                    <div class="dropdown center-block">
+                                    <div class="dropdown center-block dropdown-hover">
                                         <a class="dropdown-toggle" data-toggle="dropdown">
                                             <span class="fa fa-users"></span>
                                         </a>
                                                                                       
-                                        <div class="container-fluid dropdown-menu">
+                                        <div class="container-fluid dropdown-menu dropdown-menu-hover">
 
                                             @for (int i = 0; i < 6; i++)
                                             {
-                                                var teamMember = user.TeamMembers.FirstOrDefault(tm => tm.Slot == i + 1);
+                                                var userCreature = user.UserCreatures.Where(uc => uc.InSquad).FirstOrDefault(uc => uc.Slot == i + 1);
 
                                                 <div class="col-md-4 col-xs-4">
                                                     <div class="col-md-12 gamecard-xs">
                                                         <p>
-                                                            @(teamMember != null ? "Lvl: " + teamMember.Level.ToString() : "Empty")
-                                                            @if (teamMember != null)
+                                                            @(userCreature != null ? "Lvl: " + userCreature.Level.ToString() : "Empty")
+                                                            @if (userCreature != null)
                                                             {
                                                                 <span>
-                                                                    <img class="gamecard-element-xs" src="@Helper.GetElementUrl(teamMember.Character.Element)" />
+                                                                    <img class="gamecard-element-xs" src="@Helper.GetElementUrl(userCreature.Creature.Element)" />
                                                                 </span>
                                                             }
                                                         </p>
-                                                        <img class="img-responsive" src="@(teamMember != null ? teamMember.Character.ImageUrl : "/Images/Other/concrete.jpg")" />
-                                                        <p>Dmg: @(teamMember != null ? teamMember.Damage.ToString() : "")</p>
-                                                        <p>Def: @(teamMember != null ? teamMember.Defense.ToString() : "")</p>
-                                                        <p>Hp: @(teamMember != null ? teamMember.Hp.ToString() : "")</p>
+                                                        <img class="img-responsive" src="@(userCreature != null ? userCreature.Creature.ImageUrl : "/Images/Other/concrete.jpg")" />
+                                                        <p>Dmg: @(userCreature != null ? userCreature.Damage.ToString() : "")</p>
+                                                        <p>Def: @(userCreature != null ? userCreature.Defense.ToString() : "")</p>
+                                                        <p>Hp: @(userCreature != null ? userCreature.Hp.ToString() : "")</p>
                                                     </div>
                                                 </div>
 
@@ -219,15 +218,15 @@
                                     @if (user.Id == userId)
                                     {
                                         <a class="btn-hover">
-                                            <span class="text-on-hover">Can't Challenge Yourself</span>
+                                            <span class="text-on-hover">Can't challenge yourself</span>
                                             <span class="fa fa-2x fa-send"></span>
                                         </a>
                                     }
 
-                                    else if (challenges.Where(c => c.ChallengerId == userId && c.ReceiverId == user.Id && !c.Accepted).Count() == 2)
+                                    else if (challenges.Where(c => c.ChallengerId == userId && c.ReceiverId == user.Id && !c.Accepted).Count() == 2 || activeBattles.Count(c => c.Challenge.ReceiverId == user.Id) == 2)
                                     {
                                         <a class="btn-hover">
-                                            <span class="text-on-hover">Max. 2 Active Challenges</span>
+                                            <span class="text-on-hover">Max 2 active challenges</span>
                                             <span class="fa fa-2x fa-send"></span>
                                         </a>
                                     }
@@ -235,7 +234,7 @@
                                     else if (userStamina < 6)
                                     {
                                         <a class="btn-hover">
-                                            <span class="text-on-hover">Not Enough Stamina</span>
+                                            <span class="text-on-hover">Not enough stamina</span>
                                             <span class="fa fa-2x fa-send"></span>
                                         </a>
                                     }

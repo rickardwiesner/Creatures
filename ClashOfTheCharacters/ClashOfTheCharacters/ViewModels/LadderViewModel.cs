@@ -6,9 +6,10 @@ using System.Web;
 
 namespace ClashOfTheCharacters.ViewModels
 {
-    public class HomeViewModel
+    public class LadderViewModel
     {
-        public ICollection<ApplicationUser> Users { get; set; }
-        public ICollection<Creature> Characters { get; set; }
+        public ApplicationUser User { get; set; }
+
+        public int Rank { get; set; }
     }
 }

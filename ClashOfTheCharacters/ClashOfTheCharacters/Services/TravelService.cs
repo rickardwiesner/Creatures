@@ -20,10 +20,10 @@ namespace ClashOfTheCharacters.Services
 
                 db.CurrentLands.Add(new CurrentLand
                 {
-                    CurrentStageIndex = 1,
+                    CurrentLevel = 1,
                     LandId = travel.LandId,
                     UserId = userId,
-                    WildCreatureStartLevel = user.TeamMembers.OrderByDescending(tm => tm.Level).First().Level
+                    WildCreatureStartLevel = user.ClearedLands.Count == 0 ? 10 : user.ClearedLands.Count * 10
                 });
 
                 db.Travels.Remove(travel);

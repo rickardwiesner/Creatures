@@ -29,28 +29,24 @@
 								</tr>
 								<tr>
 									<td>Lost Battles:</td>
-									<td>@Model.LostBattles  (@Model.LosePercentage%)				  </td>
+									<td>@Model.LostBattles  (@Model.LosePercentage%)</td>
 								</tr>
 								<tr>
-									<td>Total Gold Earned: </td>
-									<td>@Model.TotalGoldEarned</td>
+									<td>Most Experienced Creature: </td>
+									<td>@(Model.TotalBattles == 0 ? "None" : Model.MostUsedCreature.Creature.Name)</td>
 								</tr>
 								<tr>
-									<td>Most Battle Appearances: </td>
-									<td>@(Model.TotalBattles == 0 ? "None" : Model.MostUsedCharacter.Character.Name)</td>
+									<td>Fights:</td>
+									<td>@(Model.MostUsedCreature.Battles)</td>
 								</tr>
 								<tr>
-									<td>Battles:</td>
-									<td>@(Model.MostUsedCharacter.BattleAppearances.Count())</td>
-								</tr>
-								@*<tr>
-									<td>Most Valuable Character:</td>
-									<td> @(Model.TotalBattles == 0 ? "None" : Model.MostValuedCharacter.Character.Name)</td>
+									<td>Most Valuable Creature:</td>
+									<td> @(Model.TotalBattles == 0 ? "None" : Model.MostValuableCreature.Creature.Name)</td>
 								</tr>
 								<tr>
 									<td>Kills:</td>
-									<td>@(Model.MostValuedCharacter.Kills)</td>
-								</tr>*@
+									<td>@(Model.MostValuableCreature.Kills)</td>
+								</tr>
 							</tbody>
 						</table>
 					</div>

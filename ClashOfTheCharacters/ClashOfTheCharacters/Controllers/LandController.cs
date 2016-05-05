@@ -53,7 +53,10 @@ namespace ClashOfTheCharacters.Controllers
         {
             var userId = User.Identity.GetUserId();
 
-            wildBattleService.Attack(userId);
+            if (db.WildBattles.Any(wb => wb.UserId == userId && !wb.Finished))
+            {
+                wildBattleService.Attack(userId);
+            }
 
             return RedirectToAction("Battle");
         }
@@ -62,6 +65,13 @@ namespace ClashOfTheCharacters.Controllers
         public ActionResult Capture()
         {
             var userId = User.Identity.GetUserId();
+            var user = db.Users.Find(userId);
+            var userItemId = Convert.ToInt32(Request.Form.Get("userItemId"));
+
+            if (db.WildBattles.Any(wb => wb.UserId == userId && !wb.Finished) && user.UserItems.Any(ui => ui.Id == userItemId))
+            {
+                wildBattleService.Capture(userId, userItemId);
+            }
 
             return RedirectToAction("Battle");
         }
@@ -71,7 +81,10 @@ namespace ClashOfTheCharacters.Controllers
         {
             var userId = User.Identity.GetUserId();
 
-            wildBattleService.FinishBattle(userId);
+            if (db.WildBattles.Any(wb => wb.UserId == userId) && db.CurrentLands.Any(wb => wb.UserId == userId)) 
+            {
+                wildBattleService.FinishBattle(userId);
+            }
 
             return RedirectToAction("Index");
         }

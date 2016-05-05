@@ -21,13 +21,13 @@ namespace ClashOfTheCharacters.Controllers
         {
             var userId = User.Identity.GetUserId();
             var user = db.Users.Find(userId);
-            var userCharacters = user.TeamMembers.Select(x => x.CharacterId);
-            var characters = db.Characters.Where(x => !userCharacters.Contains(x.Id) && x.Rarity != Rarity.Legendary && x.Rarity != Rarity.Epic).ToList();
+            var userCharacters = user.UserCreatures.Select(x => x.CreatureId);
+            var characters = db.Creatures.Where(x => !userCharacters.Contains(x.Id) && x.Rarity != Rarity.Legendary && x.Rarity != Rarity.Epic).ToList();
 
             var sellShop = new SellShopView()
             {
                 ShoppingItems = characters,
-                SellItems = user.TeamMembers.Select(o => o.Character).ToList(),
+                SellItems = user.UserCreatures.Select(o => o.Creature).ToList(),
                 Gold = user.Gold,
                 Travelling = db.Travels.Any(wb => wb.UserId == userId) || db.CurrentLands.Any(cl => cl.UserId == userId)
             };
@@ -41,25 +41,11 @@ namespace ClashOfTheCharacters.Controllers
             var userId = User.Identity.GetUserId();
             var user = db.Users.Find(userId);
             var gold = user.Gold;
-            var characterPrice = db.Characters.Find(id).Price;
+            var characterPrice = db.Creatures.Find(id).Price;
 
-            int slot = 0;
-
-            for (int i = 1; i <= 6; i++)
+            if (gold >= characterPrice)
             {
-                if (!user.TeamMembers.Any(tm => tm.Slot == i))
-                {
-                    slot = i;
-                    break;
-                }
-            }
-
-            //var slotsTaken = user.TeamMembers.Select(tm => tm.Slot);
-            //var slot = slotsTaken.Contains(1) ? slotsTaken.First(st => st + 1 != st++) : 1;
-
-            if (gold >= characterPrice && user.TeamMembers.Count < 6)
-            {
-                db.TeamMembers.Add(new TeamMember { ApplicationUserId = userId, CharacterId = id, Level = 1, Slot = slot });
+                db.UserCreatures.Add(new UserCreature { UserId = userId, CreatureId = id, Level = 1 });
                 user.Gold -= characterPrice;
                 db.SaveChanges();
                 db.Dispose();
@@ -74,18 +60,16 @@ namespace ClashOfTheCharacters.Controllers
         {
             var userId = User.Identity.GetUserId();
             var user = db.Users.Find(userId);
-            var teamMember = user.TeamMembers.Single(o => o.CharacterId == id);
-            var worth = teamMember.Worth;
 
-            if (user.TeamMembers.Count() > 1)
+            if (user.UserCreatures.Count() > 1)
             {
-                user.Gold += worth;
-                db.TeamMembers.Remove(teamMember);
+                var userCreature = user.UserCreatures.Single(o => o.CreatureId == id);
+                var worth = userCreature.Worth;
 
-                if (ModelState.IsValid)
-                {
-                    db.SaveChanges();
-                }
+                user.Gold += worth;
+                db.UserCreatures.Remove(userCreature);
+
+                db.SaveChanges();
             }
 
             return RedirectToAction("Index");

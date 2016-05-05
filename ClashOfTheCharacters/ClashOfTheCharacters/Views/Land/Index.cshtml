@@ -13,9 +13,9 @@
         </h2>
     </div>
 
-    @foreach (var stage in Model.Land.Stages.OrderBy(s => s.Index))
+    @for (int i = 1; i <= Model.CurrentLevel; i++)
     {
-        switch (stage.Index)
+        switch (i)
         {
             case 1:
                 y = 150;
@@ -49,14 +49,14 @@
 
         }
 
-        if (Model.CurrentStageIndex == stage.Index)
+        if (Model.CurrentLevel == i)
         {
             <a href="/Land/Battle/@Model.Id">
                 <span class="fa fa-4x fa-question-circle text-danger" style="@Html.AttributeEncode(string.Format("top: {0}px; left: {1}px", y, x))"></span>
             </a>
         }
 
-        else if (Model.CurrentStageIndex > stage.Index)
+        else if (Model.CurrentLevel > i)
         {
             <span class="fa fa-4x fa-check-circle" style="@Html.AttributeEncode(string.Format("top: {0}px; left: {1}px", y, x))"></span>
         }

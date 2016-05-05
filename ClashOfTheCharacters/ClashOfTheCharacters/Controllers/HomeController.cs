@@ -19,7 +19,7 @@ namespace ClashOfTheCharacters.Controllers
             var homeViewModel = new HomeViewModel
             {
                 Users = db.Users.ToList(),
-                Characters = db.Characters.ToList()
+                Characters = db.Creatures.ToList()
             };
 
             return View(homeViewModel);
@@ -31,7 +31,7 @@ namespace ClashOfTheCharacters.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Character charact = db.Characters.Find(id);
+            Creature charact = db.Creatures.Find(id);
             if (charact == null)
             {
                 return HttpNotFound();

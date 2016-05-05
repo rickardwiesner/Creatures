@@ -93,19 +93,19 @@ namespace ClashOfTheCharacters.Services
                 loserXp = 9;
             }
 
+            winner.User.Battles++;
+            winner.User.Wins++;
             winner.GoldEarned = winnerGold;
             winner.User.Gold += winnerGold;          
-
             winner.RankingPointsEarned = winnerRankingPoints;
             winner.User.LadderPoints += winnerRankingPoints;
-
             winner.XpEarned = winnerXp;
 
+            loser.User.Battles++;
+            loser.User.Losses++;
             loser.GoldEarned = loserGold;
             loser.User.Gold += loserGold;
-
             loser.XpEarned = loserXp;
-
             loser.RankingPointsEarned = loserRankingPoints;
 
             if (loser.User.LadderPoints + loserRankingPoints >= 0)

@@ -23,26 +23,25 @@ namespace ClashOfTheCharacters.Controllers
             var userViewModel = new UserViewModel
             {
                 Username = user.UserName,
-				ProfilePicture = user.ImageUrl,
-				WonBattles = db.Competitors.Where(c => c.UserId == userId && c.Winner).Count(),
-                LostBattles = db.Competitors.Where(c => c.UserId == userId && !c.Winner).Count(),
-                MostUsedCharacter = user.TeamMembers.OrderByDescending(t => t.BattleAppearances.Count()).First(),
-                //MostValuedCharacter = user.TeamMembers.OrderByDescending(t => t.Kills).First(),
-                TotalGoldEarned = db.Competitors.Any(c => c.UserId == userId) ? db.Competitors.Where(c => c.UserId == userId).Sum(c => c.GoldEarned) : 0
+                ProfilePicture = user.ImageUrl,
+                WonBattles = user.Wins,
+                LostBattles = user.Losses,
+                MostUsedCreature = user.UserCreatures.OrderByDescending(uc => uc.Battles).First(),
+                MostValuableCreature = user.UserCreatures.OrderByDescending(uc => uc.Kills).First()
             };
 
             return View(userViewModel);
         }
 
-        public ActionResult ChangeSlot(int originalTeamMemberId, int replacerTeamMemberId)
+        public ActionResult ChangeSlot(int originalUserCreatureId, int replacerUserCreatureId)
         {
             var userId = User.Identity.GetUserId();
             var user = db.Users.Find(userId);
 
-            var originalTeamMember = user.TeamMembers.First(tm => tm.Id == originalTeamMemberId);
+            var originalTeamMember = user.UserCreatures.First(uc => uc.Id == originalUserCreatureId);
             int originalTeamMemberSlot = originalTeamMember.Slot;
 
-            var replacerTeamMember = user.TeamMembers.First(tm => tm.Id == replacerTeamMemberId);
+            var replacerTeamMember = user.UserCreatures.First(uc => uc.Id == replacerUserCreatureId);
             int replacerTeamMemberSlot = replacerTeamMember.Slot;
 
             originalTeamMember.Slot = replacerTeamMemberSlot;
@@ -53,12 +52,12 @@ namespace ClashOfTheCharacters.Controllers
             return Redirect(Request.UrlReferrer.PathAndQuery);
         }
 
-        public ActionResult ChangeToEmptySlot(int teamMemberId, int slot)
+        public ActionResult ChangeToEmptySlot(int userCreatureId, int slot)
         {
             var userId = User.Identity.GetUserId();
             var user = db.Users.Find(userId);
 
-            user.TeamMembers.First(tm => tm.Id == teamMemberId).Slot = slot;
+            user.UserCreatures.First(tm => tm.Id == userCreatureId).Slot = slot;
 
             db.SaveChanges();
 
@@ -74,11 +73,6 @@ namespace ClashOfTheCharacters.Controllers
 
             var userId = User.Identity.GetUserId();
             var user = db.Users.Find(userId);
-
-            if (user.TeamMembers.Count == 0)
-            {
-                return RedirectToAction("Select", "Character");
-            }
 
             int index = 0;
 
@@ -106,7 +100,7 @@ namespace ClashOfTheCharacters.Controllers
                 MaxXp = user.MaxXp,
                 Level = user.Level,
                 NextStaminaMinutes = 10 - (DateTimeOffset.Now - user.LastStaminaTime).Minutes,
-                TeamMembers = user.TeamMembers.OrderBy(tm => tm.Slot).ToList(),
+                UserCreatures = user.UserCreatures.Where(uc => uc.InSquad).OrderBy(uc => uc.Slot).ToList(),
                 RecentBattles = db.Battles.Where(b => (b.Challenge.ChallengerId == userId || b.Challenge.ReceiverId == userId) && b.Calculated).OrderByDescending(b => b.StartTime).Take(10).ToList(),
                 OngoingBattles = db.Battles.Where(b => (b.Challenge.ChallengerId == userId || b.Challenge.ReceiverId == userId) && !b.Calculated).ToList()
             };

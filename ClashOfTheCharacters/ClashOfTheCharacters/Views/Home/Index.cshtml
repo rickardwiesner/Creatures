@@ -67,44 +67,46 @@
                 <td><h5>@user.LadderPoints</h5></td>
                 <td>
                     @*@*Hover Dropdown*@
-                    <div class="dropdown center-block">
+                    <div class="dropdown center-block dropdown-hover">
                         <a class="dropdown-toggle" data-toggle="dropdown">
                             <span class="fa fa-users"></span>
                         </a>
 
-                        <div class="container-fluid dropdown-menu">
+                        <div class="container-fluid dropdown-menu dropdown-menu-hover">
 
                             @for (int i = 0; i < 6; i++)
                             {
-                                var teamMember = user.TeamMembers.FirstOrDefault(tm => tm.Slot == i + 1);
+                                var userCreature = user.UserCreatures.Where(uc => uc.InSquad).FirstOrDefault(uc => uc.Slot == i + 1);
 
                                 <div class="col-md-4 col-xs-4">
                                     <div class="col-md-12 gamecard-xs">
                                         <p>
-                                            @(teamMember != null ? "Lvl: " + teamMember.Level.ToString() : "Empty")
-                                            @if (teamMember != null)
+                                            @(userCreature != null ? "Lvl: " + userCreature.Level.ToString() : "Empty")
+                                            @if (userCreature != null)
                                             {
                                                 <span>
-                                                    <img class="gamecard-element-xs" src="@Helper.GetElementUrl(teamMember.Character.Element)" />
+                                                    <img class="gamecard-element-xs" src="@Helper.GetElementUrl(userCreature.Creature.Element)" />
                                                 </span>
                                             }
                                         </p>
-                                        <img class="img-responsive" src="@(teamMember != null ? teamMember.Character.ImageUrl : "/Images/Other/concrete.jpg")" />
-                                        <p>Dmg: @(teamMember != null ? teamMember.Damage.ToString() : "")</p>
-                                        <p>Def: @(teamMember != null ? teamMember.Defense.ToString() : "")</p>
-                                        <p>Hp: @(teamMember != null ? teamMember.Hp.ToString() : "")</p>
+                                        <img class="img-responsive" src="@(userCreature != null ? userCreature.Creature.ImageUrl : "/Images/Other/concrete.jpg")" />
+                                        <p>Dmg: @(userCreature != null ? userCreature.Damage.ToString() : "")</p>
+                                        <p>Def: @(userCreature != null ? userCreature.Defense.ToString() : "")</p>
+                                        <p>Hp: @(userCreature != null ? userCreature.Hp.ToString() : "")</p>
                                     </div>
                                 </div>
+
                                 if (i == 2)
                                 {
                                     <div class="clearfix visible-xs"></div>
-                                    <div class="clearfix visible-sm"></div>
-                                    <div class="clearfix visible-md"></div>
-                                    <div class="clearfix visible-lg"></div>
+                                                    <div class="clearfix visible-sm"></div>
+                                                    <div class="clearfix visible-md"></div>
+                                                    <div class="clearfix visible-lg"></div>
                                 }
                             }
                         </div>
                     </div>
+                    
                 </td>
                 <td class="text-right">
                     @if (user.IsOnline)
