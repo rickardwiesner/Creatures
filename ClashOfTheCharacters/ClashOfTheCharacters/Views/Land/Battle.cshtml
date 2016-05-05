@@ -130,15 +130,25 @@
 
             <button data-toggle="dropdown" class="btn btn-custom btn-block">Capture</button>
             <ul class="dropdown-menu">
-                @foreach (var item in Model.User.UserItems.Where(ui => ui.InBag))
+                
+                @if (Model.User.UserCreatures.Any(uc => uc.CreatureId == cpuCreature.CreatureId))
                 {
-                    <li>
-                        <form role="form" action="/Land/Capture" method="post">
-                            <input hidden name="userItemId" value="@item.Id" />
-                            <button type="submit" class="btn-dropdown">@item.Item.Name (@item.Quantity)</button>
-                        </form>
-                    </li>
+                    <li>Can't have duplicates</li>
                 }
+
+                else
+                {
+                    foreach (var item in Model.User.UserItems.Where(ui => ui.InBag))
+                    {
+                        <li>
+                            <form role="form" action="/Land/Capture" method="post">
+                                <input hidden name="userItemId" value="@item.Id" />
+                                <button type="submit" class="btn-dropdown">@item.Item.Name (@item.Quantity)</button>
+                            </form>
+                        </li>
+                    }
+                }
+
             </ul>
         }
 

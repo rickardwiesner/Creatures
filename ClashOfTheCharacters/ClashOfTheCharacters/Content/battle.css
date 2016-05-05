@@ -10,44 +10,9 @@ h3 span {
     padding: 1px;
 }
 
-/*Ta bort - Från*/
-.dropdown {
+td .dropdown {
     width: 21px;
 }
-
-/*.dropdown-content {
-    display: none;
-    position: relative;
-    min-width: 320px;
-    max-width: 500px;
-    background-color: #fff0e5;
-}
-
-.dropdown-content-small {
-    display: none;
-    position: relative;
-    min-width: 300px;
-    background-color: #fff0e5;
-}
-
-.dropdown-content .col-md-2 {
-    padding: 1px;
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
-}
-
-.dropdown > a > h5 {
-    color: #eb6864;
-}
-
-.dropdown > a > h5:hover {
-    cursor: pointer;
-}*/
-/*Ta bort - Till*/
-
-
 
 .text-small {
     font-size: 12px;

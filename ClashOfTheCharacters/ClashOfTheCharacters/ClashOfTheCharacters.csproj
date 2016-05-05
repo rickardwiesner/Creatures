@@ -231,6 +231,7 @@
     <Compile Include="Services\WildBattleService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
+    <Compile Include="ViewModels\LadderViewModel.cs" />
     <Compile Include="ViewModels\ProfilePartialViewModel.cs" />
     <Compile Include="ViewModels\SellShopView.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
@@ -376,7 +377,6 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Battle\Index.cshtml" />
-    <Content Include="Views\Ladder\SearchForUser.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Shared\_ProfilePartial.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />

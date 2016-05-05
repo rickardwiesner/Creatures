@@ -68,3 +68,21 @@ a:hover, a:focus {
 .btn-dropdown:hover {
     background-color: #f0d2bb;
 }
+
+.margin-0 {
+    margin: 0;
+}
+
+.margin-bottom-20
+{
+    margin-bottom: 20px;
+}
+
+.margin-bottom-10
+{
+    margin-bottom: 10px;
+}
+
+.margin-top-20 {
+    margin-top: 20px;
+}

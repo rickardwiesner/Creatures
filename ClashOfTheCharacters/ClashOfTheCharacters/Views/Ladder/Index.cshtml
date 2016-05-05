@@ -1,14 +1,13 @@
-﻿@model IEnumerable<ClashOfTheCharacters.Models.ApplicationUser>
-@using ClashOfTheCharacters.Helpers;
+﻿@using ClashOfTheCharacters.Helpers
+
+@model IEnumerable<ClashOfTheCharacters.ViewModels.LadderViewModel>
+
 @{
     ViewBag.Title = "Ladder";
-    int counter = 0;
-    bool search = ViewBag.Search;
 }
 
-
 <a href="/Ladder/Index"><h2>Ladder</h2></a>
-<form class="form-inline" role="search" action="/Ladder/Index">
+<form class="form-inline" role="search">
     <div class="form-group">
         <input class="form-control" placeholder="Search for user" name="SearchInput">
     </div>
@@ -17,11 +16,7 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            @if (!search)
-            {
-                <th>Rank</th>
-            }
-
+            <th>Rank</th>
             <th>Ladder points</th>
             <th>Username</th>
             <th class="text-center">Team</th>
@@ -30,14 +25,11 @@
     <tbody>
         @foreach (var user in Model)
         {
-            counter++;
             <tr>
-                @if (!search)
-                {
-                    <td><h5>@counter</h5></td>
-                }
-                <td><h5>@user.LadderPoints</h5></td>
-                <td><h5>@user.UserName</h5></td>
+
+                <td><h5>@user.Rank</h5></td>
+                <td><h5>@user.User.LadderPoints</h5></td>
+                <td><h5>@user.User.UserName</h5></td>
                 <td>
                     @*@*Hover Dropdown*@
                     <div class="dropdown center-block dropdown-hover">
@@ -49,7 +41,7 @@
 
                             @for (int i = 0; i < 6; i++)
                             {
-                                var userCreature = user.UserCreatures.Where(uc => uc.InSquad).FirstOrDefault(uc => uc.Slot == i + 1);
+                                var userCreature = user.User.UserCreatures.Where(uc => uc.InSquad).FirstOrDefault(uc => uc.Slot == i + 1);
 
                                 <div class="col-md-4 col-xs-4">
                                     <div class="col-md-12 gamecard-xs">
@@ -72,14 +64,14 @@
                                 if (i == 2)
                                 {
                                     <div class="clearfix visible-xs"></div>
-                                                    <div class="clearfix visible-sm"></div>
-                                                    <div class="clearfix visible-md"></div>
+                                    <div class="clearfix visible-sm"></div>
+                                    <div class="clearfix visible-md"></div>
                                                     <div class="clearfix visible-lg"></div>
                                 }
                             }
                         </div>
                     </div>
-                    
+
                 </td>
 
             </tr>

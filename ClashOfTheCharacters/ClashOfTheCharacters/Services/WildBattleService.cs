@@ -10,6 +10,7 @@ namespace ClashOfTheCharacters.Services
     public class WildBattleService
     {
         ApplicationDbContext db = new ApplicationDbContext();
+        ExperienceService experienceService = new ExperienceService();
         Effect effect;
 
         public void InitializeBattle(string userId)
@@ -96,8 +97,7 @@ namespace ClashOfTheCharacters.Services
 
             if (cpuCreature.Hp == 0)
             {
-                user.UserCreatures.First(uc => uc.CreatureId == userCreature.CreatureId).Battles++;
-                user.UserCreatures.First(uc => uc.CreatureId == userCreature.CreatureId).Kills++;
+                experienceService.CalculateWildXp(userCreature.Id, cpuCreature.Level, true);
             }
 
             if (!wildBattle.WildBattleCreatures.Any(wbc => wbc.UserId == null && wbc.Alive))
@@ -130,8 +130,7 @@ namespace ClashOfTheCharacters.Services
 
             if (userCreature.Hp == 0)
             {
-                user.UserCreatures.First(uc => uc.CreatureId == userCreature.CreatureId).Battles++;
-                user.UserCreatures.First(uc => uc.CreatureId == userCreature.CreatureId).Deaths++;
+                experienceService.CalculateWildXp(userCreature.Id, cpuCreature.Level, false);
             }
 
             if (!wildBattle.WildBattleCreatures.Any(wbc => wbc.UserId != null && wbc.Alive))
@@ -149,6 +148,11 @@ namespace ClashOfTheCharacters.Services
             var userCreature = wildBattle.WildBattleCreatures.Where(wbc => wbc.UserId != null && wbc.Alive).OrderBy(wbc => wbc.Slot).First();
             var cpuCreature = wildBattle.WildBattleCreatures.Where(wbc => wbc.UserId == null && wbc.Alive).OrderBy(wbc => wbc.Slot).First();
 
+            if (userCreature.User.UserCreatures.Any(uc => uc.CreatureId == cpuCreature.CreatureId))
+            {
+                return;
+            }
+
             var result = CaptureAttempt(userId, cpuCreature.Id, userItemId);
             effect = result == true ? Effect.Success : Effect.Fail;
 
@@ -162,6 +166,11 @@ namespace ClashOfTheCharacters.Services
             });
 
             cpuCreature.Hp = result == true ? 0 : cpuCreature.Hp;
+
+            if (cpuCreature.Hp == 0)
+            {
+                userCreature.User.UserCreatures.Where(uc => uc.InSquad).First(uc => uc.CreatureId == userCreature.CreatureId).Battles++;
+            }
 
             if (cpuCreature.Hp == 0 && !wildBattle.WildBattleCreatures.Any(wbc => wbc.UserId == null && wbc.Alive))
             {
@@ -191,6 +200,11 @@ namespace ClashOfTheCharacters.Services
             });
 
             userCreature.Hp = hpRemaining;
+
+            if (userCreature.Hp == 0)
+            {
+                experienceService.CalculateWildXp(userCreature.Id, cpuCreature.Level, false);
+            }
 
             if (userCreature.Hp == 0 && !wildBattle.WildBattleCreatures.Any(wbc => wbc.UserId != null && wbc.Alive))
             {
@@ -290,6 +304,16 @@ namespace ClashOfTheCharacters.Services
 
             if (wildBattle.Won)
             {
+                foreach (var wildBattleAction in wildBattle.WildBattleActions.Where(wb => wb.CaptureSuccess == true))
+                {
+                    db.UserCreatures.Add(new UserCreature
+                    {
+                        CreatureId = wildBattleAction.Defender.CreatureId,
+                        Level = wildBattleAction.Defender.Level,
+                        UserId = userId
+                    });
+                }
+
                 var experienceService = new ExperienceService();
 
                 if (user.ClearedLands.Any(cl => cl.LandId == currentLand.LandId))

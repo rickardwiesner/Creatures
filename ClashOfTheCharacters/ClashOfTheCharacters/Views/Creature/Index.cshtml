@@ -6,6 +6,7 @@
 @{
     ViewBag.Title = "Creatures";
     int counter = 0;
+    bool travelling = ViewBag.Travelling;
 }
 
 
@@ -17,6 +18,43 @@
         counter++;
 
         <div class="col-md-6 col-sm-6 col-xs-12">
+            
+            <div class="dropdown text-right">
+                <button class="btn-link dropdown-toggle" type="button" id="creature-option" data-toggle="dropdown">
+                    <span class="fa fa-ellipsis-h fa-2x"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="creature-option">
+                    
+                    @if (travelling)
+                    {
+                        <li><p>Can't change while travelling</p></li>
+                    }
+
+                    else if (userCreature.InSquad)
+                    {
+                        <li>@Html.ActionLink("Remove from squad", "RemoveFromSquad", new { userCreatureId = userCreature.Id }, new { @role = "menuitem" })</li>
+                    }
+
+                    else if (userCreature.User.UserCreatures.Count(uc => uc.InSquad) == 6)
+                    {
+                        <li><p>Squad is full</p></li>
+                    }
+
+                    else
+                    {
+                        <li>@Html.ActionLink("Add to squad", "AddToSquad", new { userCreatureId = userCreature.Id }, new { @role = "menuitem" })</li>
+                    }
+
+                    <li><p>Details (Not available)</p></li>
+                    @*<li>@Html.ActionLink("Details", "Details", new { userCreatureId = userCreature.Id }, new { @role = "menuitem" })</li>*@
+                    
+                    <li role="presentation" class="divider"></li>
+                    
+                    <li><p>Sell (Not available)</p></li>
+                    @*<li>@Html.ActionLink("Sell", "Sell", new { userCreatureId = userCreature.Id }, new { @role = "menuitem" })</li>*@
+                </ul>
+            </div>
+
             <div class="col-md-12 col-sm-12 col-xs-12 gamecard">
                 <h4>
                     <span><img class="gamecard-rarity" src="@Helper.GetRarityUrl(userCreature.Creature.Rarity)" /></span>

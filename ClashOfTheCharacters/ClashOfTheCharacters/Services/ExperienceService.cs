@@ -71,6 +71,66 @@ namespace ClashOfTheCharacters.Services
             AddXp(loserUserCreature.Id, loserXp);
         }
 
+        public void CalculateWildXp(int wildBattleCreatureId, int opponentCreatureLevel, bool won)
+        {
+            var wildBattleCreature = db.WildBattleCreatures.Find(wildBattleCreatureId);
+            var levelDifference = wildBattleCreature.Level - opponentCreatureLevel;
+            var xp = 0;
+
+            if (levelDifference < -10)
+            {
+                xp = won ? 24 : 4;
+            }
+
+            else if (levelDifference < -5)
+            {
+                xp = won ? 22 : 4;
+            }
+
+            else if (levelDifference < -1)
+            {
+                xp = won ? 20 : 6;
+            }
+
+            else if (levelDifference < 2)
+            {
+                xp = won ? 18 : 6;
+            }
+
+            else if (levelDifference < 6)
+            {
+                xp = won ? 16 : 8;
+            }
+
+            else if (levelDifference < 10)
+            {
+                xp = won ? 14 : 8;
+            }
+
+            else
+            {
+                xp = won ? 12 : 8;
+            }
+
+            var userCreature = wildBattleCreature.User.UserCreatures.Where(uc => uc.InSquad).First(uc => uc.CreatureId == wildBattleCreature.CreatureId);
+            userCreature.Battles++;
+
+            if (won)
+            {
+                userCreature.Kills++;
+            }
+
+            else
+            {
+                userCreature.Deaths++;
+            }
+
+            wildBattleCreature.XpEarned += xp;
+            db.SaveChanges();
+
+            AddXp(userCreature.Id, xp);
+        }
+
         public void AddXp(int userCreatureId, int xp)
         {
             var userCreature = db.UserCreatures.Find(userCreatureId);

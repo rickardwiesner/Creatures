@@ -18,6 +18,9 @@ namespace ClashOfTheCharacters.Controllers
             if (db.UserCreatures.Any(tm => tm.UserId == userId))
             {
                 var userCreatures = db.UserCreatures.Where(tm => tm.UserId == userId);
+
+                ViewBag.Travelling = db.Travels.Any(t => t.UserId == userId) || db.CurrentLands.Any(cl => cl.UserId == userId) ? true : false;
+
                 return View(userCreatures.ToList());
             }
 
@@ -54,6 +57,53 @@ namespace ClashOfTheCharacters.Controllers
             db.SaveChanges();
 
             return RedirectToAction("Index", "Battle");
+        }
+
+        public ActionResult AddToSquad(int userCreatureId)
+        {
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Find(userId);
+
+            int slot = 0;
+
+            if (user.UserCreatures.Any(uc => uc.Id == userCreatureId) && user.UserCreatures.Count(uc => uc.InSquad) < 6 && !db.Travels.Any(t => t.UserId == userId) && !db.CurrentLands.Any(cl => cl.UserId == userId))
+            {
+                var userCreature = user.UserCreatures.First(uc => uc.Id == userCreatureId);
+
+                for (int i = 1; i <= 6; i++)
+                {
+                    if (!user.UserCreatures.Where(uc => uc.InSquad).Any(uc => uc.Slot == i))
+                    {
+                        slot = i;
+                        break;
+                    }
+                }
+
+                userCreature.InSquad = true;
+                userCreature.Slot = slot;
+
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult RemoveFromSquad(int userCreatureId)
+        {
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Find(userId);
+
+            if (user.UserCreatures.Any(uc => uc.Id == userCreatureId && uc.InSquad) && !db.Travels.Any(t => t.UserId == userId) && !db.CurrentLands.Any(cl => cl.UserId == userId))
+            {
+                var userCreature = user.UserCreatures.First(uc => uc.Id == userCreatureId);
+                userCreature.InSquad = false;
+                userCreature.Slot = 0;
+
+                db.SaveChanges();
+
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }
