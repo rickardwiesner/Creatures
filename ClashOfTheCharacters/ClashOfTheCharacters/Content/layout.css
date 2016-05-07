@@ -46,6 +46,20 @@ a:hover, a:focus {
     outline: none;
 }
 
+.btn-custom-dark {
+    background-color: #f0d2bb;
+    border: 1px solid black;
+}
+
+.btn-custom-dark:hover {
+    background-color: #debea6;
+}
+
+.btn-custom-dark:focus {
+    background-color: #fff0e5;
+    outline: none;
+}
+
 .btn-none {
     background-color: transparent;
     border: none;

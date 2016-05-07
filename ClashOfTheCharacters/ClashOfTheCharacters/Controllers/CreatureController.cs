@@ -15,9 +15,9 @@ namespace ClashOfTheCharacters.Controllers
         {
             var userId = User.Identity.GetUserId();
 
-            if (db.UserCreatures.Any(tm => tm.UserId == userId))
+            if (db.UserCreatures.Any(uc => uc.UserId == userId))
             {
-                var userCreatures = db.UserCreatures.Where(tm => tm.UserId == userId);
+                var userCreatures = db.UserCreatures.Where(uc => uc.UserId == userId && !uc.InAuction);
 
                 ViewBag.Travelling = db.Travels.Any(t => t.UserId == userId) || db.CurrentLands.Any(cl => cl.UserId == userId) ? true : false;
 
