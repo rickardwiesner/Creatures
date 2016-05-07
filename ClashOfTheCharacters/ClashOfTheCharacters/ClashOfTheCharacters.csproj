@@ -190,7 +190,6 @@
     <Compile Include="Controllers\MapController.cs" />
     <Compile Include="Controllers\Shopping.cs" />
     <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="Controllers\VillageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -243,7 +242,6 @@
     <Compile Include="ViewModels\ProfilePartialViewModel.cs" />
     <Compile Include="ViewModels\SellShopView.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
-    <Compile Include="ViewModels\VillageViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\auction.css" />
