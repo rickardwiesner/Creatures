@@ -407,7 +407,7 @@
     <Content Include="Views\Auction\Creatures.cshtml" />
     <Content Include="Views\Auction\Items.cshtml" />
     <Content Include="Views\Auction\Targets.cshtml" />
-    <Content Include="Views\Auction\Test.cshtml" />
+    <Content Include="Views\Village\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
