@@ -31,6 +31,7 @@ namespace ClashOfTheCharacters
                       "~/Content/battle.css",
                       "~/Content/layout.css",
                       "~/Content/map.css",
+                      "~/Content/auction.css",
                       "~/Content/land.css",
                       "~/Content/profile-partial.css",
                       "~/Content/site.css"));

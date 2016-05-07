@@ -58,6 +58,8 @@ namespace ClashOfTheCharacters.Models
         public virtual ICollection<ClearedLand> ClearedLands { get; set; }
 
         public virtual ICollection<UserItem> UserItems { get; set; }
+
+        public virtual ICollection<AuctionTarget> AuctionTargets { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -113,5 +115,8 @@ namespace ClashOfTheCharacters.Models
         public DbSet<WildBattleAction> WildBattleActions { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<UserItem> UserItems { get; set; }
+        public DbSet<AuctionItem> AuctionItems { get; set; }
+        public DbSet<AuctionCreature> AuctionCreatures { get; set; }
+        public DbSet<AuctionTarget> AuctionTargets { get; set; }
     }
 }

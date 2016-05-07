@@ -179,6 +179,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\AuctionController.cs" />
     <Compile Include="Controllers\BattleController.cs" />
     <Compile Include="Controllers\CreatureController.cs" />
     <Compile Include="Controllers\HelpController.cs" />
@@ -204,6 +205,9 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Attack.cs" />
+    <Compile Include="Models\AuctionCreature.cs" />
+    <Compile Include="Models\AuctionItem.cs" />
+    <Compile Include="Models\AuctionTarget.cs" />
     <Compile Include="Models\Battle.cs" />
     <Compile Include="Models\BattleCreature.cs" />
     <Compile Include="Models\Challenge.cs" />
@@ -223,6 +227,7 @@
     <Compile Include="Models\WildBattleAction.cs" />
     <Compile Include="Models\WildBattleCreature.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AuctionService.cs" />
     <Compile Include="Services\BattleService.cs" />
     <Compile Include="Services\ExperienceService.cs" />
     <Compile Include="Services\RewardService.cs" />
@@ -230,6 +235,8 @@
     <Compile Include="Services\TravelService.cs" />
     <Compile Include="Services\WildBattleService.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\AuctionItemViewModel.cs" />
+    <Compile Include="ViewModels\AuctionCreatureViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\LadderViewModel.cs" />
     <Compile Include="ViewModels\ProfilePartialViewModel.cs" />
@@ -237,6 +244,7 @@
     <Compile Include="ViewModels\UserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\auction.css" />
     <Content Include="Content\battle.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
@@ -393,6 +401,12 @@
     <Content Include="Views\Ladder\Index.cshtml" />
     <Content Include="Views\Creature\Index.cshtml" />
     <Content Include="Views\Creature\Select.cshtml" />
+    <Content Include="Views\Auction\Index.cshtml" />
+    <Content Include="Views\Auction\Sell.cshtml" />
+    <Content Include="Views\Auction\SellCreature.cshtml" />
+    <Content Include="Views\Auction\Creatures.cshtml" />
+    <Content Include="Views\Auction\Items.cshtml" />
+    <Content Include="Views\Auction\Targets.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
