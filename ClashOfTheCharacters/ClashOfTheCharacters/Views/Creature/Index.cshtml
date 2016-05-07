@@ -28,6 +28,11 @@
                         <li><p>Can't change while travelling</p></li>
                     }
 
+                    else if (userCreature.InSquad && userCreature.User.UserCreatures.Count(uc => uc.InSquad) == 1)
+                    {
+                        <li><p>Need at least one creature in squad</p></li>
+                    }
+
                     else if (userCreature.InSquad)
                     {
                         <li>@Html.ActionLink("Remove from squad", "RemoveFromSquad", new { userCreatureId = userCreature.Id }, new { @role = "menuitem" })</li>
@@ -46,8 +51,6 @@
                     <li><p>Details (Not available)</p></li>
                     @*<li>@Html.ActionLink("Details", "Details", new { userCreatureId = userCreature.Id }, new { @role = "menuitem" })</li>*@
                         
-                    <li role="presentation" class="divider"></li>
-                    <li><p>Sell</p></li>
                     <li role="presentation" class="divider"></li>
                     
                     @*<li>@Html.ActionLink("Sell", "Sell", new { userCreatureId = userCreature.Id }, new { @role = "menuitem" })</li>*@

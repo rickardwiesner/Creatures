@@ -15,9 +15,9 @@ namespace ClashOfTheCharacters.Models
 
         public int? BuyoutPrice { get; set; }
 
-        public bool Sold { get { return Finished && (CurrentBid != null || BuyoutPrice != null); } }
+        public bool Sold { get { return OwnerId != UserCreature.UserId; } }
 
-        public bool Finished { get { return (EndTime - DateTimeOffset.Now).TotalMilliseconds < 0; } }
+        public bool Finished { get; set; }
 
         public DateTimeOffset EndTime { get; set; }
 

@@ -44,6 +44,7 @@ a:hover, a:focus {
 .btn-custom:focus {
     background-color: #f0d2bb;
     outline: none;
+    color: black;
 }
 
 .btn-custom-dark {

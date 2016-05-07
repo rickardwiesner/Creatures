@@ -93,7 +93,7 @@ namespace ClashOfTheCharacters.Controllers
             var userId = User.Identity.GetUserId();
             var user = db.Users.Find(userId);
 
-            if (user.UserCreatures.Any(uc => uc.Id == userCreatureId && uc.InSquad) && !db.Travels.Any(t => t.UserId == userId) && !db.CurrentLands.Any(cl => cl.UserId == userId))
+            if (user.UserCreatures.Any(uc => uc.Id == userCreatureId && uc.InSquad) && !db.Travels.Any(t => t.UserId == userId) && !db.CurrentLands.Any(cl => cl.UserId == userId) && user.UserCreatures.Count(uc => uc.InSquad) > 1)
             {
                 var userCreature = user.UserCreatures.First(uc => uc.Id == userCreatureId);
                 userCreature.InSquad = false;

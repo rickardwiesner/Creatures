@@ -12,7 +12,7 @@
 
     <div class="col-md-12 auction-buttons">
         <div class="col-md-4">
-            @Html.ActionLink("Ongoing", "Index", null, new { @class = "btn btn-custom btn-block" })
+            @Html.ActionLink("Creatures", "Creatures", null, new { @class = "btn btn-custom btn-block" })
         </div>
         <div class="col-md-4">
             @Html.ActionLink("Selling", "Selling", null, new { @class = "btn btn-custom btn-block" })
@@ -56,7 +56,7 @@
                 <div class="col-md-12 col-xs-12">
                     <h5>
                         @(auctionCreature.Finished ? "Finished" : "Time Remaining: " + @Helper.GetRemainingTime(auctionCreature.EndTime))
-
+                        
                         @if (auctionCreature.CurrentBidder == user)
                         {
                             <span class="fa fa-check text-success pull-right"></span>
@@ -72,7 +72,7 @@
                     <h5>@Html.AttributeEncode(auctionCreature.Finished ? "End Price: " : "Current Bid: ")@(auctionCreature.CurrentBid == null ? "None" : auctionCreature.CurrentBid.ToString())</h5>
                 </div>
 
-                @if (auctionCreature.Owner != user && !auctionCreature.Finished)
+                @if (auctionCreature.Owner != user)
                 {
                     <div class="col-md-12 margin-bottom-10">
                         <form class="form-inline" action="/Auction/BidCreature" method="post" role="form">

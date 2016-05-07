@@ -17,12 +17,31 @@ namespace ClashOfTheCharacters.Controllers
                 
         public ActionResult Index()
         {
-            return View();
+            var userId = User.Identity.GetUserId();
+            ViewBag.Gold = db.Users.Find(userId).Gold;
+            ViewBag.User = db.Users.Find(userId);
+
+            return View("Index", db.AuctionCreatures.Where(ac => !ac.Finished && ac.OwnerId != userId).OrderBy(ac => ac.EndTime).ToList());
         }
 
-        public ActionResult Creatures()
+        public ActionResult Selling()
         {
-            return View(db.AuctionCreatures.ToList());
+            var userId = User.Identity.GetUserId();
+            ViewBag.Gold = db.Users.Find(userId).Gold;
+            ViewBag.User = db.Users.Find(userId);
+
+            return View("Index", db.AuctionCreatures.Where(ac => ac.OwnerId == userId).ToList());
+        }
+
+        public ActionResult Targets()
+        {
+            var userId = User.Identity.GetUserId();
+            ViewBag.Gold = db.Users.Find(userId).Gold;
+            ViewBag.User = db.Users.Find(userId);
+
+            var auctionTargets = db.AuctionTargets.Where(at => at.UserId == userId).Select(at => at.AuctionCreatureId);
+
+            return View("Index", db.AuctionCreatures.Where(ac => auctionTargets.Contains(ac.Id)).ToList());
         }
 
         public ActionResult Items()
@@ -41,10 +60,21 @@ namespace ClashOfTheCharacters.Controllers
 
             var auctionCreature = db.AuctionCreatures.Find(auctionCreatureId);
 
-            if (user.Gold >= amount && !user.UserCreatures.Any(uc => uc.CreatureId == auctionCreature.UserCreature.CreatureId))
+            if (auctionCreature.CurrentBid != null && amount >= auctionCreature.CurrentBid + 50 || auctionCreature.CurrentBid == null && user.Gold >= amount && !user.UserCreatures.Any(uc => uc.CreatureId == auctionCreature.UserCreature.CreatureId))
             {
+                if (auctionCreature.CurrentBidder != null)
+                {
+                    auctionCreature.CurrentBidder.Gold += (int)auctionCreature.CurrentBid;
+                }
+
+                user.Gold -= amount;
                 auctionCreature.CurrentBid = amount;
                 auctionCreature.CurrentBidderId = userId;
+
+                if ((auctionCreature.EndTime - DateTimeOffset.Now).TotalSeconds < 30)
+                {
+                    auctionCreature.EndTime = DateTimeOffset.Now.AddSeconds(30);
+                }
 
                 if (!user.AuctionTargets.Any(at => at.AuctionCreatureId == auctionCreatureId))
                 {
@@ -69,12 +99,23 @@ namespace ClashOfTheCharacters.Controllers
 
             if (auctionCreature.BuyoutPrice != null && user.Gold >= auctionCreature.BuyoutPrice && !user.UserCreatures.Any(uc => uc.Id == auctionCreature.UserCreatureId))
             {
+                if (auctionCreature.CurrentBidder != null)
+                {
+                    auctionCreature.CurrentBidder.Gold += (int)auctionCreature.CurrentBid;
+                }
+
                 auctionCreature.Owner.Gold += Convert.ToInt32((float)auctionCreature.BuyoutPrice * 0.95f);
                 user.Gold -= (int)auctionCreature.BuyoutPrice;
                 auctionCreature.UserCreature.UserId = userId;
                 auctionCreature.UserCreature.InAuction = false;
+                auctionCreature.Finished = true;
+                auctionCreature.CurrentBidder = user;
+                auctionCreature.CurrentBid = (int)auctionCreature.BuyoutPrice;
 
-                db.AuctionTargets.Add(new AuctionTarget { AuctionCreatureId = auctionCreatureId, UserId = userId });
+                if (!user.AuctionTargets.Any(at => at.AuctionCreatureId == auctionCreatureId))
+                {
+                    db.AuctionTargets.Add(new AuctionTarget { AuctionCreatureId = auctionCreatureId, UserId = userId });
+                }
 
                 db.SaveChanges();
             }
@@ -127,20 +168,6 @@ namespace ClashOfTheCharacters.Controllers
             }
 
             return View();
-        }
-
-        public ActionResult Selling()
-        {
-            var userId = User.Identity.GetUserId();
-
-            return View("Creatures", db.AuctionCreatures.Where(ac => ac.OwnerId == userId).ToList());
-        }
-
-        public ActionResult Targets()
-        {
-            var userId = User.Identity.GetUserId();
-
-            return View(db.AuctionTargets.Where(at => at.UserId == userId).ToList());
         }
     }
 }
