@@ -19,7 +19,7 @@ namespace ClashOfTheCharacters.Models
 
         public int XpEarned { get; set; }
 
-        public int TotalHp { get { return BattleCharacters.Sum(bc => bc.Hp); } }
+        public int TotalHp { get { return BattleCreatures.Sum(bc => bc.Hp); } }
 
         public string UserId { get; set; }
         public virtual ApplicationUser User { get; set; }
@@ -27,6 +27,6 @@ namespace ClashOfTheCharacters.Models
         public int BattleId { get; set; }
         public virtual Battle Battle { get; set; }
 
-        public virtual ICollection<BattleCreature> BattleCharacters { get; set; }
+        public virtual ICollection<BattleCreature> BattleCreatures { get; set; }
     }
 }

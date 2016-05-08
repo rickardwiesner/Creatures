@@ -52,6 +52,15 @@
     padding: 2px;
 }
 
+.gamecard-auction {
+    background-image: url('../Images/Other/gamecard.jpg');
+    background-size: cover;
+    border: 1px solid #808080;
+    font-family: Gabriola;
+    text-transform: uppercase;
+    padding: 2px;
+}
+
 .gamecard-xs {
     background-image: url('../Images/Other/gamecard.jpg');
     background-size: cover;

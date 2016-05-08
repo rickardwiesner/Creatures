@@ -1,5 +1,23 @@
 ﻿.container-auction {
-    background-color: #fff0e5;
-    border: 1px solid #808080;
-    margin-bottom: 20px;    
+    margin-bottom: 20px; 
+}
+
+.container-auction a {
+   color: black;
+}
+
+.container-auction p {
+   margin: 0;
+}
+
+.auction-buttons .col-md-4 {
+    margin-bottom: 5px;
+}
+
+.auction-buttons {
+    margin-bottom: 20px;
+}
+
+.auction-buttons a {
+    color: black;
 }

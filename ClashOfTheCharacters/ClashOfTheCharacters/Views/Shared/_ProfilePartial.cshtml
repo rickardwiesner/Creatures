@@ -232,7 +232,7 @@
                                             <h4>Gold Earned: @challenger.GoldEarned</h4>
                                             <h4>Xp Earned: @challenger.XpEarned</h4>
                                             <h4>Ladder Points @(challenger.RankingPointsEarned > 0 ? "Earned: " + challenger.RankingPointsEarned : "Lost: " + challenger.RankingPointsEarned)</h4>
-                                            @foreach (var battleCharacter in challenger.BattleCharacters.Where(bc => bc.XpEarned > 0).OrderBy(bc => bc.Slot))
+                                            @foreach (var battleCharacter in challenger.BattleCreatures.Where(bc => bc.XpEarned > 0).OrderBy(bc => bc.Slot))
                                             {
                                                 <h5>@(battleCharacter.Creature.Name) Earned: @(battleCharacter.XpEarned)Xp</h5>
                                             }
@@ -242,7 +242,7 @@
                                             <h4>Gold Earned: @receiver.GoldEarned</h4>
                                             <h4>Xp Earned: @receiver.XpEarned</h4>
                                             <h4>Ladder Points @(receiver.RankingPointsEarned > 0 ? "Earned:" + receiver.RankingPointsEarned : "Lost:" + receiver.RankingPointsEarned)</h4>
-                                            @foreach (var battleCharacter in receiver.BattleCharacters.Where(bc => bc.XpEarned > 0).OrderBy(bc => bc.Slot))
+                                            @foreach (var battleCharacter in receiver.BattleCreatures.Where(bc => bc.XpEarned > 0).OrderBy(bc => bc.Slot))
                                             {
                                                 <h5>@(battleCharacter.Creature.Name) Earned: @(battleCharacter.XpEarned)xp</h5>
                                             }

@@ -145,6 +145,9 @@ namespace ClashOfTheCharacters.Controllers
 
             var battleService = new BattleService();
             battleService.RunBattles();
+
+            var auctionService = new AuctionService();
+            auctionService.CheckAuctions();
         }
     }
 }

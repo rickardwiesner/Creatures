@@ -41,8 +41,8 @@ namespace ClashOfTheCharacters.Services
             while (challengerCompetitor.TotalHp > 0 && receiverCompetitor.TotalHp > 0)
             {
                 //så plockar vi fram första karatären i båda lagen som lever.
-                var challengerCharacter = challengerCompetitor.BattleCharacters.Where(ct => ct.Alive).OrderBy(bc => bc.Slot).First();
-                var receiverCharacter = receiverCompetitor.BattleCharacters.Where(ct => ct.Alive).OrderBy(bc => bc.Slot).First();
+                var challengerCharacter = challengerCompetitor.BattleCreatures.Where(ct => ct.Alive).OrderBy(bc => bc.Slot).First();
+                var receiverCharacter = receiverCompetitor.BattleCreatures.Where(ct => ct.Alive).OrderBy(bc => bc.Slot).First();
 
                 //Så länge båda av dom lever...
                 while (challengerCharacter.Alive && receiverCharacter.Alive)

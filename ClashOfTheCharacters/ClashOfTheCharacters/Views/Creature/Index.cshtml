@@ -10,7 +10,7 @@
 }
 
 <div class="row">
-    
+
     @*Om dom är med i squaden*@
 
     @foreach (var userCreature in Model)
@@ -136,113 +136,116 @@
         {
 
 
-            counter++;
+        counter++;
 
-            <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            
+            <div class="dropdown text-right">
+                <button class="btn-link dropdown-toggle" type="button" id="creature-option" data-toggle="dropdown">
+                    <span class="fa fa-ellipsis-h fa-2x"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="creature-option">
+                    
+                    @if (travelling)
+                    {
+                        <li><p>Can't change while travelling</p></li>
+                    }
 
-                <div class="dropdown text-right">
-                    <button class="btn-link dropdown-toggle" type="button" id="creature-option" data-toggle="dropdown">
-                        <span class="fa fa-ellipsis-h fa-2x"></span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="creature-option">
+                    else if (userCreature.InSquad && userCreature.User.UserCreatures.Count(uc => uc.InSquad) == 1)
+                    {
+                        <li><p>Need at least one creature in squad</p></li>
+                    }
 
-                        @if (travelling)
-                        {
-                            <li><p>Can't change while travelling</p></li>
-                        }
+                    else if (userCreature.InSquad)
+                    {
+                        <li>@Html.ActionLink("Remove from squad", "RemoveFromSquad", new { userCreatureId = userCreature.Id }, new { @role = "menuitem" })</li>
+                    }
 
-                        else if (userCreature.InSquad)
-                        {
-                            <li>@Html.ActionLink("Remove from squad", "RemoveFromSquad", new { userCreatureId = userCreature.Id }, new { @role = "menuitem" })</li>
-                        }
+                    else if (userCreature.User.UserCreatures.Count(uc => uc.InSquad) == 6)
+                    {
+                        <li><p>Squad is full</p></li>
+                    }
 
-                        else if (userCreature.User.UserCreatures.Count(uc => uc.InSquad) == 6)
-                        {
-                            <li><p>Squad is full</p></li>
-                        }
+                    else
+                    {
+                        <li>@Html.ActionLink("Add to squad", "AddToSquad", new { userCreatureId = userCreature.Id }, new { @role = "menuitem" })</li>
+                    }
 
-                        else
-                        {
-                            <li>@Html.ActionLink("Add to squad", "AddToSquad", new { userCreatureId = userCreature.Id }, new { @role = "menuitem" })</li>
-                        }
+                    <li><p>Details (Not available)</p></li>
+                    @*<li>@Html.ActionLink("Details", "Details", new { userCreatureId = userCreature.Id }, new { @role = "menuitem" })</li>*@
+                        
+                    <li role="presentation" class="divider"></li>
+                    
+                    @*<li>@Html.ActionLink("Sell", "Sell", new { userCreatureId = userCreature.Id }, new { @role = "menuitem" })</li>*@
+                
+                    @if (userCreature.User.UserCreatures.Count(uc => !uc.InAuction) == 1)
+                    {
+                        <li><p>Need at least one creature</p></li>
+                    }
 
-                        <li><p>Details (Not available)</p></li>
-                        @*<li>@Html.ActionLink("Details", "Details", new { userCreatureId = userCreature.Id }, new { @role = "menuitem" })</li>*@
+                    else if (travelling)
+                    {
+                        <li><p>Can't sell while travelling</p></li>
+                    }
 
-                        <li role="presentation" class="divider"></li>
-                        <li><p>Sell</p></li>
-                        <li role="presentation" class="divider"></li>
+                    else if (userCreature.InSquad)
+                    {
+                        <li><p>Remove from squad to sell</p></li>
+                    }      
 
-                        @*<li>@Html.ActionLink("Sell", "Sell", new { userCreatureId = userCreature.Id }, new { @role = "menuitem" })</li>*@
+                    else
+                    {
+                        <li><p>Quick Sell (Not available)</p></li>
+                        <li>@Html.ActionLink("Sell on auction", "SellCreature", "Auction", new { userCreatureId = userCreature.Id }, new { @role = "menuitem" })</li>
+                    }
 
-                        @if (userCreature.User.UserCreatures.Count(uc => !uc.InAuction) == 1)
-                        {
-                            <li><p>Need at least one creature</p></li>
-                        }
-
-                        else if (travelling)
-                        {
-                            <li><p>Can't sell while travelling</p></li>
-                        }
-
-                        else if (userCreature.InSquad)
-                        {
-                            <li><p>Remove from squad to sell</p></li>
-                        }
-
-                        else
-                        {
-                            <li><p>Quick Sell (Not available)</p></li>
-                            <li>@Html.ActionLink("Sell on auction", "SellCreature", "Auction", new { userCreatureId = userCreature.Id }, new { @role = "menuitem" })</li>
-                        }
-
-                    </ul>
-                </div>
-
-                <div class="col-md-12 col-sm-12 col-xs-12 gamecard">
-                    <h4>
-                        <span><img class="gamecard-rarity" src="@Helper.GetRarityUrl(userCreature.Creature.Rarity)" /></span>
-                        <strong>@userCreature.Creature.Name</strong>
-                        <span> Lvl: @userCreature.Level</span>
-                        <span><img class="gamecard-element" src="@Helper.GetElementUrl(userCreature.Creature.Element)" /></span>
-                    </h4>
-                    <img class="img-responsive gamecard-image" src=@userCreature.Creature.ImageUrl />
-                    <div class="gamecard-xpbar">
-                        <div style="width:@Helper.GetPercentage(userCreature.Xp, userCreature.MaxXp)%"></div>
-                    </div>
-
-                    <p>
-                        <span class="gamecard-worth">Worth: @userCreature.Worth</span>
-                        <span class="gamecard-xp-maxxp">@userCreature.Xp / @userCreature.MaxXp Xp</span>
-                    </p>
-
-                    <div class="clearfix visible-lg"></div>
-                    <div class="clearfix visible-sm"></div>
-                    <div class="clearfix visible-md"></div>
-                    <div class="clearfix visible-xs"></div>
-
-                    <div class="col-md-6 col-sm-6 col-xs-6 text-center">
-                        <h5>Stats</h5>
-                        <p>Dmg: @userCreature.Damage</p>
-                        <p>Def: @userCreature.Defense</p>
-                        <p>Hp: @userCreature.Hp</p>
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-xs-6 text-center">
-                        <h5>History</h5>
-                        <p>Fights: @userCreature.Battles</p>
-                        <p>Kills: @userCreature.Kills</p>
-                        <p>Deaths: @userCreature.Deaths</p>
-                    </div>
-                </div>
+                </ul>
             </div>
 
+            <div class="col-md-12 col-sm-12 col-xs-12 gamecard">
+                <h4>
+                    <span><img class="gamecard-rarity" src="@Helper.GetRarityUrl(userCreature.Creature.Rarity)" /></span>
+                    <strong>@userCreature.Creature.Name</strong>
+                    <span> Lvl: @userCreature.Level</span>
+                    <span><img class="gamecard-element" src="@Helper.GetElementUrl(userCreature.Creature.Element)" /></span>
+                </h4>
+                <img class="img-responsive gamecard-image" src=@userCreature.Creature.ImageUrl />
+                <div class="gamecard-xpbar">
+                    <div style="width:@Helper.GetPercentage(userCreature.Xp, userCreature.MaxXp)%"></div>
+                </div>
 
-            if (counter % 2 == 0)
-            {
+                <p>
+                    <span class="gamecard-worth">Worth: @userCreature.Worth</span>
+                    <span class="gamecard-xp-maxxp">@userCreature.Xp / @userCreature.MaxXp Xp</span>
+                </p>
+
                 <div class="clearfix visible-lg"></div>
                 <div class="clearfix visible-sm"></div>
                 <div class="clearfix visible-md"></div>
-            }
+                <div class="clearfix visible-xs"></div>
+
+                <div class="col-md-6 col-sm-6 col-xs-6 text-center">
+                    <h5>Stats</h5>
+                    <p>Dmg: @userCreature.Damage</p>
+                    <p>Def: @userCreature.Defense</p>
+                    <p>Hp: @userCreature.Hp</p>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6 text-center">
+                    <h5>History</h5>
+                    <p>Fights: @userCreature.Battles</p>
+                    <p>Kills: @userCreature.Kills</p>
+                    <p>Deaths: @userCreature.Deaths</p>
+                </div>
+            </div>
+        </div>
+
+
+        if (counter % 2 == 0)
+        {
+            <div class="clearfix visible-lg"></div>
+            <div class="clearfix visible-sm"></div>
+            <div class="clearfix visible-md"></div>
         }
+    }
     }
 </div>
