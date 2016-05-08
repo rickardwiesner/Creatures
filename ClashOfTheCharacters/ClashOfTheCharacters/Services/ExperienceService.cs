@@ -113,17 +113,6 @@ namespace ClashOfTheCharacters.Services
             }
 
             var userCreature = wildBattleCreature.User.UserCreatures.Where(uc => uc.InSquad).First(uc => uc.CreatureId == wildBattleCreature.CreatureId);
-            userCreature.Battles++;
-
-            if (won)
-            {
-                userCreature.Kills++;
-            }
-
-            else
-            {
-                userCreature.Deaths++;
-            }
 
             wildBattleCreature.XpEarned += xp;
             db.SaveChanges();

@@ -27,6 +27,8 @@ namespace ClashOfTheCharacters.Models
 
         public int MaxStamina { get; set; }
 
+        public int RainbowGems { get; set; }
+
         public int Gold { get; set; }
 
         public int Xp { get; set; }

@@ -28,6 +28,13 @@ namespace ClashOfTheCharacters.Helpers
             }
         }
 
+        static public int GetCost(DateTimeOffset dateTime)
+        {
+            var timeSpan = dateTime - DateTimeOffset.Now;
+
+            return (int)timeSpan.TotalHours + 1;
+        }
+
         static public string GetRarityUrl(Rarity rarity)
         {
             switch (rarity)

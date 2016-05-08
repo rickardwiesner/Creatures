@@ -239,6 +239,7 @@
     <Compile Include="ViewModels\AuctionCreatureViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\LadderViewModel.cs" />
+    <Compile Include="ViewModels\MapViewModel.cs" />
     <Compile Include="ViewModels\ProfilePartialViewModel.cs" />
     <Compile Include="ViewModels\SellShopView.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
@@ -297,7 +298,9 @@
     <Content Include="Images\Help\ScoreCount.PNG" />
     <Content Include="Images\Land\attack.png" />
     <Content Include="Images\Land\bag.PNG" />
-    <Content Include="Images\Land\wild-creature-fire.png" />
+    <Content Include="Images\Land\landoffire.jpg" />
+    <Content Include="Images\Land\map.png" />
+    <Content Include="Images\Land\shop.png" />
     <Content Include="Images\Map\air.png" />
     <Content Include="Images\Map\darkness.png" />
     <Content Include="Images\Map\earth.png" />
@@ -408,6 +411,7 @@
     <Content Include="Views\Auction\Items.cshtml" />
     <Content Include="Views\Auction\Targets.cshtml" />
     <Content Include="Views\Village\Index.cshtml" />
+    <Content Include="Views\Map\Shop.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

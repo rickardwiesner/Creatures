@@ -88,5 +88,27 @@ namespace ClashOfTheCharacters.Controllers
 
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        public ActionResult Leave()
+        {
+            var userId = User.Identity.GetUserId();
+            var wildBattle = db.WildBattles.FirstOrDefault(wb => wb.UserId == userId);
+            var currentLand = db.CurrentLands.FirstOrDefault(wb => wb.UserId == userId);
+
+            if (wildBattle != null)
+            {
+                db.WildBattles.Remove(wildBattle);
+            }
+
+            if (currentLand != null)
+            {
+                db.CurrentLands.Remove(currentLand);
+            }
+
+            db.SaveChanges();
+
+            return RedirectToAction("Index", "Map");
+        }
     }
 }

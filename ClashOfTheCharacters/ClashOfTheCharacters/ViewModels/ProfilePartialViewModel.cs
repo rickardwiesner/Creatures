@@ -32,6 +32,12 @@ namespace ClashOfTheCharacters.ViewModels
 
         public int NextStaminaMinutes { get; set; }
 
+        public int TotalUserCreatures { get; set; }
+
+        public int RainbowGems { get; set; }
+
+        public bool Travelling { get; set; }
+
         public ICollection<UserCreature> UserCreatures { get; set; }
 
         public ICollection<Battle> RecentBattles { get; set; }

@@ -3,15 +3,18 @@
 }
 
 .land {
-    background-image: url('../Images/Other/forest.jpg');
     background-size: cover;
     height: 550px;
 }
 
+.fire {
+    background-image: url('../Images/Land/landoffire.jpg');
+}
+
 .land h2 {
     font-family: Gabriola;
-    font-size: 50px;
-    color: #a8602d;
+    font-size: 40px;
+    color: black;
 }
 
 .land h4 {
@@ -22,13 +25,26 @@
 }
 
 .land a > span:hover {
-    color: #a8602d;
+    color: black;
 }
 
 .land a > span {
-    color: #a8602d;
+    color: #322828;
 }
 
 .land span {
     position: absolute;
+}
+
+.back-to-map > img {
+    width: 40px;
+    height: 40px;
+    float: left;
+    margin-left: 10px;
+}
+
+.form-leave {
+    position: absolute;
+    top: 500px;
+    left: 10px;
 }

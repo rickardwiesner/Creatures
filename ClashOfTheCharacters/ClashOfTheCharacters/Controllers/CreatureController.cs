@@ -100,10 +100,9 @@ namespace ClashOfTheCharacters.Controllers
                 userCreature.Slot = 0;
 
                 db.SaveChanges();
-
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction(Request.UrlReferrer.PathAndQuery);
         }
     }
 }

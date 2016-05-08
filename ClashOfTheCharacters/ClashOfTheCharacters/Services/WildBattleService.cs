@@ -167,9 +167,16 @@ namespace ClashOfTheCharacters.Services
 
             cpuCreature.Hp = result == true ? 0 : cpuCreature.Hp;
 
-            if (cpuCreature.Hp == 0)
+            var userItem = db.UserItems.Find(userItemId);
+
+            if (userItem.Quantity == 1)
             {
-                userCreature.User.UserCreatures.Where(uc => uc.InSquad).First(uc => uc.CreatureId == userCreature.CreatureId).Battles++;
+                db.UserItems.Remove(userItem);
+            }
+
+            else
+            {
+                userItem.Quantity--;
             }
 
             if (cpuCreature.Hp == 0 && !wildBattle.WildBattleCreatures.Any(wbc => wbc.UserId == null && wbc.Alive))
