@@ -19,3 +19,6 @@ strong {
 	margin-left:48%;
 	font-size:x-large;
 }
+em > strong {
+	margin-left:30%;
+}
