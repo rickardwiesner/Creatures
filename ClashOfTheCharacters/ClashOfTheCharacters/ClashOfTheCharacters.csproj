@@ -239,6 +239,7 @@
     <Compile Include="ViewModels\AuctionCreatureViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\LadderViewModel.cs" />
+    <Compile Include="ViewModels\MapViewModel.cs" />
     <Compile Include="ViewModels\ProfilePartialViewModel.cs" />
     <Compile Include="ViewModels\SellShopView.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
@@ -275,18 +276,32 @@
     <Content Include="Images\Characters\aidan.jpg" />
     <Content Include="Images\Characters\bogey.jpg" />
     <Content Include="Images\Characters\drogo.jpg" />
+    <Content Include="Images\Characters\earth1.jpg" />
+    <Content Include="Images\Characters\earth2.jpg" />
+    <Content Include="Images\Characters\earth3.jpg" />
+    <Content Include="Images\Characters\earth4.jpg" />
+    <Content Include="Images\Characters\earth5.jpg" />
+    <Content Include="Images\Characters\earth6.jpg" />
     <Content Include="Images\Characters\emptyslot.jpg" />
-    <Content Include="Images\Characters\Fire\fire1.jpg" />
-    <Content Include="Images\Characters\Fire\fire2.jpg" />
-    <Content Include="Images\Characters\Fire\fire3.jpg" />
-    <Content Include="Images\Characters\Fire\fire4.jpg" />
-    <Content Include="Images\Characters\Fire\fire5.jpg" />
-    <Content Include="Images\Characters\Fire\fire6.jpg" />
-    <Content Include="Images\Characters\Fire\fire7.jpg" />
-    <Content Include="Images\Characters\Fire\fire8.jpg" />
+    <Content Include="Images\Characters\fire1.jpg" />
+    <Content Include="Images\Characters\fire2.jpg" />
+    <Content Include="Images\Characters\fire3.jpg" />
+    <Content Include="Images\Characters\fire4.jpg" />
+    <Content Include="Images\Characters\fire5.jpg" />
+    <Content Include="Images\Characters\fire6.jpg" />
+    <Content Include="Images\Characters\fire7.jpg" />
+    <Content Include="Images\Characters\fire8.jpg" />
     <Content Include="Images\Characters\horsich.jpg" />
     <Content Include="Images\Characters\kiera.jpg" />
     <Content Include="Images\Characters\mossy.jpg" />
+    <Content Include="Images\Characters\water1.jpg" />
+    <Content Include="Images\Characters\water2.jpg" />
+    <Content Include="Images\Characters\water3.jpg" />
+    <Content Include="Images\Characters\water4.jpg" />
+    <Content Include="Images\Characters\wind1.jpg" />
+    <Content Include="Images\Characters\wind2.jpg" />
+    <Content Include="Images\Characters\wind3.jpg" />
+    <Content Include="Images\Characters\wind4.jpg" />
     <Content Include="Images\Characters\xineoph.jpg" />
     <Content Include="Images\Characters\zen.jpg" />
     <Content Include="Images\Elements\air.png" />
@@ -297,7 +312,9 @@
     <Content Include="Images\Help\ScoreCount.PNG" />
     <Content Include="Images\Land\attack.png" />
     <Content Include="Images\Land\bag.PNG" />
-    <Content Include="Images\Land\wild-creature-fire.png" />
+    <Content Include="Images\Land\landoffire.jpg" />
+    <Content Include="Images\Land\map.png" />
+    <Content Include="Images\Land\shop.png" />
     <Content Include="Images\Map\air.png" />
     <Content Include="Images\Map\darkness.png" />
     <Content Include="Images\Map\earth.png" />
@@ -408,6 +425,7 @@
     <Content Include="Views\Auction\Items.cshtml" />
     <Content Include="Views\Auction\Targets.cshtml" />
     <Content Include="Views\Village\Index.cshtml" />
+    <Content Include="Views\Map\Shop.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

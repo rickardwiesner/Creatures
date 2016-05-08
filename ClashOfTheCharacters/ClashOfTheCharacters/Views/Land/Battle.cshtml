@@ -22,6 +22,8 @@
     }
 }
 
+<a href="/Land/Index" class="btn btn-custom margin-bottom-10" style="color: black">Go back</a>
+
 <div class="row margin-bottom-20">
     <div class="col-md-4 col-sm-4 col-xs-12 margin-bottom-20">
 
@@ -131,7 +133,12 @@
             <button data-toggle="dropdown" class="btn btn-custom btn-block">Capture</button>
             <ul class="dropdown-menu">
                 
-                @if (Model.User.UserCreatures.Any(uc => uc.CreatureId == cpuCreature.CreatureId))
+                @if (!Model.User.UserItems.Any(ui => ui.Item.ItemType == ItemType.Net && ui.InBag))
+                {
+                    <li>You have no capture equipment</li>
+                }
+
+                else if (Model.User.UserCreatures.Any(uc => uc.CreatureId == cpuCreature.CreatureId))
                 {
                     <li>Can't have duplicates</li>
                 }

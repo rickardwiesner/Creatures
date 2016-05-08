@@ -19,7 +19,12 @@ namespace ClashOfTheCharacters.Controllers
         // GET: Map
         public ActionResult Index()
         {
-            return View();
+            var userId = User.Identity.GetUserId();
+            var travel = db.Travels.FirstOrDefault(t => t.UserId == userId);
+            var currentLand = db.CurrentLands.FirstOrDefault(cl => cl.UserId == userId);
+            var mapViewModel = new MapViewModel { Travel = travel, CurrentLand = currentLand };
+            
+            return View(mapViewModel);
         }
 
         public ActionResult Travel(int id)
@@ -80,6 +85,11 @@ namespace ClashOfTheCharacters.Controllers
             var travelService = new TravelService();
             travelService.CheckArrivalTime(userId);
 
+            if (db.CurrentLands.Any(cl => cl.UserId == userId))
+            {
+                return RedirectToAction("Index", "Land");
+            }
+
             if (!db.Travels.Any(t => t.UserId == userId))
             {
                 return RedirectToAction("Index");
@@ -118,6 +128,64 @@ namespace ClashOfTheCharacters.Controllers
             db.SaveChanges();
 
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult FastTravel()
+        {
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Find(userId);
+            var rainbowGemCost = Convert.ToInt32(Request.Form.Get("rainbowGemCost"));
+
+            if (!db.Travels.Any(t => t.UserId == userId) || user.RainbowGems < rainbowGemCost)
+            {
+                return RedirectToAction("Index");
+            }
+
+            user.RainbowGems -= rainbowGemCost;
+
+            var travel = db.Travels.First(t => t.UserId == userId);
+            travel.ArrivalTime = DateTimeOffset.Now;
+
+            db.SaveChanges();
+
+            var travelService = new TravelService();
+            travelService.CheckArrivalTime(userId);
+
+            return RedirectToAction("Index", "Land");
+        }
+
+        public ActionResult Shop()
+        {
+            return View(db.Items.ToList());
+        }
+
+        [HttpPost]
+        public ActionResult Buy()
+        {
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Find(userId);
+            var itemId = Convert.ToInt32(Request.Form.Get("itemId"));
+            var itemPrice = Convert.ToInt32(Request.Form.Get("itemPrice"));
+
+            if (user.Gold >= itemPrice)
+            {
+                if (user.UserItems.Any(ui => ui.ItemId == itemId))
+                {
+                    user.UserItems.First(ui => ui.ItemId == itemId).Quantity++;
+                }
+
+                else
+                {
+                    db.UserItems.Add(new UserItem { ItemId = itemId, UserId = userId, Quantity = 1, InBag = true });
+                }
+
+                user.Gold -= itemPrice;
+
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("Shop");
         }
     }
 }

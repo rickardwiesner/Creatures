@@ -4,15 +4,18 @@
     ViewBag.Title = "Land";
     int y = 0;
     int x = 0;
+    int shopY = 300;
+    int shopX = 100;
 }
 
-<div class="row land margin-bottom-20">
-    <div class="text-center margin-bottom-20">
-        <h2>
-            The Land Of @Model.Land.Element
+<div class="row @Html.AttributeEncode(Model.Land.Element.ToString().ToLower()) land margin-bottom-20">
+    <div class="margin-bottom-20">
+        <a href="/Map/Index"><span class="back-to-map"><img src="~/Images/Land/map.png" /></span></a>
+        <h2 class="text-center">
+            The Land Of @Model.Land.Element           
         </h2>
     </div>
-
+    
     @for (int i = 1; i <= Model.CurrentLevel; i++)
     {
         switch (i)
@@ -60,5 +63,15 @@
         {
             <span class="fa fa-4x fa-check-circle" style="@Html.AttributeEncode(string.Format("top: {0}px; left: {1}px", y, x))"></span>
         }
+
+        <a href="/Map/Shop">
+            <img class="shop" src="/Images/Land/shop.png" style="@Html.AttributeEncode(string.Format("top: {0}px; left: {1}px", shopY, shopX))"/>
+        </a>
+
     }
+    <form action="/Land/Leave" method="post" class="form-leave">
+        <input type="submit" class="btn btn-custom-dark" value="Leave" />
+        <label>You will not receive any compensation</label>
+    </form>
+
 </div>

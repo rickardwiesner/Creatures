@@ -1,0 +1,37 @@
+﻿@model IEnumerable<ClashOfTheCharacters.Models.Item>
+
+@{
+    ViewBag.Title = "Shop";
+}
+
+<a href="/Land/Index" class="btn btn-custom margin-bottom-10" style="color: black">Go back</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Rarity</th>
+            <th>Price</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.ItemType</td>
+                <td>@item.Rarity</td>
+                <td>@item.Price</td>
+                <td>
+                    <form method="post" action="/Map/Buy">
+                        <input hidden value="@item.Price" name="itemPrice" />
+                        <input hidden value="@item.Id" name="itemId" />
+                        <input type="submit" value="Buy" class="btn btn-custom" />
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

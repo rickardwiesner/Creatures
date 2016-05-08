@@ -29,16 +29,22 @@
     </div>
 
     <div class="col-md-12">
-        <div class="col-md-12 col-xs-6 col-lg-6 col-user-info text-center">
+        <div class="col-md-6 col-xs-6 col-lg-6 col-user-info text-center">
+            <span class="fa fa-diamond"> @Model.RainbowGems</span>
+        </div>
+        <div class="col-md-6 col-xs-6 col-lg-6 col-user-info text-center">
+            <span class="fa fa-users"> @Model.TotalUserCreatures</span>
+        </div>
+        <div class="col-md-6 col-xs-6 col-lg-6 col-user-info text-center">
             <span class="fa fa-line-chart"> @Model.LadderPoints</span>
         </div>
-        <div class="col-md-12 col-xs-6 col-lg-6 col-user-info text-center">
+        <div class="col-md-6 col-xs-6 col-lg-6 col-user-info text-center">
             <span class="fa fa-money"> @Model.Gold</span>
         </div>
-        <div class="col-md-12 col-xs-6 col-lg-6 col-user-info text-center">
+        <div class="col-md-6 col-xs-6 col-lg-6 col-user-info text-center">
             <span class="fa fa-flash"> @Model.Stamina / @Model.MaxStamina</span>
         </div>
-        <div class="col-md-12 col-xs-6 col-lg-6 col-user-info text-center">
+        <div class="col-md-6 col-xs-6 col-lg-6 col-user-info text-center">
             <span class="fa fa-graduation-cap"> @Model.Xp / @Model.MaxXp</span>
         </div>
     </div>
@@ -102,7 +108,13 @@
                                     <li>@Html.ActionLink(string.Format("Slot: {0} - {1}", j + 1, userCreatureInSlot.Creature.Name), "ChangeSlot", new { originalUserCreatureId = userCreatureInSlot.Id, replacerUserCreatureId = userCreature.Id })</li>
                                 }
                             }
-                        }                     
+                        }
+                        @if (Model.UserCreatures.Count > 1 && !Model.Travelling && userCreature != null)
+                        {
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Remove from squad", "RemoveFromSquad", "Creature", new { userCreatureId = userCreature.Id }, null)</li>
+                        }
+
                     </ul>
                 </div>
             }
@@ -164,14 +176,14 @@
                                         if (i == 2)
                                         {
                                             <div class="clearfix visible-xs"></div>
-                                                    <div class="clearfix visible-sm"></div>
+                                            <div class="clearfix visible-sm"></div>
                                                     <div class="clearfix visible-md"></div>
                                                     <div class="clearfix visible-lg"></div>
                                         }
                                     }
                                 </div>
                             </div>
-                        </td>                   
+                        </td>
                         <td class="text-right"><h5>@(battle.StartTime.Subtract(DateTime.Now.TimeOfDay).Minute + 1)m</h5></td>
                     </tr>
                 }
@@ -300,7 +312,7 @@
 
                                             <hr />
 
-                                                <div class="clearfix visible-xs"></div>
+                                            <div class="clearfix visible-xs"></div>
                                                 <div class="clearfix visible-sm"></div>
                                                 <div class="clearfix visible-md"></div>
                                                 <div class="clearfix visible-lg"></div>
