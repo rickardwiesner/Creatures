@@ -7,13 +7,13 @@ namespace ClashOfTheCharacters.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class InitialCreate : IMigrationMetadata
+    public sealed partial class added : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialCreate));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(added));
         
         string IMigrationMetadata.Id
         {
-            get { return "201605041511127_InitialCreate"; }
+            get { return "201605082119093_added!"; }
         }
         
         string IMigrationMetadata.Source
