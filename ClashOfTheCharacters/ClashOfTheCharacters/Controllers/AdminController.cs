@@ -7,9 +7,11 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ClashOfTheCharacters.Models;
+using Microsoft.AspNet.Identity;
 
 namespace ClashOfTheCharacters.Controllers
 {
+    [Authorize]
     public class AdminController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -17,7 +19,22 @@ namespace ClashOfTheCharacters.Controllers
         // GET: Admin
         public ActionResult Index()
         {
-            return View(db.Creatures.ToList());
+            var userId = User.Identity.GetUserId(); 
+            var user = db.Users.Where(x => x.Id == userId);
+            var isAdmin = false;
+
+            foreach (var properties in user)
+            {
+                isAdmin = properties.Admin;
+            }
+
+            if (isAdmin == true)
+            {
+                return View(db.Creatures.ToList());
+            }
+
+            return RedirectToAction("Index", "Home");
+
         }
 
         // GET: Admin/Details/5

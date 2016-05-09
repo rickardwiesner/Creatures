@@ -102,7 +102,7 @@ namespace ClashOfTheCharacters.Controllers
                 db.SaveChanges();
             }
 
-            return RedirectToAction(Request.UrlReferrer.PathAndQuery);
+            return RedirectToAction("/Index");
         }
     }
 }
