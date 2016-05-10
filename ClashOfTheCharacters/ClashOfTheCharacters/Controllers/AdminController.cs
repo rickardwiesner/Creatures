@@ -40,6 +40,18 @@ namespace ClashOfTheCharacters.Controllers
         // GET: Admin/Details/5
         public ActionResult Details(int? id)
         {
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Where(x => x.Id == userId);
+            var isAdmin = false;
+
+            foreach (var properties in user)
+            {
+                isAdmin = properties.Admin;
+            }
+            if (isAdmin == false)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -55,6 +67,18 @@ namespace ClashOfTheCharacters.Controllers
         // GET: Admin/Create
         public ActionResult Create()
         {
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Where(x => x.Id == userId);
+            var isAdmin = false;
+
+            foreach (var properties in user)
+            {
+                isAdmin = properties.Admin;
+            }
+            if (isAdmin == false)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
 
@@ -78,10 +102,25 @@ namespace ClashOfTheCharacters.Controllers
         // GET: Admin/Edit/5
         public ActionResult Edit(int? id)
         {
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Where(x => x.Id == userId);
+            var isAdmin = false;
+
+            foreach (var properties in user)
+            {
+                isAdmin = properties.Admin;
+            }
+
+            if (isAdmin == false)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Creature character = db.Creatures.Find(id);
             if (character == null)
             {
@@ -109,11 +148,27 @@ namespace ClashOfTheCharacters.Controllers
         // GET: Admin/Delete/5
         public ActionResult Delete(int? id)
         {
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Where(x => x.Id == userId);
+            var isAdmin = false;
+
+            foreach (var properties in user)
+            {
+                isAdmin = properties.Admin;
+            }
+
+            if (isAdmin == false)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Creature character = db.Creatures.Find(id);
+           
             if (character == null)
             {
                 return HttpNotFound();
