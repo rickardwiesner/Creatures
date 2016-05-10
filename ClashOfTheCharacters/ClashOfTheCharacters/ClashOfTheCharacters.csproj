@@ -332,9 +332,13 @@
     <Content Include="Images\Map\nature.png" />
     <Content Include="Images\Map\pollution.png" />
     <Content Include="Images\Map\water.png" />
+    <Content Include="Images\Other\auction.png" />
     <Content Include="Images\Other\concrete.jpg" />
     <Content Include="Images\Land\nature.jpg" />
     <Content Include="Images\Other\gamecard.jpg" />
+    <Content Include="Images\Other\home-dragon.png" />
+    <Content Include="Images\Other\logo.png" />
+    <Content Include="Images\Other\logo2.png" />
     <Content Include="Images\Other\map.jpg" />
     <Content Include="Images\Other\noprofilepicture.jpg" />
     <Content Include="Images\Other\questionmark.jpg" />
@@ -388,7 +392,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\Index_.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
@@ -428,11 +432,14 @@
     <Content Include="Views\Creature\Select.cshtml" />
     <Content Include="Views\Auction\Index.cshtml" />
     <Content Include="Views\Auction\SellCreature.cshtml" />
-    <Content Include="Views\Auction\Creatures.cshtml" />
-    <Content Include="Views\Auction\Items.cshtml" />
-    <Content Include="Views\Auction\Targets.cshtml" />
     <Content Include="Views\Village\Index.cshtml" />
     <Content Include="Views\Map\Shop.cshtml" />
+    <Content Include="Views\Admin\Create.cshtml" />
+    <Content Include="Views\Admin\Delete.cshtml" />
+    <Content Include="Views\Admin\Details.cshtml" />
+    <Content Include="Views\Admin\Edit.cshtml" />
+    <Content Include="Views\Creature\Sell.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

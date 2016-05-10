@@ -8,8 +8,13 @@ namespace ClashOfTheCharacters.Models
     public class SellShopView
     {
         public List<Creature> ShoppingItems { get; set; }
+
         public List<Creature> SellItems { get; set; }
+
+        public ICollection<UserCreature> UserCreatures { get; set; }
+
         public int Gold { get; set; }
+
         public bool Travelling { get; set; }
     }
 }

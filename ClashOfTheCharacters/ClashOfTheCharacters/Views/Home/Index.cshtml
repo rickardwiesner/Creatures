@@ -3,134 +3,158 @@
 @using ClashOfTheCharacters.Models;
 
 @{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Home";
     <link href="~/Content/temp-home.css" rel="stylesheet" />
-    Random rnd = new Random();
-    int r = rnd.Next(0, Model.Characters.Count());
 }
 
-@if (!Request.IsAuthenticated)
-{
-	<!-- container -->
-    <div class="container">
-        <div class="jumbotron">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="img-thumbnail">
-                        <img class="img-responsive" src="@Url.Content(Model.Characters.ElementAt(r).ImageUrl)" alt="@Html.DisplayFor(model => model.Characters.ElementAt(r).Element)" />
+<div class="row">
+    @if (!Request.IsAuthenticated)
+    {
+
+        <div class="jumbotron col-md-12">
+            <div class="col-md-6">
+                <img class="img-responsive" src="~/Images/Other/home-dragon.png" />
+            </div>
+            <div class="col-md-6">
+                <h1>Join The Battle Today!</h1>
+                <h3>Build your team of mythical creatures and compete against @Model.Characters.Count() other members of becoming the best trainer.</h3>
+                @Html.ActionLink("Sign Up", "Register", "Account", null, new { @class = "btn btn-lg btn-danger" })
+                <h5>Already a member?</h5>
+                @Html.ActionLink("Log In", "Login", "Account", null, new { @class = "btn btn-default" })
+            </div>
+        </div>
+
+    }
+
+
+        <div id="carousel-home" class="carousel slide" data-ride="carousel">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+                <li data-target="#carousel-home" data-slide-to="0" class="active"></li>
+                <li data-target="#carousel-home" data-slide-to="1"></li>
+                <li data-target="#carousel-home" data-slide-to="2"></li>
+
+            </ol>
+
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner carousel-height" role="listbox">
+                <div class="item active">
+                    <div class="col-md-12 text-center">
+                        <h2>The Shop is now opened!</h2>
+                        <h4>Find Creatures like Kohn, Windaloo, Golgari and Cuddly at a reasonable price</h4>
+                    </div>
+                    <div class="col-md-8 col-md-offset-2 container-creatures">
+
+                        @foreach (var creature in Model.Characters.Where(c => c.Name == "Kohn" || c.Name == "Windaloo" || c.Name == "Golgari" || c.Name == "Cuddly"))
+                        {
+                            <div class="col-md-3 carousel-creatures">
+                                <div class="col-md-12 col-xs-12 gamecard-auction">
+                                    <p>@creature.Name<span><img class="gamecard-element-small" src="@Helper.GetElementUrl(creature.Element)" /></span></p>
+                                    <img class="img-responsive" src="@creature.ImageUrl" />
+                                    <p>Price: @creature.Price</p>
+                                    <p>Dmg: @creature.BaseAttack</p>
+                                    <p>Def: @creature.BaseDefense</p>
+                                    <p>Hp: @creature.BaseHp</p>
+                                </div>
+                            </div>
+                        }
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <h1>Join The Battle Today!</h1>
-                    <h3>Build your team of mythical creatures and compete against @Model.Characters.Count() other members of becoming the best trainer.</h3>
-                    @Html.ActionLink("Sign Up", "Register", "Account", null, new { @class = "btn btn-lg btn-danger" })
-                    <h5>Already a member?</h5>
-                    @Html.ActionLink("Log In", "Login", "Account", null, new { @class = "btn btn-default" })
+
+                <div class="item carousel-background-image">
+                    <div class="col-md-4 col-lg-offset-4">
+                        <h1>The Land Of Fire is here!</h1>
+                        <h3>Try it out, who knows, maybe you'll find a legendary creature?</h3>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="col-md-6">
+                        <h2>Going One, Two, Three, Sold!</h2>
+                        <h4>Can't find what you're looking for in the shop? Try the auction, there you can find everything!</h4>
+                    </div>
+                    <div class="col-md-6">
+                        <img class="img-responsive pull-right" src="~/Images/Other/auction.png" />
+                    </div>
                 </div>
             </div>
         </div>
-        <hr />
-        <!--  row of columns -->
+    
+    <div class="col-md-12">
+        <h2 class="text-center">Top 5</h2>
 
-        @{
-            for (int i = 0; i < 4; i++)
-            {
-                <div class="col-md-3 ">
-                    <div class="col-md-12 gamecard">
-                        <div class="text-center"><h3>@Model.Characters.ElementAt(i).Name</h3></div>
-                        <a href="@Url.Content("~/Home/Characters/" + Model.Characters.ElementAt(i).Id.ToString())">
-                            <img class="img-responsive gamecard-image" src="@Url.Content(Model.Characters.ElementAt(i).ImageUrl)" alt="@Html.DisplayFor(model => model.Characters.ElementAt(i).Element)" />
-                        </a>
-                        <br />
-                    </div>
-                </div>}
-        }
-    </div><!--  End div row of columns -->
-            <hr />
-			}
-			else
-			{
-				<div class="panel panel-warning">
-					<div class="panel-body">
-						<em class="center-block">
-							<strong>Welcome to the game: @User.Identity.Name
-							</strong> 
-						</em>
-					</div>
-				</div>
-			}
-
-<h2 class="text-center">Top 5</h2>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Username</th>
-            <th>Ladder Points</th>
-            <th class="text-center">Team</th>
-            <th class="text-right">Online</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var user in Model.Users.OrderByDescending(u => u.LadderPoints).Take(5))
-        {
+    </div>
+    <table class="table table-striped">
+        <thead>
             <tr>
+                <th>Username</th>
+                <th>Ladder Points</th>
+                <th class="text-center">Team</th>
+                <th class="text-right">Online</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model.Users.OrderByDescending(u => u.LadderPoints).Take(5))
+            {
+                <tr>
 
-                <td><h5>@user.UserName</h5></td>
-                <td><h5>@user.LadderPoints</h5></td>
-                <td>
-                    @*@*Hover Dropdown*@
-                    <div class="dropdown center-block dropdown-hover">
-                        <a class="dropdown-toggle" data-toggle="dropdown">
-                            <span class="fa fa-users"></span>
-                        </a>
+                    <td><h5>@user.UserName</h5></td>
+                    <td><h5>@user.LadderPoints</h5></td>
+                    <td>
+                        @*@*Hover Dropdown*@
+                        <div class="dropdown center-block dropdown-hover">
+                            <a class="dropdown-toggle" data-toggle="dropdown">
+                                <span class="fa fa-users"></span>
+                            </a>
 
-                        <div class="container-fluid dropdown-menu dropdown-menu-hover">
+                            <div class="container-fluid dropdown-menu dropdown-menu-hover">
 
-                            @for (int i = 0; i < 6; i++)
-                            {
-                                var userCreature = user.UserCreatures.Where(uc => uc.InSquad).FirstOrDefault(uc => uc.Slot == i + 1);
-
-                                <div class="col-md-4 col-xs-4">
-                                    <div class="col-md-12 gamecard-xs">
-                                        <p>
-                                            @(userCreature != null ? "Lvl: " + userCreature.Level.ToString() : "Empty")
-                                            @if (userCreature != null)
-                                            {
-                                                <span>
-                                                    <img class="gamecard-element-xs" src="@Helper.GetElementUrl(userCreature.Creature.Element)" />
-                                                </span>
-                                            }
-                                        </p>
-                                        <img class="img-responsive" src="@(userCreature != null ? userCreature.Creature.ImageUrl : "/Images/Other/concrete.jpg")" />
-                                        <p>Dmg: @(userCreature != null ? userCreature.Damage.ToString() : "")</p>
-                                        <p>Def: @(userCreature != null ? userCreature.Defense.ToString() : "")</p>
-                                        <p>Hp: @(userCreature != null ? userCreature.Hp.ToString() : "")</p>
-                                    </div>
-                                </div>
-
-                                if (i == 2)
+                                @for (int i = 0; i < 6; i++)
                                 {
-                                    <div class="clearfix visible-xs"></div>
-                                                    <div class="clearfix visible-sm"></div>
-                                                    <div class="clearfix visible-md"></div>
-                                                    <div class="clearfix visible-lg"></div>
-                                }
-                            }
-                        </div>
-                    </div>
-                    
-                </td>
-                <td class="text-right">
-                    @if (user.IsOnline)
-                    {
-                        <span class="fa fa-circle text-success fa-sm-table"></span>
-                    }
-                    else
-                    {
-                        <span class="fa fa-circle-o fa-sm-table"></span>
-                    }
-                </td>
-            </tr>}
+                                    var userCreature = user.UserCreatures.Where(uc => uc.InSquad).FirstOrDefault(uc => uc.Slot == i + 1);
 
-    </tbody>
-</table>
+                                    <div class="col-md-4 col-xs-4">
+                                        <div class="col-md-12 gamecard-xs">
+                                            <p>
+                                                @(userCreature != null ? "Lvl: " + userCreature.Level.ToString() : "Empty")
+                                                @if (userCreature != null)
+                                                {
+                                                    <span>
+                                                        <img class="gamecard-element-xs" src="@Helper.GetElementUrl(userCreature.Creature.Element)" />
+                                                    </span>
+                                                }
+                                            </p>
+                                            <img class="img-responsive" src="@(userCreature != null ? userCreature.Creature.ImageUrl : "/Images/Other/concrete.jpg")" />
+                                            <p>Dmg: @(userCreature != null ? userCreature.Damage.ToString() : "")</p>
+                                            <p>Def: @(userCreature != null ? userCreature.Defense.ToString() : "")</p>
+                                            <p>Hp: @(userCreature != null ? userCreature.Hp.ToString() : "")</p>
+                                        </div>
+                                    </div>
+
+                                    if (i == 2)
+                                    {
+                                        <div class="clearfix visible-xs"></div>
+                                        <div class="clearfix visible-sm"></div>
+                                        <div class="clearfix visible-md"></div>
+                                        <div class="clearfix visible-lg"></div>
+                                    }
+                                }
+                            </div>
+                        </div>
+
+                    </td>
+                    <td class="text-right">
+                        @if (user.IsOnline)
+                        {
+                            <span class="fa fa-circle text-success fa-sm-table"></span>
+                        }
+                        else
+                        {
+                            <span class="fa fa-circle-o fa-sm-table"></span>
+                        }
+                    </td>
+                </tr>}
+
+        </tbody>
+    </table>
+</div>

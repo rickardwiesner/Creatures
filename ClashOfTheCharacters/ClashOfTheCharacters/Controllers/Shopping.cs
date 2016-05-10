@@ -21,13 +21,14 @@ namespace ClashOfTheCharacters.Controllers
         {
             var userId = User.Identity.GetUserId();
             var user = db.Users.Find(userId);
-            var userCharacters = user.UserCreatures.Select(x => x.CreatureId);
-            var characters = db.Creatures.Where(x => !userCharacters.Contains(x.Id) && x.Rarity != Rarity.Legendary && x.Rarity != Rarity.Epic).ToList();
+            //var userCharacters = user.UserCreatures.Select(x => x.CreatureId);
+            //var characters = db.Creatures.Where(x => !userCharacters.Contains(x.Id) && x.Rarity != Rarity.Legendary && x.Rarity != Rarity.Epic).ToList();
 
             var sellShop = new SellShopView()
             {
-                ShoppingItems = characters,
-                SellItems = user.UserCreatures.Select(o => o.Creature).ToList(),
+                ShoppingItems = db.Creatures.Where(c => /*!userCharacters.Contains(x.Id) && */c.Rarity != Rarity.Legendary && c.Rarity != Rarity.Epic).ToList(),
+                //SellItems = user.UserCreatures.Select(o => o.Creature).ToList(),
+                UserCreatures = user.UserCreatures,
                 Gold = user.Gold,
                 Travelling = db.Travels.Any(wb => wb.UserId == userId) || db.CurrentLands.Any(cl => cl.UserId == userId)
             };

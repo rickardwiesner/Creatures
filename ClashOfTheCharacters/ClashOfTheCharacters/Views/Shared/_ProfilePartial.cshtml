@@ -83,15 +83,15 @@
                                     </span>
                                 }
                             </p>
-                            <img class="img-responsive" src="@(userCreature != null ? userCreature.Creature.ImageUrl : "/Images/Other/concrete.jpg")" />
+                            <img class="img-responsive" src="@(userCreature != null ? userCreature.Creature.ImageUrl : "/Images/Other/concrete.jpg")"/>
                             <p>Dmg: @(userCreature != null ? userCreature.Damage.ToString() : "")</p>
                             <p>Def: @(userCreature != null ? userCreature.Defense.ToString() : "")</p>
                             <p>Hp: @(userCreature != null ? userCreature.Hp.ToString() : "")</p>
 
                         </div>
                     </a>
-                    <ul class="dropdown-menu">
-                        <li><p>Move @(userCreature != null ? userCreature.Creature.Name : "") to</p></li>
+                    <ul class="dropdown-menu" style="padding: 5px">
+                        <li><h5>Move @(userCreature != null ? userCreature.Creature.Name : "") to</h5></li>
                         @for (int j = 0; j < 6; j++)
                         {
                             var userCreatureInSlot = Model.UserCreatures.Where(uc => uc.InSquad).FirstOrDefault(tm => tm.Slot == j + 1);
@@ -100,20 +100,34 @@
                             {
                                 if (userCreatureInSlot == null)
                                 {
-                                    <li>@Html.ActionLink(string.Format("Slot: {0} - Empty", j + 1), "ChangeToEmptySlot", new { userCreatureId = userCreature.Id, slot = j + 1 })</li>
+                                    <li><h5>@Html.ActionLink(string.Format("Slot: {0} - Empty", j + 1), "ChangeToEmptySlot", new { userCreatureId = userCreature.Id, slot = j + 1 })</h5></li>
                                 }
 
                                 else if (userCreatureInSlot.Id != userCreature.Id)
                                 {
-                                    <li>@Html.ActionLink(string.Format("Slot: {0} - {1}", j + 1, userCreatureInSlot.Creature.Name), "ChangeSlot", new { originalUserCreatureId = userCreatureInSlot.Id, replacerUserCreatureId = userCreature.Id })</li>
+                                    <li><h5>@Html.ActionLink(string.Format("Slot: {0} - {1}", j + 1, userCreatureInSlot.Creature.Name), "ChangeSlot", new { originalUserCreatureId = userCreatureInSlot.Id, replacerUserCreatureId = userCreature.Id })</h5></li>
                                 }
                             }
                         }
-                        @if (Model.UserCreatures.Count > 1 && !Model.Travelling && userCreature != null)
+                        @if (userCreature != null)
                         {
                             <li class="divider"></li>
-                            <li>@Html.ActionLink("Remove from squad", "RemoveFromSquad", "User", new { userCreatureId = userCreature.Id }, null)</li>
-                        }
+
+                            if (Model.UserCreatures.Count == 1)
+                            {
+                                <li><h5>Need at least one creature in squad</h5></li>
+                            }
+
+                            else if (Model.Travelling)
+                            {
+                                <li><h5>Can't remove from squad while travelling</h5></li>
+                            }
+
+                            else
+                            {
+                                <li><h5>@Html.ActionLink("Remove from squad", "RemoveFromSquad", "User", new { userCreatureId = userCreature.Id }, null)</h5></li>
+                            }
+                        }                     
 
                     </ul>
                 </div>

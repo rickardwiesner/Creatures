@@ -41,14 +41,10 @@
                 <h3 class="text-center">Nothing to show</h3>
             </div>
         }
-
-
-
     </div>
 
     @foreach (var auctionCreature in Model)
     {
-            <!-- Trigger the modal with a button -->
         <div class="col-md-12 col-xs-12 container-auction">
             <div class="col-md-3 col-xs-4">
                 <button type="button" class="btn-none" data-toggle="modal" data-target="#gamecard-modal-@auctionCreature.Id">
@@ -177,8 +173,6 @@
                 <hr />
             </div>
         </div>
-
-
 
         <!-- Modal -->
         <div class="modal fade" id="gamecard-modal-@auctionCreature.Id" role="dialog">

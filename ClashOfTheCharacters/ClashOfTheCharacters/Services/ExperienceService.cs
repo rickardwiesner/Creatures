@@ -79,12 +79,12 @@ namespace ClashOfTheCharacters.Services
 
             if (levelDifference < -10)
             {
-                xp = won ? 24 : 4;
+                xp = won ? 24 : 8;
             }
 
             else if (levelDifference < -5)
             {
-                xp = won ? 22 : 4;
+                xp = won ? 22 : 8;
             }
 
             else if (levelDifference < -1)
@@ -99,17 +99,17 @@ namespace ClashOfTheCharacters.Services
 
             else if (levelDifference < 6)
             {
-                xp = won ? 16 : 8;
+                xp = won ? 16 : 4;
             }
 
             else if (levelDifference < 10)
             {
-                xp = won ? 14 : 8;
+                xp = won ? 14 : 4;
             }
 
             else
             {
-                xp = won ? 12 : 8;
+                xp = won ? 12 : 2;
             }
 
             var userCreature = wildBattleCreature.User.UserCreatures.Where(uc => uc.InSquad).First(uc => uc.CreatureId == wildBattleCreature.CreatureId);

@@ -104,8 +104,10 @@ namespace ClashOfTheCharacters.Services
             {
                 wildBattle.Finished = true;
                 wildBattle.Won = true;
-
                 db.SaveChanges();
+
+                DistributeReward(userId);
+
                 return;
             }
 
@@ -183,8 +185,9 @@ namespace ClashOfTheCharacters.Services
             {
                 wildBattle.Finished = true;
                 wildBattle.Won = true;
-
                 db.SaveChanges();
+
+                DistributeReward(userId);
 
                 return;
             }
@@ -303,38 +306,52 @@ namespace ClashOfTheCharacters.Services
             return random < successrate;
         }
 
-        public void FinishBattle(string userId)
+        public void DistributeReward(string userId)
         {
             var user = db.Users.Find(userId);
             var wildBattle = db.WildBattles.First(wb => wb.UserId == userId);
             var currentLand = db.CurrentLands.First(cl => cl.UserId == userId);
 
+            foreach (var wildBattleAction in wildBattle.WildBattleActions.Where(wb => wb.CaptureSuccess == true))
+            {
+                db.UserCreatures.Add(new UserCreature
+                {
+                    CreatureId = wildBattleAction.Defender.CreatureId,
+                    Level = wildBattleAction.Defender.Level,
+                    UserId = userId
+                });
+            }
+
+            var experienceService = new ExperienceService();
+
+            if (user.ClearedLands.Any(cl => cl.LandId == currentLand.LandId))
+            {
+                wildBattle.GoldEarned = (wildBattle.Stage.GoldReward / 2);
+                wildBattle.XpEarned = (wildBattle.Stage.XpReward / 2);
+
+                user.Gold += (wildBattle.Stage.GoldReward / 2);
+                experienceService.AddXp(userId, (wildBattle.Stage.XpReward / 2));
+            }
+
+            else
+            {
+                wildBattle.GoldEarned = wildBattle.Stage.GoldReward;
+                wildBattle.XpEarned = wildBattle.Stage.XpReward;
+
+                user.Gold += wildBattle.Stage.GoldReward;
+                experienceService.AddXp(userId, wildBattle.Stage.XpReward);
+            }
+
+            db.SaveChanges();
+        }
+
+        public void FinishBattle(string userId)
+        {
+            var currentLand = db.CurrentLands.First(cl => cl.UserId == userId);
+            var wildBattle = db.WildBattles.First(wb => wb.UserId == userId);
+
             if (wildBattle.Won)
             {
-                foreach (var wildBattleAction in wildBattle.WildBattleActions.Where(wb => wb.CaptureSuccess == true))
-                {
-                    db.UserCreatures.Add(new UserCreature
-                    {
-                        CreatureId = wildBattleAction.Defender.CreatureId,
-                        Level = wildBattleAction.Defender.Level,
-                        UserId = userId
-                    });
-                }
-
-                var experienceService = new ExperienceService();
-
-                if (user.ClearedLands.Any(cl => cl.LandId == currentLand.LandId))
-                {
-                    user.Gold += (wildBattle.Stage.GoldReward / 2);
-                    experienceService.AddXp(userId, (wildBattle.Stage.XpReward / 2));
-                }
-
-                else
-                {
-                    user.Gold += wildBattle.Stage.GoldReward;
-                    experienceService.AddXp(userId, wildBattle.Stage.XpReward);
-                }
-
                 if (currentLand.CurrentLevel == currentLand.Land.Stages.Count)
                 {
                     if (!db.ClearedLands.Any(cl => cl.UserId == userId && cl.LandId == currentLand.LandId))

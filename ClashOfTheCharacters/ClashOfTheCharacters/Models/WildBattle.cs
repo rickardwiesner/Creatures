@@ -19,6 +19,10 @@ namespace ClashOfTheCharacters.Models
 
         public bool Finished { get; set; }
 
+        public int XpEarned { get; set; }
+
+        public int GoldEarned { get; set; }
+
         public virtual ICollection<WildBattleCreature> WildBattleCreatures { get; set; }
         public virtual ICollection<WildBattleAction> WildBattleActions { get; set; }
     }

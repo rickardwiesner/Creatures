@@ -70,7 +70,7 @@ namespace ClashOfTheCharacters.Controllers
 
             var auctionCreature = db.AuctionCreatures.Find(auctionCreatureId);
 
-            if (auctionCreature.CurrentBid != null && amount >= auctionCreature.CurrentBid + 50 || auctionCreature.CurrentBid == null && user.Gold >= amount && !user.UserCreatures.Any(uc => uc.CreatureId == auctionCreature.UserCreature.CreatureId))
+            if (auctionCreature.CurrentBid != null && amount >= auctionCreature.CurrentBid + 50 || auctionCreature.CurrentBid == null && user.Gold >= amount)
             {
                 if (auctionCreature.CurrentBidder != null)
                 {
@@ -107,7 +107,7 @@ namespace ClashOfTheCharacters.Controllers
 
             var auctionCreature = db.AuctionCreatures.Find(auctionCreatureId);
 
-            if (auctionCreature.BuyoutPrice != null && user.Gold >= auctionCreature.BuyoutPrice && !user.UserCreatures.Any(uc => uc.Id == auctionCreature.UserCreatureId))
+            if (auctionCreature.BuyoutPrice != null && user.Gold >= auctionCreature.BuyoutPrice)
             {
                 if (auctionCreature.CurrentBidder != null)
                 {

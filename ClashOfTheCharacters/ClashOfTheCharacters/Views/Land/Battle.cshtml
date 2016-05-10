@@ -138,11 +138,6 @@
                     <li>You have no capture equipment</li>
                 }
 
-                else if (Model.User.UserCreatures.Any(uc => uc.CreatureId == cpuCreature.CreatureId))
-                {
-                    <li>Can't have duplicates</li>
-                }
-
                 else
                 {
                     foreach (var item in Model.User.UserItems.Where(ui => ui.InBag))
@@ -161,7 +156,105 @@
 
         else
         {
-            <button class="btn btn-custom btn-block margin-bottom-10">Reward</button>
+            <!-- Trigger the modal with a button -->
+            <button type="button" class="btn btn-custom btn-block margin-bottom-10" data-toggle="modal" data-target="#reward">Reward</button>
+
+            <!-- Modal -->
+            <div id="reward" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content modal-reward">
+
+                        <div class="modal-body container-fluid">
+                            <div class="col-md-12 text-center">
+                                <div class="col-md-2">
+                                    <img src="@Model.User.ImageUrl" class="img-circle img-responsive" />
+                                </div>
+                                <div class="col-md-5">
+                                    <h5>Gold</h5>
+                                    <h3 class="@Html.AttributeEncode(Model.Won ? "text-success" : "text-danger")">@Model.XpEarned</h3>
+                                </div>
+                                <div class="col-md-5">
+                                    <h5>Xp</h5>
+                                    <h3 class="@Html.AttributeEncode(Model.Won ? "text-success" : "text-danger")">@Model.GoldEarned</h3>
+                                </div>
+                               
+                            </div>
+                            <div class="col-md-12">
+                                <hr />
+                            </div>
+                            <div class="col-md-12 col-xs-12">
+                                @{ int counterXs = 0;}
+                                @foreach (var wildBattleCreature in Model.WildBattleCreatures.Where(wbc => wbc.UserId != null && wbc.XpEarned > 0))
+                                {
+                                    counterXs++;
+
+                                    <div class="col-md-4 col-xs-6 margin-bottom-10">
+                                        <div class="col-md-8 col-xs-9">
+                                            <div class="col-md-12 gamecard-xs">
+                                                <p>
+                                                    Lvl: @wildBattleCreature.Level
+
+                                                    <span>
+                                                        <img class="gamecard-element-xs" src="@Helper.GetElementUrl(wildBattleCreature.Creature.Element)" />
+                                                    </span>
+
+                                                </p>
+                                                <img class="img-responsive" src="@wildBattleCreature.Creature.ImageUrl" />
+                                                <p>Dmg: @wildBattleCreature.Damage</p>
+                                                <p>Def: @wildBattleCreature.Defense</p>
+                                                <p>Hp: @wildBattleCreature.Hp</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-xs-3">
+                                            <h5>Xp</h5>
+                                            <h4 class="text-success">@wildBattleCreature.XpEarned</h4>
+                                        </div>
+                                    </div>
+
+                                    if (counterXs % 2 == 0)
+                                    {
+                                        <div class="clearfix visible-xs"></div>
+                                    }
+                                }
+                            </div>
+                            @if (Model.WildBattleActions.Any(wba => wba.CaptureSuccess == true && Model.Won))
+                            {
+                                <div class="col-md-12 text-center">
+                                    <hr />
+                                    <h4>New Creatures!</h4>
+                                </div>
+                                <div class="col-md-12">
+                                    @foreach (var capture in Model.WildBattleActions.Where(wba => wba.CaptureSuccess == true && Model.Won))
+                                    {
+                                        <div class="col-md-3 col-xs-6 margin-bottom-10">
+
+                                                <div class="col-md-12 gamecard-xs">
+                                                    <p>
+                                                        Lvl: @capture.Defender.Level
+
+                                                        <span>
+                                                            <img class="gamecard-element-xs" src="@Helper.GetElementUrl(capture.Defender.Creature.Element)" />
+                                                        </span>
+
+                                                    </p>
+                                                    <img class="img-responsive" src="@capture.Defender.Creature.ImageUrl" />
+                                                    <p>Dmg: @capture.Defender.Damage</p>
+                                                    <p>Def: @capture.Defender.Defense</p>
+                                                    <p>Hp: @capture.Defender.Hp</p>
+                                                </div>
+
+                                        </div>
+                                    }
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
 
             <form role="form" action="/Land/Finish" method="post" class="margin-bottom-10">
                 <button type="submit" class="btn btn-custom btn-block">Finish</button>
