@@ -23,7 +23,7 @@ namespace ClashOfTheCharacters.Services
                     CurrentLevel = 1,
                     LandId = travel.LandId,
                     UserId = userId,
-                    WildCreatureStartLevel = user.ClearedLands.Count == 0 ? 10 : user.ClearedLands.Count * 10
+                    WildCreatureStartLevel = (user.ClearedLands.Count + 1) * 10
                 });
 
                 db.Travels.Remove(travel);
