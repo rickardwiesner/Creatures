@@ -1,4 +1,6 @@
-﻿@model ClashOfTheCharacters.Models.SellShopView
+﻿@using ClashOfTheCharacters.Helpers
+
+@model ClashOfTheCharacters.Models.SellShopView
 
 @{
     ViewBag.Title = "Shop";
@@ -56,8 +58,9 @@
 
             <div class="col-md-12 col-sm-12 col-xs-12 gamecard">
                 <h4>
-                    <strong>@Html.DisplayFor(modelItem => item.Name)</strong>
-                    <span> @Html.DisplayFor(modelItem => item.Element)</span>
+                    <span><img class="gamecard-rarity" src="@Helper.GetRarityUrl(item.Rarity)" /></span>
+                    <strong>@item.Name</strong>
+                    <span><img class="gamecard-element" src="@Helper.GetElementUrl(item.Element)" /></span>
 
                     <span>
                         @*<div class="btn-group gamecard-element">
