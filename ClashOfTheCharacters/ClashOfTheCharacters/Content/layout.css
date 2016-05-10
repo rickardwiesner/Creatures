@@ -109,7 +109,6 @@ a:hover, a:focus {
 }
 
 #carousel-home .item {
-    /*background-color: #f0d2bb;*/
     height: 100%;
 }
 
@@ -117,6 +116,20 @@ a:hover, a:focus {
     background-image: url('../Images/Land/fire.jpg');
     background-position: center;
     background-size: cover;
+}
+
+.carousel-background-image h1 {
+    color: #cecbcb;
+}
+
+.carousel-background-image h3 {
+    color: #cecbcb;
+}
+
+.carousel-background-image div {
+    background-color: black;
+    opacity: 0.8;
+    margin-top: 150px;   
 }
 
 .carousel-height {
@@ -136,4 +149,18 @@ a:hover, a:focus {
 
 .carousel-indicators li {
     border: 1px solid #f0d2bb;
+}
+
+.btn-link-custom {
+    background-color: transparent;
+    border: none;
+    color: #cd4242;
+}
+
+.btn-link-custom:hover {
+    color: #c14646
+}
+
+.btn-link-custom:focus {
+    outline: none;
 }

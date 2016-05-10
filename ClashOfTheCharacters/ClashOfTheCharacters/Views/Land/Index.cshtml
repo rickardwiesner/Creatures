@@ -16,9 +16,30 @@
     {
         if (Model.CurrentLevel == stage.Level)
         {
-            <a href="/Land/Battle/@Model.Id">
-                <span class="fa fa-4x fa-question-circle text-danger" style="@Html.AttributeEncode(string.Format("top: {0}px; left: {1}px", stage.PositionY, stage.PositionX))"></span>
-            </a>
+            if (Model.User.Stamina < 10 && ViewBag.OnGoingBattle == false)
+            {
+                <a>
+                    <span class="fa fa-4x fa-question-circle text-danger" style="@Html.AttributeEncode(string.Format("top: {0}px; left: {1}px", stage.PositionY, stage.PositionX))"></span>
+                </a>
+                <div class="stamina" style="@Html.AttributeEncode(string.Format("top: {0}px; left: {1}px", stage.PositionY + 10, stage.PositionX + 55))">
+                    <h5>Not enough stamina</h5>
+                </div>
+
+            }
+
+            else
+            {
+                <a href="/Land/Battle/@Model.Id">
+                    <span class="fa fa-4x fa-question-circle text-danger" style="@Html.AttributeEncode(string.Format("top: {0}px; left: {1}px", stage.PositionY, stage.PositionX))"></span>
+                </a>
+
+                if (ViewBag.OnGoingBattle == false)
+                {
+                    <div class="stamina" style="@Html.AttributeEncode(string.Format("top: {0}px; left: {1}px", stage.PositionY + 10, stage.PositionX + 55))">
+                        <h5>Cost: 10 Stamina</h5>
+                    </div>
+                }
+            }
         }
 
         else if (Model.CurrentLevel > stage.Level)
@@ -31,8 +52,10 @@
         <img class="shop" src="/Images/Land/shop.png" style="@Html.AttributeEncode(string.Format("top: {0}px; left: {1}px", Model.Land.ShopPositionY, Model.Land.ShopPositionX))" />
     </a>
 
-    <form action="/Land/Leave" method="post" class="form-leave">
+    <form action="/Land/Leave" method="post" class="form-leave form-inline">
         <input type="submit" class="btn btn-custom-dark" value="Leave" />
-        <label>You will not receive any compensation</label>
+        <div class="no-comp form-group">
+            <h5>You will not receive any compensation</h5>
+        </div>
     </form>
 </div>

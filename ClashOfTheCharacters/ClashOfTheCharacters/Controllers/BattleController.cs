@@ -37,7 +37,7 @@ namespace ClashOfTheCharacters.Controllers
 
             if (user.UserCreatures.Count == 0)
             {
-                return RedirectToAction("Select", "Character");
+                return RedirectToAction("Select", "Creature");
             }
 
             if (userId != id && id != null)
@@ -71,7 +71,7 @@ namespace ClashOfTheCharacters.Controllers
 
             if (user.UserCreatures.Count == 0)
             {
-                return RedirectToAction("Select", "Character");
+                return RedirectToAction("Select", "Creature");
             }
 
             if (!db.Battles.Any(b => b.ChallengeId == id))

@@ -55,6 +55,7 @@ namespace ClashOfTheCharacters.Services
             }
 
             var user = db.Users.Find(userId);
+            user.Stamina -= 10;
 
             foreach (var userCreature in user.UserCreatures.Where(uc => uc.InSquad).OrderBy(tm => tm.Slot).ToList())
             {

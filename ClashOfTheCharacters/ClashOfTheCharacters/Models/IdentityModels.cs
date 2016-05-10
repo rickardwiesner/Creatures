@@ -49,6 +49,8 @@ namespace ClashOfTheCharacters.Models
 
         public DateTimeOffset LastActive { get; set; }
 
+        public DateTimeOffset LastRainbowGemTime { get; set; }
+
         public DateTimeOffset LastStaminaTime { get; set; }
 
         public bool IsOnline { get { return (DateTimeOffset.Now - LastActive).TotalMinutes < 30; } }

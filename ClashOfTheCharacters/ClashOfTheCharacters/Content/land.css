@@ -1,5 +1,5 @@
 ﻿.stage-unavailable {
-   opacity: 0.5;
+    opacity: 0.5;
 }
 
 .land {
@@ -25,12 +25,28 @@
 }
 
 .land a > span:hover {
-    color: black;
+    color: #a74a4a;
 }
 
 .land a > span {
-    color: #322828;
+    color: #c53d3d;
 }
+
+.land span {
+    color: #4ba94f;
+}
+
+.stamina {
+    position: absolute;
+    background-color: black;
+    opacity: 0.7;
+}
+
+    .stamina h5 {
+        color: #cacaca;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
 
 .land span {
     position: absolute;
@@ -51,4 +67,15 @@
 
 .modal-reward {
     background-color: #fff0e5;
+}
+
+.no-comp {
+    background-color: black;
+    opacity: 0.8;
+}
+
+.no-comp h5 {
+    color: #cacaca;
+    padding-left: 5px;
+    padding-right: 5px;
 }
