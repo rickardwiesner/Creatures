@@ -101,3 +101,39 @@ a:hover, a:focus {
 .margin-top-20 {
     margin-top: 20px;
 }
+
+.logo {
+    width: 50px;
+    height: 50px;
+    margin: 5px 10px;
+}
+
+#carousel-home .item {
+    /*background-color: #f0d2bb;*/
+    height: 100%;
+}
+
+.carousel-background-image {
+    background-image: url('../Images/Land/fire.jpg');
+    background-position: center;
+    background-size: cover;
+}
+
+.carousel-height {
+    height: 400px;
+}
+
+.carousel-creatures {
+    padding-bottom: 50px;
+}
+.carousel-creatures p {
+    margin: 0;
+}
+
+.carousel-indicators .active {
+    background-color: #f0d2bb;
+}
+
+.carousel-indicators li {
+    border: 1px solid #f0d2bb;
+}

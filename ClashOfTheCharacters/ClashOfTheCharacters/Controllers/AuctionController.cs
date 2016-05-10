@@ -1,5 +1,6 @@
 ﻿using ClashOfTheCharacters.Helpers;
 using ClashOfTheCharacters.Models;
+using ClashOfTheCharacters.Services;
 using ClashOfTheCharacters.ViewModels;
 using Microsoft.AspNet.Identity;
 using System;
@@ -21,6 +22,9 @@ namespace ClashOfTheCharacters.Controllers
             ViewBag.Gold = db.Users.Find(userId).Gold;
             ViewBag.User = db.Users.Find(userId);
 
+            var auctionService = new AuctionService();
+            auctionService.CheckAuctions();
+
             return View("Index", db.AuctionCreatures.Where(ac => !ac.Finished && ac.OwnerId != userId).OrderBy(ac => ac.EndTime).ToList());
         }
 
@@ -30,7 +34,11 @@ namespace ClashOfTheCharacters.Controllers
             ViewBag.Gold = db.Users.Find(userId).Gold;
             ViewBag.User = db.Users.Find(userId);
 
-            return View("Index", db.AuctionCreatures.Where(ac => ac.OwnerId == userId).ToList());
+            var auctionService = new AuctionService();
+            auctionService.CheckAuctions();
+
+            var auctionTargets = db.AuctionTargets.Where(at => at.UserId == userId).Select(at => at.AuctionCreatureId);
+            return View("Index", db.AuctionCreatures.Where(ac => auctionTargets.Contains(ac.Id) && ac.OwnerId == userId).OrderBy(ac => ac.EndTime).OrderBy(ac => ac.Finished).ToList());
         }
 
         public ActionResult Targets()
@@ -39,9 +47,11 @@ namespace ClashOfTheCharacters.Controllers
             ViewBag.Gold = db.Users.Find(userId).Gold;
             ViewBag.User = db.Users.Find(userId);
 
-            var auctionTargets = db.AuctionTargets.Where(at => at.UserId == userId).Select(at => at.AuctionCreatureId);
+            var auctionService = new AuctionService();
+            auctionService.CheckAuctions();
 
-            return View("Index", db.AuctionCreatures.Where(ac => auctionTargets.Contains(ac.Id)).ToList());
+            var auctionTargets = db.AuctionTargets.Where(at => at.UserId == userId).Select(at => at.AuctionCreatureId);
+            return View("Index", db.AuctionCreatures.Where(ac => auctionTargets.Contains(ac.Id) && ac.OwnerId != userId || ac.CurrentBidderId == userId && !ac.Finished).OrderBy(ac => ac.EndTime).OrderBy(ac => ac.Finished).ToList());
         }
 
         public ActionResult Items()
@@ -60,7 +70,7 @@ namespace ClashOfTheCharacters.Controllers
 
             var auctionCreature = db.AuctionCreatures.Find(auctionCreatureId);
 
-            if (auctionCreature.CurrentBid != null && amount >= auctionCreature.CurrentBid + 50 || auctionCreature.CurrentBid == null && user.Gold >= amount && !user.UserCreatures.Any(uc => uc.CreatureId == auctionCreature.UserCreature.CreatureId))
+            if (auctionCreature.CurrentBid != null && amount >= auctionCreature.CurrentBid + 50 || auctionCreature.CurrentBid == null && user.Gold >= amount)
             {
                 if (auctionCreature.CurrentBidder != null)
                 {
@@ -84,7 +94,7 @@ namespace ClashOfTheCharacters.Controllers
                 db.SaveChanges();
             }
 
-            return RedirectToAction("Creatures");
+            return Redirect(Request.UrlReferrer.PathAndQuery);
         }
 
         [HttpPost]
@@ -97,7 +107,7 @@ namespace ClashOfTheCharacters.Controllers
 
             var auctionCreature = db.AuctionCreatures.Find(auctionCreatureId);
 
-            if (auctionCreature.BuyoutPrice != null && user.Gold >= auctionCreature.BuyoutPrice && !user.UserCreatures.Any(uc => uc.Id == auctionCreature.UserCreatureId))
+            if (auctionCreature.BuyoutPrice != null && user.Gold >= auctionCreature.BuyoutPrice)
             {
                 if (auctionCreature.CurrentBidder != null)
                 {
@@ -121,7 +131,7 @@ namespace ClashOfTheCharacters.Controllers
             }
 
 
-            return RedirectToAction("Creatures");
+            return Redirect(Request.UrlReferrer.PathAndQuery);
         }
 
         public ActionResult SellCreature(int userCreatureId)
@@ -141,25 +151,28 @@ namespace ClashOfTheCharacters.Controllers
         }
 
         [HttpPost]
-        public ActionResult SellCreature(AuctionCreatureViewModel auctionCreatureViewModel)
+        public ActionResult SellCreature(AuctionCreatureViewModel model)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && (model.BuyoutPrice != null && model.BuyoutPrice - model.StartPrice >= 50 || model.BuyoutPrice == null))
             {
                 var userId = User.Identity.GetUserId();
                 var user = db.Users.Find(userId);
 
-                if (user.UserCreatures.Any(uc => uc.Id == auctionCreatureViewModel.UserCreatureId))
+                if (user.UserCreatures.Any(uc => uc.Id == model.UserCreatureId))
                 {
-                    db.AuctionCreatures.Add(new AuctionCreature
+                    var auctionCreature = new AuctionCreature
                     {
                         OwnerId = userId,
-                        UserCreatureId = auctionCreatureViewModel.UserCreatureId,
-                        StartPrice = auctionCreatureViewModel.StartPrice,
-                        BuyoutPrice = auctionCreatureViewModel.BuyoutPrice,
-                        EndTime = DateTimeOffset.Now.AddHours(auctionCreatureViewModel.Hours)
-                    });
+                        UserCreatureId = model.UserCreatureId,
+                        StartPrice = model.StartPrice,
+                        BuyoutPrice = model.BuyoutPrice,
+                        EndTime = DateTimeOffset.Now.AddHours(model.Hours)
+                    };
 
-                    user.UserCreatures.First(uc => uc.Id == auctionCreatureViewModel.UserCreatureId).InAuction = true;
+                    db.AuctionCreatures.Add(auctionCreature);
+                    db.AuctionTargets.Add(new AuctionTarget { AuctionCreatureId = auctionCreature.Id, UserId = userId });
+
+                    user.UserCreatures.First(uc => uc.Id == model.UserCreatureId).InAuction = true;
 
                     db.SaveChanges();
                 }
@@ -167,7 +180,58 @@ namespace ClashOfTheCharacters.Controllers
                 return RedirectToAction("Index", "Creature");
             }
 
+            else if (model.BuyoutPrice != null && model.BuyoutPrice - model.StartPrice < 50)
+            {
+                ViewBag.Error = "Buyout Price needs to be 50 gold or more than Start Price";
+            }
+
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult TargetCreature()
+        {
+            var userId = User.Identity.GetUserId();
+
+            var auctionCreatureId = Convert.ToInt32(Request.Form.Get("auctionCreatureId"));
+
+            db.AuctionTargets.Add(new AuctionTarget { UserId = userId, AuctionCreatureId = auctionCreatureId });
+            db.SaveChanges();
+
+            return Redirect(Request.UrlReferrer.PathAndQuery);
+        }
+
+        public ActionResult UntargetCreature()
+        {
+            var userId = User.Identity.GetUserId();
+
+            var auctionCreatureId = Convert.ToInt32(Request.Form.Get("auctionCreatureId"));
+            var auctionTarget = db.AuctionTargets.First(at => at.UserId == userId && at.AuctionCreatureId == auctionCreatureId);
+
+            db.AuctionTargets.Remove(auctionTarget);
+            db.SaveChanges();
+
+            return Redirect(Request.UrlReferrer.PathAndQuery);
+        }
+
+        public ActionResult ClearTargets()
+        {
+            var userId = User.Identity.GetUserId();
+
+            db.AuctionTargets.RemoveRange(db.AuctionTargets.Where(at => at.UserId == userId && at.AuctionCreature.Finished && at.AuctionCreature.OwnerId != userId));
+            db.SaveChanges();
+
+            return Redirect(Request.UrlReferrer.PathAndQuery);
+        }
+
+        public ActionResult ClearSales()
+        {
+            var userId = User.Identity.GetUserId();
+
+            db.AuctionTargets.RemoveRange(db.AuctionTargets.Where(at => at.UserId == userId && at.AuctionCreature.Finished && at.AuctionCreature.OwnerId == userId));
+            db.SaveChanges();
+
+            return Redirect(Request.UrlReferrer.PathAndQuery);
         }
     }
 }

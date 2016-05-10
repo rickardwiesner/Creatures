@@ -16,27 +16,27 @@ namespace ClashOfTheCharacters.Services
         public void InitializeBattle(string userId)
         {
             var currentLand = db.CurrentLands.First(cl => cl.UserId == userId);
+            var stage = currentLand.Land.Stages.First(s => s.Level == currentLand.CurrentLevel);
 
-            db.WildBattles.Add(new WildBattle { LandId = currentLand.LandId, UserId = userId });
+            db.WildBattles.Add(new WildBattle { StageId = stage.Id, UserId = userId });
             db.SaveChanges();
 
-            var numberOfCreatures = GetNumberOfCreatures(currentLand.CurrentLevel);
             var wildBattleId = db.WildBattles.First(ct => ct.UserId == userId).Id;
 
-            for (int i = 1; i <= numberOfCreatures; i++)
+            for (int i = 1; i <= stage.NumberOfCreatures; i++)
             {
                 Rarity rarity = new Rarity();
 
                 for (int j = 0; j < 10; j++)
                 {
-                    rarity = RandomizeRarity(currentLand.CurrentLevel, currentLand.Land.Levels);
+                    rarity = RandomizeRarity(currentLand.CurrentLevel, currentLand.Land.Stages.Count);
                 }
 
                 int creatureId = 0;
 
                 for (int j = 0; j < 10; j++)
                 {
-                    creatureId = RandomizeCreatureId(rarity);
+                    creatureId = RandomizeCreatureId(stage.Land.Element, rarity);
                 }
 
                 var creature = db.Creatures.Find(creatureId);
@@ -104,8 +104,10 @@ namespace ClashOfTheCharacters.Services
             {
                 wildBattle.Finished = true;
                 wildBattle.Won = true;
-
                 db.SaveChanges();
+
+                DistributeReward(userId);
+
                 return;
             }
 
@@ -183,8 +185,9 @@ namespace ClashOfTheCharacters.Services
             {
                 wildBattle.Finished = true;
                 wildBattle.Won = true;
-
                 db.SaveChanges();
+
+                DistributeReward(userId);
 
                 return;
             }
@@ -303,39 +306,53 @@ namespace ClashOfTheCharacters.Services
             return random < successrate;
         }
 
-        public void FinishBattle(string userId)
+        public void DistributeReward(string userId)
         {
             var user = db.Users.Find(userId);
             var wildBattle = db.WildBattles.First(wb => wb.UserId == userId);
             var currentLand = db.CurrentLands.First(cl => cl.UserId == userId);
 
+            foreach (var wildBattleAction in wildBattle.WildBattleActions.Where(wb => wb.CaptureSuccess == true))
+            {
+                db.UserCreatures.Add(new UserCreature
+                {
+                    CreatureId = wildBattleAction.Defender.CreatureId,
+                    Level = wildBattleAction.Defender.Level,
+                    UserId = userId
+                });
+            }
+
+            var experienceService = new ExperienceService();
+
+            if (user.ClearedLands.Any(cl => cl.LandId == currentLand.LandId))
+            {
+                wildBattle.GoldEarned = (wildBattle.Stage.GoldReward / 2);
+                wildBattle.XpEarned = (wildBattle.Stage.XpReward / 2);
+
+                user.Gold += (wildBattle.Stage.GoldReward / 2);
+                experienceService.AddXp(userId, (wildBattle.Stage.XpReward / 2));
+            }
+
+            else
+            {
+                wildBattle.GoldEarned = wildBattle.Stage.GoldReward;
+                wildBattle.XpEarned = wildBattle.Stage.XpReward;
+
+                user.Gold += wildBattle.Stage.GoldReward;
+                experienceService.AddXp(userId, wildBattle.Stage.XpReward);
+            }
+
+            db.SaveChanges();
+        }
+
+        public void FinishBattle(string userId)
+        {
+            var currentLand = db.CurrentLands.First(cl => cl.UserId == userId);
+            var wildBattle = db.WildBattles.First(wb => wb.UserId == userId);
+
             if (wildBattle.Won)
             {
-                foreach (var wildBattleAction in wildBattle.WildBattleActions.Where(wb => wb.CaptureSuccess == true))
-                {
-                    db.UserCreatures.Add(new UserCreature
-                    {
-                        CreatureId = wildBattleAction.Defender.CreatureId,
-                        Level = wildBattleAction.Defender.Level,
-                        UserId = userId
-                    });
-                }
-
-                var experienceService = new ExperienceService();
-
-                if (user.ClearedLands.Any(cl => cl.LandId == currentLand.LandId))
-                {
-                    user.Gold += (wildBattle.Land.GoldReward / 2);
-                    experienceService.AddXp(userId, (wildBattle.Land.XpReward / 2));
-                }
-
-                else
-                {
-                    user.Gold += wildBattle.Land.GoldReward;
-                    experienceService.AddXp(userId, wildBattle.Land.XpReward);
-                }
-
-                if (currentLand.CurrentLevel == currentLand.Land.Levels)
+                if (currentLand.CurrentLevel == currentLand.Land.Stages.Count)
                 {
                     if (!db.ClearedLands.Any(cl => cl.UserId == userId && cl.LandId == currentLand.LandId))
                     {
@@ -411,31 +428,9 @@ namespace ClashOfTheCharacters.Services
             return (((2 * (float)attacker.Level + 10) / 250) * ((float)attacker.Damage / (float)defender.Defense) * (float)attacker.Creature.BaseAttack + 2) * (1.5f * elementBonus * (random * 2));
         }
 
-        int GetNumberOfCreatures(int stageIndex)
+        int RandomizeCreatureId(Element element, Rarity rarity)
         {
-            int numberOfCreatures = 0;
-
-            if (stageIndex <= 2)
-            {
-                numberOfCreatures = 1;
-            }
-
-            else if (stageIndex <= 4)
-            {
-                numberOfCreatures = 2;
-            }
-
-            else
-            {
-                numberOfCreatures = 3;
-            }
-
-            return numberOfCreatures;
-        }
-
-        int RandomizeCreatureId(Rarity rarity)
-        {
-            var creatures = db.Creatures.Where(c => c.Rarity == rarity).ToList();
+            var creatures = db.Creatures.Where(c => c.Rarity == rarity && c.Element == element).ToList();
 
             var instance = new Random();
             int random = 0;

@@ -11,8 +11,14 @@
 
 <div class="row">
 
+    @if (!Model.Any(m => !m.InSquad && !m.InAuction))
+    {
+        <h4 class="text-center">No Creatures here</h4>
+    }
+
     @*Om dom inte är med i squaden*@
-    <h4>Creatures you own but are not in your squad.</h4>
+
+    @*<h4>Creatures you own but are not in your squad.</h4>*@
     @foreach (var userCreature in Model)
     {
         if (userCreature.InSquad == false)
@@ -25,56 +31,50 @@
                     <button class="btn-link dropdown-toggle" type="button" id="creature-option" data-toggle="dropdown">
                         <span class="fa fa-ellipsis-h fa-2x"></span>
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="creature-option">
+                    <ul class="dropdown-menu dropdown-menu-right" style="padding: 5px" role="menu" aria-labelledby="creature-option">
 
                         @if (travelling)
                         {
-                            <li><p>Can't change while travelling</p></li>
+                            <li><h5>Can't change while travelling</h5></li>
                         }
 
-                        else if (userCreature.InSquad)
+                        else if (userCreature.User.UserCreatures.Any(uc => uc.CreatureId == userCreature.CreatureId && uc.InSquad))
                         {
-                            <li>@Html.ActionLink("Remove from squad", "RemoveFromSquad", new { userCreatureId = userCreature.Id }, new { @role = "menuitem" })</li>
+                            <li><h5>Only one of the same creature in squad</h5></li>
                         }
 
                         else if (userCreature.User.UserCreatures.Count(uc => uc.InSquad) == 6)
                         {
-                            <li><p>Squad is full</p></li>
+                            <li><h5>Squad is full</h5></li>
                         }
 
                         else
                         {
-                            <li>@Html.ActionLink("Add to squad", "AddToSquad", new { userCreatureId = userCreature.Id }, new { @role = "menuitem" })</li>
+                            <li><h5>@Html.ActionLink("Add to squad", "AddToSquad", new { userCreatureId = userCreature.Id }, new { @role = "menuitem" })</h5></li>
                         }
 
-                        <li><p>Details (Not available)</p></li>
-                        @*<li>@Html.ActionLink("Details", "Details", new { userCreatureId = userCreature.Id }, new { @role = "menuitem" })</li>*@
-
+                        <li><h5 class="margin-top-20">Sell</h5></li>
                         <li role="presentation" class="divider"></li>
-                        <li><p>Sell</p></li>
-                        <li role="presentation" class="divider"></li>
-
-                        @*<li>@Html.ActionLink("Sell", "Sell", new { userCreatureId = userCreature.Id }, new { @role = "menuitem" })</li>*@
 
                         @if (userCreature.User.UserCreatures.Count(uc => !uc.InAuction) == 1)
                         {
-                            <li><p>Need at least one creature</p></li>
+                            <li><h5>Need at least one creature</h5></li>
                         }
 
                         else if (travelling)
                         {
-                            <li><p>Can't sell while travelling</p></li>
+                            <li><h5>Can't sell while travelling</h5></li>
                         }
 
                         else if (userCreature.InSquad)
                         {
-                            <li><p>Remove from squad to sell</p></li>
+                            <li><h5>Remove from squad to sell</h5></li>
                         }
 
                         else
                         {
-                            <li><p>Quick Sell (Not available)</p></li>
-                            <li>@Html.ActionLink("Sell on auction", "SellCreature", "Auction", new { userCreatureId = userCreature.Id }, new { @role = "menuitem" })</li>
+                            <li><h5>@Html.ActionLink("Quick Sell (" + userCreature.Worth + " Gold)", "Sell", "Creature", new { userCreatureId = userCreature.Id }, new { @role = "menuitem" })</h5></li>
+                            <li><h5>@Html.ActionLink("Sell on auction", "SellCreature", "Auction", new { userCreatureId = userCreature.Id }, new { @role = "menuitem" })</h5></li>
                         }
 
                     </ul>

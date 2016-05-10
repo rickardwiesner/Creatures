@@ -33,6 +33,23 @@ namespace ClashOfTheCharacters.Controllers
             return View(userViewModel);
         }
 
+        public ActionResult RemoveFromSquad(int userCreatureId)
+        {
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Find(userId);
+
+            if (user.UserCreatures.Any(uc => uc.Id == userCreatureId && uc.InSquad) && !db.Travels.Any(t => t.UserId == userId) && !db.CurrentLands.Any(cl => cl.UserId == userId) && user.UserCreatures.Count(uc => uc.InSquad) > 1)
+            {
+                var userCreature = user.UserCreatures.First(uc => uc.Id == userCreatureId);
+                userCreature.InSquad = false;
+                userCreature.Slot = 0;
+
+                db.SaveChanges();
+            }
+
+            return Redirect(Request.UrlReferrer.PathAndQuery);
+        }
+
         public ActionResult ChangeSlot(int originalUserCreatureId, int replacerUserCreatureId)
         {
             var userId = User.Identity.GetUserId();

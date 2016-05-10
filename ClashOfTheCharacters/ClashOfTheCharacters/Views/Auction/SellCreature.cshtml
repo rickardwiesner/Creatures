@@ -19,7 +19,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.StartPrice, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.StartPrice, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.StartPrice, new { htmlAttributes = new { @class = "form-control", @min = 50 } })
                 @Html.ValidationMessageFor(model => model.StartPrice, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -27,15 +27,16 @@
         <div class="form-group">
             @Html.LabelFor(model => model.BuyoutPrice, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.BuyoutPrice, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.BuyoutPrice, new { htmlAttributes = new { @class = "form-control", @min = 100} })
                 @Html.ValidationMessageFor(model => model.BuyoutPrice, "", new { @class = "text-danger" })
+                <p class="text-danger">@ViewBag.Error</p>
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.Hours, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Hours, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Hours, new { htmlAttributes = new { @class = "form-control", @min = 1, @max = 24 } })
                 @Html.ValidationMessageFor(model => model.Hours, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -43,7 +44,7 @@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Sell" style="min-width: 100px" class="btn btn-custom" />
-                <p>5% Tax</p>
+                <label>5% tax on all sales</label>
             </div>
         </div>
     </div>

@@ -12,12 +12,16 @@ namespace ClashOfTheCharacters.Models
         public string UserId { get; set; }
         public virtual ApplicationUser User { get; set; }
 
-        public int LandId { get; set; }
-        public virtual Land Land { get; set; }
+        public int StageId { get; set; }
+        public virtual Stage Stage { get; set; }
 
         public bool Won { get; set; }
 
         public bool Finished { get; set; }
+
+        public int XpEarned { get; set; }
+
+        public int GoldEarned { get; set; }
 
         public virtual ICollection<WildBattleCreature> WildBattleCreatures { get; set; }
         public virtual ICollection<WildBattleAction> WildBattleActions { get; set; }

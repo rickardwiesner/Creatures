@@ -1,7 +1,9 @@
-﻿@model ClashOfTheCharacters.Models.SellShopView
+﻿@using ClashOfTheCharacters.Helpers
+
+@model ClashOfTheCharacters.Models.SellShopView
 
 @{
-    ViewBag.Title = "Shopping";
+    ViewBag.Title = "Shop";
     int counter = 0;
 }
 <div class="row">
@@ -10,132 +12,90 @@
         counter++;
 
         <div class="col-md-4 col-sm-4 col-xs-6">
-            <div class="col-md-12 col-sm-12 col-xs-12 gamecard">
-                <h4>
-                    <strong>@Html.DisplayFor(modelItem => item.Name)</strong>
-                    <span> @Html.DisplayFor(modelItem => item.Element)</span>
-                    
-                        <span> <div class="btn-group gamecard-element">
-    <a  class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span class="sr-only">Toggle Dropdown</span>
-        <span class="glyphicon glyphicon-list"></span>
-    </a>
-    <div class="dropdown-menu">
-        @if (Model.Gold >= item.Price && !Model.Travelling)
-        {
-            using (Html.BeginForm("Buy", "Shopping", FormMethod.Post))
-            {
-                @Html.AntiForgeryToken()
-                @Html.Hidden("id", item.Id)
-                <div class="dropdown-item">
-                    <input type="submit" value="Buy" class="btn btn-sm btn-primary"  />
-                </div>
-            }
-        }
 
-        else if (Model.Travelling)
-        {
-            <p class="dropdown-item">Can't trade while travelling</p>
-        }
+            <div class="dropdown text-right">
+                <button class="btn-link dropdown-toggle" type="button" id="creature-option" data-toggle="dropdown">
+                    <span class="fa fa-ellipsis-h fa-2x"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="creature-option">
 
-        else
-        {
-            <p class="dropdown-item">Not enough gold</p>
-        }
+                    @if (Model.Gold >= item.Price && !Model.Travelling)
+                    {
+                        using (Html.BeginForm("Buy", "Shopping", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.Hidden("id", item.Id)
+                            <li>
+                                <div class="dropdown-item">
+                                    <input type="submit" value="@string.Format("Buy ({0} Gold)", item.Price)" class="btn-link" />
+                                </div>
+                            </li>
+                            if (Model.UserCreatures.Any(uc => uc.CreatureId == item.Id))
+                            {
+                                <li>
+                                    <div class="dropdown-item">
+                                        <h5 class="text-warning" style="padding: 5px">
+                                            Warning! You can only have one of the same creature in squad
+                                        </h5>
+                                    </div>
+                                </li>
+                            }
+                        }
+                    }
 
-        @*<div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="#">Separated link</a>*@
-    </div>
-        </div></span>
-                </h4>
-                <img class="img-responsive gamecard-image" src="@Html.DisplayFor(modelItem => item.ImageUrl)") />
+                    else if (Model.Travelling)
+                    {
+                        <li><p class="dropdown-item">Can't trade while travelling</p></li>
+                    }
 
-                <div class="clearfix visible-lg"></div>
-                <div class="clearfix visible-sm"></div>
-                <div class="clearfix visible-md"></div>
-                <div class="clearfix visible-xs"></div>
+                    else
+                    {
+                        <li><p class="dropdown-item">Not enough gold</p></li>
+                    }
 
-                <div class="col-md-6 col-sm-6 col-xs-6 text-center">
-                    <p>Price: </p>
-                    <p>Attack: </p>
-                    <p>Defense: </p>
-                    <p>Hp</p>
-                   
-                </div>
-                <div class="col-md-6 col-sm-6 col-xs-6 text-center">
-                    <p>@Html.DisplayFor(modelItem => item.Price)</p>
-                    <p>@Html.DisplayFor(modelItem => item.BaseAttack)</p>
-                    <p>@Html.DisplayFor(modelItem => item.BaseDefense)</p>
-                    <p>@Html.DisplayFor(modelItem => item.BaseHp)</p>
-                </div>
+                </ul>
             </div>
-            @*</a>*@
-        </div>
 
-        if (counter % 3 == 0)
-        {
-            <div class="clearfix visible-sm"></div>
-            <div class="clearfix visible-md"></div>
-            <div class="clearfix visible-lg"></div>
-        }
-
-        if (counter % 2 == 0)
-        {
-            <div class="clearfix visible-xs"></div>
-        }
-    }
-</div>   
-
-<h2>Sell</h2>
-
-@{ counter = 0; }
- 
-<div class="row">
-    @foreach (var item in Model.SellItems)
-    {
-        counter++;
-
-        <div class="col-md-4 col-sm-4 col-xs-6">
             <div class="col-md-12 col-sm-12 col-xs-12 gamecard">
                 <h4>
-                    <strong>@Html.DisplayFor(modelItem => item.Name)</strong>
-                    <span> @Html.DisplayFor(modelItem => item.Element)</span>
+                    <span><img class="gamecard-rarity" src="@Helper.GetRarityUrl(item.Rarity)" /></span>
+                    <strong>@item.Name</strong>
+                    <span><img class="gamecard-element" src="@Helper.GetElementUrl(item.Element)" /></span>
 
                     <span>
-                        <div class="btn-group gamecard-element">
-                            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="sr-only">Toggle Dropdown</span>
-                                <span class="glyphicon glyphicon-list"></span>
-                            </a>
-                            <div class="dropdown-menu">
-                                @if (Model.SellItems.Count > 1 && !Model.Travelling)
-                                {
-                                    using (Html.BeginForm("Sell", "Shopping", FormMethod.Post))
-                                    {
-                                        @Html.AntiForgeryToken()
-                                        @Html.Hidden("id", item.Id)
-                                        <div class="dropdown-item">
-                                            <input type="submit" value="Sell" class="btn btn-sm btn-primary" />
-                                        </div>
-                                    }
-                                }
+                        @*<div class="btn-group gamecard-element">
+                                <a  class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                        <span class="glyphicon glyphicon-list"></span>
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        @if (Model.Gold >= item.Price && !Model.Travelling)
+                                        {
+                                            using (Html.BeginForm("Buy", "Shopping", FormMethod.Post))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                @Html.Hidden("id", item.Id)
+                                                <div class="dropdown-item">
+                                                    <input type="submit" value="Buy" class="btn btn-sm btn-primary"  />
+                                                </div>
+                                            }
+                                        }
 
-                                else if (Model.Travelling)
-                                {
-                                    <p class="dropdown-item">Can't trade while travelling</p>
-                                }
+                                        else if (Model.Travelling)
+                                        {
+                                            <p class="dropdown-item">Can't trade while travelling</p>
+                                        }
 
-                                else
-                                {
-                                    <p class="dropdown-item">Need to have at least one creature</p>
-                                }
-                                @*<div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Separated link</a>*@
-                            </div>
-                        </div>
+                                        else
+                                        {
+                                            <p class="dropdown-item">Not enough gold</p>
+                                        }
+
+                                    </div>
+                            </div>*@
                     </span>
                 </h4>
-                <img class="img-responsive gamecard-image" src="@Html.DisplayFor(modelItem => item.ImageUrl)"/>
+                <img class="img-responsive gamecard-image" src="@Html.DisplayFor(modelItem => item.ImageUrl)" ) />
 
                 <div class="clearfix visible-lg"></div>
                 <div class="clearfix visible-sm"></div>
@@ -173,4 +133,89 @@
     }
 </div>
 
-   
+@*<h2>Sell</h2>
+
+    @{ counter = 0; }
+
+    <div class="row">
+        @foreach (var item in Model.SellItems)
+        {
+            counter++;
+
+            <div class="col-md-4 col-sm-4 col-xs-6">
+                <div class="col-md-12 col-sm-12 col-xs-12 gamecard">
+                    <h4>
+                        <strong>@Html.DisplayFor(modelItem => item.Name)</strong>
+                        <span> @Html.DisplayFor(modelItem => item.Element)</span>
+
+                        <span>
+                            <div class="btn-group gamecard-element">
+                                <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                    <span class="glyphicon glyphicon-list"></span>
+                                </a>
+                                <div class="dropdown-menu">
+                                    @if (Model.SellItems.Count > 1 && !Model.Travelling)
+                                    {
+                                        using (Html.BeginForm("Sell", "Shopping", FormMethod.Post))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            @Html.Hidden("id", item.Id)
+                                            <div class="dropdown-item">
+                                                <input type="submit" value="Sell" class="btn btn-sm btn-primary" />
+                                            </div>
+                                        }
+                                    }
+
+                                    else if (Model.Travelling)
+                                    {
+                                        <p class="dropdown-item">Can't trade while travelling</p>
+                                    }
+
+                                    else
+                                    {
+                                        <p class="dropdown-item">Need to have at least one creature</p>
+                                    }
+
+                                </div>
+                            </div>
+                        </span>
+                    </h4>
+                    <img class="img-responsive gamecard-image" src="@Html.DisplayFor(modelItem => item.ImageUrl)"/>
+
+                    <div class="clearfix visible-lg"></div>
+                    <div class="clearfix visible-sm"></div>
+                    <div class="clearfix visible-md"></div>
+                    <div class="clearfix visible-xs"></div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-6 text-center">
+                        <p>Price: </p>
+                        <p>Attack: </p>
+                        <p>Defense: </p>
+                        <p>Hp</p>
+
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6 text-center">
+                        <p>@Html.DisplayFor(modelItem => item.Price)</p>
+                        <p>@Html.DisplayFor(modelItem => item.BaseAttack)</p>
+                        <p>@Html.DisplayFor(modelItem => item.BaseDefense)</p>
+                        <p>@Html.DisplayFor(modelItem => item.BaseHp)</p>
+                    </div>
+                </div>
+            </div>
+
+            if (counter % 3 == 0)
+            {
+                <div class="clearfix visible-sm"></div>
+                <div class="clearfix visible-md"></div>
+                <div class="clearfix visible-lg"></div>
+            }
+
+            if (counter % 2 == 0)
+            {
+                <div class="clearfix visible-xs"></div>
+            }
+        }
+    </div>*@
+
+

@@ -20,17 +20,31 @@
         <div class="col-md-4">
             @Html.ActionLink("Targets", "Targets", null, new { @class = "btn btn-custom btn-block" })
         </div>
+        <div class="col-md-12">
+            <div class="dropdown text-right">
+                <button class="btn-link dropdown-toggle" type="button" id="creature-option" data-toggle="dropdown">
+                    <span class="fa fa-ellipsis-h fa-2x"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="creature-option">
+                    <li>
+                        @Html.ActionLink("Clear all expired targets", "ClearTargets")
+                    </li>
+                    <li>
+                        @Html.ActionLink("Clear all expired sales", "ClearSales")
+                    </li>
+                </ul>
+            </div>
+        </div>
+        @if (Model.Count() == 0)
+        {
+            <div class="col-md-12">
+                <h3 class="text-center">Nothing to show</h3>
+            </div>
+        }
     </div>
-
-
-    @if (Model.Count() == 0)
-    {
-        <h3>Nothing to show</h3>
-    }
 
     @foreach (var auctionCreature in Model)
     {
-            <!-- Trigger the modal with a button -->
         <div class="col-md-12 col-xs-12 container-auction">
             <div class="col-md-3 col-xs-4">
                 <button type="button" class="btn-none" data-toggle="modal" data-target="#gamecard-modal-@auctionCreature.Id">
@@ -52,49 +66,111 @@
                 </button>
             </div>
             <div class="col-md-9 col-xs-8">
-
-                <div class="col-md-12 col-xs-12">
-                    <h5>
-                        @(auctionCreature.Finished ? "Finished" : "Time Remaining: " + @Helper.GetRemainingTime(auctionCreature.EndTime))
-
-                        @if (auctionCreature.CurrentBidder == user)
+                <div class="col-md-12">
+                    <div class="col-md-4 col-xs-4">
+                        <h5>Time Remaining</h5>
+                    </div>
+                    <div class="col-md-4 col-xs-4">
+                        <h5>@(auctionCreature.Finished ? "Expired" : @Helper.GetRemainingTime(auctionCreature.EndTime))</h5>
+                    </div>
+                    <div class="col-md-4 col-xs-4">
+                        @if (auctionCreature.CurrentBidder == user || auctionCreature.Owner == user && auctionCreature.Finished && auctionCreature.CurrentBid != null)
                         {
-                            <span class="fa fa-check text-success pull-right"></span>
+                            <h5><span class="fa fa-check text-success pull-right"></span></h5>
                         }
 
-                        @if (user.AuctionTargets.Any(at => at.AuctionCreature == auctionCreature))
+                        else if (auctionCreature.Owner == user && auctionCreature.Finished && auctionCreature.CurrentBid == null)
                         {
-                            <span class="fa fa-binoculars pull-right"></span>
+                            <h5><span class="fa fa-remove text-danger pull-right"></span></h5>
                         }
 
-                    </h5>
-                    <h5>Start Price: @auctionCreature.StartPrice</h5>
-                    <h5>@Html.AttributeEncode(auctionCreature.Finished ? "End Price: " : "Current Bid: ")@(auctionCreature.CurrentBid == null ? "None" : auctionCreature.CurrentBid.ToString())</h5>
+                        @if (user.AuctionTargets.Any(at => at.AuctionCreature == auctionCreature) && auctionCreature.Owner != user)
+                        {
+                            <h5><span class="fa fa-binoculars pull-right"></span></h5>
+                        }
+                    </div>
                 </div>
 
-                @if (auctionCreature.Owner != user && !auctionCreature.Finished)
-                {
-                    <div class="col-md-12 margin-bottom-10">
-                        <form class="form-inline" action="/Auction/BidCreature" method="post" role="form">
+                <div class="col-md-12 col-xs-12">
+                    <div class="col-md-4 col-sm-4 col-xs-6">
+                        <h5>Start Price</h5>
+                    </div>
+                    <div class="col-md-8 col-sm-8 col-xs-6">
+                        <h5>@auctionCreature.StartPrice</h5>
+                    </div>
+                </div>
+                <div class="col-md-12 col-xs-12 margin-bottom-10">
+                    <div class="col-md-4 col-sm-4 col-xs-6">
+                        <h5>@Html.AttributeEncode(auctionCreature.Finished ? "End Price" : "Current Bid")</h5>
+                    </div>
+                    <div class="col-md-4 col-sm-8 col-xs-6">
+                        <h5>@(auctionCreature.CurrentBid == null ? "None" : auctionCreature.CurrentBid.ToString())</h5>
+                    </div>
+                    @if (user.AuctionTargets.Any(at => at.AuctionCreature == auctionCreature) && auctionCreature.Owner != user)
+                    {
+                        <form role="form" action="/Auction/UntargetCreature" method="post">
                             <input hidden value="@auctionCreature.Id" name="auctionCreatureId" />
-                            <div class="form-group">
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-custom form-control">Untarget</button>
+                            </div>
+                        </form>
+                    }
+
+                    else if (auctionCreature.Owner != user)
+                    {
+                        <form role="form" action="/Auction/TargetCreature" method="post">
+                            <input hidden value="@auctionCreature.Id" name="auctionCreatureId" />
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-custom form-control">Target</button>
+                            </div>
+                        </form>
+                    }
+
+                </div>
+
+                @if (!auctionCreature.Finished && auctionCreature.Owner != user)
+                {
+                    <div class="col-md-12 col-xs-12 margin-bottom-10">
+                        <div class="col-md-4">
+                            <h5>Bid</h5>
+                        </div>
+                        <form action="/Auction/BidCreature" method="post" role="form">
+                            <input hidden value="@auctionCreature.Id" name="auctionCreatureId" />
+                            <div class="col-md-4">
                                 <input type="number" name="amount" class="form-control" min="@Html.AttributeEncode(auctionCreature.CurrentBid == null ? auctionCreature.StartPrice : auctionCreature.CurrentBid + 50)" max="@Html.AttributeEncode(auctionCreature.BuyoutPrice > ViewBag.Gold || auctionCreature.BuyoutPrice == null ? ViewBag.Gold : auctionCreature.BuyoutPrice - 1)" value="@Html.AttributeEncode(auctionCreature.CurrentBid == null ? auctionCreature.StartPrice : auctionCreature.CurrentBid + 50)">
                             </div>
-                            <button type="submit" class="btn btn-custom form-control">Bid</button>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-custom form-control">Place Bid</button>
+                            </div>
                         </form>
                     </div>
+                }
 
-                    if (auctionCreature.BuyoutPrice != null)
-                    {
-                        <div class="col-md-12 margin-bottom-10">
+                @if (auctionCreature.BuyoutPrice != null)
+                {
+                    <div class="col-md-12 col-xs-12">
+                        <div class="col-md-4 col-xs-6">
+                            <h5>Buyout Price</h5>
+                        </div>
+                        <div class="col-md-4 col-xs-6">
+                            <h5>@auctionCreature.BuyoutPrice</h5>
+                        </div>
+                        @if (!auctionCreature.Finished && auctionCreature.Owner != user)
+                        {
                             <form role="form" action="/Auction/BuyoutCreature" method="post">
                                 <input hidden value="@auctionCreature.Id" name="auctionCreatureId" />
-                                <h5>Buyout Price: @auctionCreature.BuyoutPrice</h5>
-                                <button id="buyout" type="submit" class="btn btn-custom">Buy Now</button>
+                                <div class="col-md-4">
+                                    <button type="submit" class="btn btn-custom form-control">Buy Now</button>
+                                </div>
                             </form>
-                        </div>
-                    }
+                        }
+
+                    </div>
                 }
+
+            </div>
+            <div class="col-md-12 col-xs-12">
+                <hr />
             </div>
         </div>
 
@@ -138,7 +214,9 @@
                             <p>Kills: @auctionCreature.UserCreature.Kills</p>
                             <p>Deaths: @auctionCreature.UserCreature.Deaths</p>
                         </div>
-                        <h5 class="text-center text-info">Current Trainer: @auctionCreature.Owner.UserName</h5>
+                        <div class="col-md-12 margin-top-20">
+                            <h5 class="text-center text-info">Seller: @auctionCreature.Owner.UserName</h5>
+                        </div>
                     </div>
                 </div>
 

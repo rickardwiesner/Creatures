@@ -3,7 +3,7 @@ namespace ClashOfTheCharacters.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class added : DbMigration
+    public partial class InitialCreate : DbMigration
     {
         public override void Up()
         {
@@ -240,12 +240,26 @@ namespace ClashOfTheCharacters.Migrations
                         Element = c.Int(nullable: false),
                         Cost = c.Int(nullable: false),
                         Hours = c.Int(nullable: false),
-                        Levels = c.Int(nullable: false),
-                        GoldReward = c.Int(nullable: false),
-                        XpReward = c.Int(nullable: false),
                         ImageUrl = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.Stages",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Level = c.Int(nullable: false),
+                        PositionX = c.Int(nullable: false),
+                        PositionY = c.Int(nullable: false),
+                        GoldReward = c.Int(nullable: false),
+                        XpReward = c.Int(nullable: false),
+                        NumberOfCreatures = c.Int(nullable: false),
+                        LandId = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Lands", t => t.LandId, cascadeDelete: true)
+                .Index(t => t.LandId);
             
             CreateTable(
                 "dbo.AspNetUserLogins",
@@ -425,15 +439,15 @@ namespace ClashOfTheCharacters.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         UserId = c.String(maxLength: 128),
-                        LandId = c.Int(nullable: false),
+                        StageId = c.Int(nullable: false),
                         Won = c.Boolean(nullable: false),
                         Finished = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Lands", t => t.LandId, cascadeDelete: true)
+                .ForeignKey("dbo.Stages", t => t.StageId, cascadeDelete: true)
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId)
                 .Index(t => t.UserId)
-                .Index(t => t.LandId);
+                .Index(t => t.StageId);
             
         }
         
@@ -444,7 +458,7 @@ namespace ClashOfTheCharacters.Migrations
             DropForeignKey("dbo.WildBattleCreatures", "WildBattleId", "dbo.WildBattles");
             DropForeignKey("dbo.WildBattleActions", "WildBattleId", "dbo.WildBattles");
             DropForeignKey("dbo.WildBattles", "UserId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.WildBattles", "LandId", "dbo.Lands");
+            DropForeignKey("dbo.WildBattles", "StageId", "dbo.Stages");
             DropForeignKey("dbo.WildBattleCreatures", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.WildBattleCreatures", "CreatureId", "dbo.Creatures");
             DropForeignKey("dbo.Travels", "UserId", "dbo.AspNetUsers");
@@ -472,6 +486,7 @@ namespace ClashOfTheCharacters.Migrations
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.ClearedLands", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.ClearedLands", "LandId", "dbo.Lands");
+            DropForeignKey("dbo.Stages", "LandId", "dbo.Lands");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AuctionTargets", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AuctionTargets", "AuctionCreatureId", "dbo.AuctionCreatures");
@@ -481,7 +496,7 @@ namespace ClashOfTheCharacters.Migrations
             DropForeignKey("dbo.AuctionCreatures", "OwnerId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AuctionCreatures", "CurrentBidderId", "dbo.AspNetUsers");
             DropForeignKey("dbo.Attacks", "BattleId", "dbo.Battles");
-            DropIndex("dbo.WildBattles", new[] { "LandId" });
+            DropIndex("dbo.WildBattles", new[] { "StageId" });
             DropIndex("dbo.WildBattles", new[] { "UserId" });
             DropIndex("dbo.WildBattleCreatures", new[] { "WildBattleId" });
             DropIndex("dbo.WildBattleCreatures", new[] { "UserId" });
@@ -504,6 +519,7 @@ namespace ClashOfTheCharacters.Migrations
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
+            DropIndex("dbo.Stages", new[] { "LandId" });
             DropIndex("dbo.ClearedLands", new[] { "LandId" });
             DropIndex("dbo.ClearedLands", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
@@ -537,6 +553,7 @@ namespace ClashOfTheCharacters.Migrations
             DropTable("dbo.UnlockedLands");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetUserLogins");
+            DropTable("dbo.Stages");
             DropTable("dbo.Lands");
             DropTable("dbo.ClearedLands");
             DropTable("dbo.AspNetUserClaims");

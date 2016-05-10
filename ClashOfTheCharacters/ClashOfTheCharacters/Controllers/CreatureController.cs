@@ -70,39 +70,58 @@ namespace ClashOfTheCharacters.Controllers
             {
                 var userCreature = user.UserCreatures.First(uc => uc.Id == userCreatureId);
 
-                for (int i = 1; i <= 6; i++)
+                if (!user.UserCreatures.Any(uc => uc.CreatureId == userCreature.CreatureId && uc.InSquad))
                 {
-                    if (!user.UserCreatures.Where(uc => uc.InSquad).Any(uc => uc.Slot == i))
+                    for (int i = 1; i <= 6; i++)
                     {
-                        slot = i;
-                        break;
+                        if (!user.UserCreatures.Where(uc => uc.InSquad).Any(uc => uc.Slot == i))
+                        {
+                            slot = i;
+                            break;
+                        }
                     }
+
+                    userCreature.InSquad = true;
+                    userCreature.Slot = slot;
+
+                    db.SaveChanges();
                 }
-
-                userCreature.InSquad = true;
-                userCreature.Slot = slot;
-
-                db.SaveChanges();
             }
 
             return RedirectToAction("Index");
         }
 
-        public ActionResult RemoveFromSquad(int userCreatureId)
+        public ActionResult Sell(int userCreatureId)
         {
             var userId = User.Identity.GetUserId();
             var user = db.Users.Find(userId);
 
-            if (user.UserCreatures.Any(uc => uc.Id == userCreatureId && uc.InSquad) && !db.Travels.Any(t => t.UserId == userId) && !db.CurrentLands.Any(cl => cl.UserId == userId) && user.UserCreatures.Count(uc => uc.InSquad) > 1)
+            if (user.UserCreatures.Count > 1 && user.UserCreatures.Any(uc => uc.Id == userCreatureId && !uc.InSquad && !uc.InAuction))
             {
-                var userCreature = user.UserCreatures.First(uc => uc.Id == userCreatureId);
-                userCreature.InSquad = false;
-                userCreature.Slot = 0;
+                var userCreature = user.UserCreatures.First(uc => uc.Id == userCreatureId && !uc.InSquad && !uc.InAuction);
+                return View(userCreature);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ActionName("Sell")]
+        public ActionResult Sell_Post(int userCreatureId)
+        {
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Find(userId);
+
+            if (user.UserCreatures.Count > 1 && user.UserCreatures.Any(uc => uc.Id == userCreatureId && !uc.InSquad && !uc.InAuction))
+            {
+                var userCreature = user.UserCreatures.First(uc => uc.Id == userCreatureId && !uc.InSquad && !uc.InAuction);
+                user.Gold += userCreature.Worth;
+                db.UserCreatures.Remove(userCreature);
 
                 db.SaveChanges();
             }
 
-            return RedirectToAction("/Index");
+            return RedirectToAction("Index");
         }
     }
 }
