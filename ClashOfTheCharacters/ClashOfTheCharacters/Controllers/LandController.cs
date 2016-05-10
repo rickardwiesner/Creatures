@@ -27,6 +27,7 @@ namespace ClashOfTheCharacters.Controllers
             }
 
             var currentLand = db.CurrentLands.First(cl => cl.UserId == userId);
+            ViewBag.OnGoingBattle = db.WildBattles.Any(wb => wb.UserId == userId) ? true : false;
 
             return View(currentLand);
         }
@@ -42,6 +43,13 @@ namespace ClashOfTheCharacters.Controllers
 
             if (!db.WildBattles.Any(wb => wb.UserId == userId))
             {
+                var user = db.Users.Find(userId);
+
+                if (user.Stamina < 10)
+                {
+                    return RedirectToAction("Index");
+                }
+
                 wildBattleService.InitializeBattle(userId);
             }
 

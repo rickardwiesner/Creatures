@@ -33,6 +33,11 @@ namespace ClashOfTheCharacters.Controllers
             var user = db.Users.Find(userId);
             var land = db.Lands.Find(id);
 
+            if (user.UserCreatures.Count == 0)
+            {
+                return RedirectToAction("Select", "Creature");
+            }
+
             if (db.Travels.Any(t => t.UserId == userId))
             {
                 return RedirectToAction("Travelling");

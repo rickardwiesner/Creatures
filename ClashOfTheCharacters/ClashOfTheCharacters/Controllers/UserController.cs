@@ -148,6 +148,12 @@ namespace ClashOfTheCharacters.Controllers
             var userId = User.Identity.GetUserId();
             var user = db.Users.Find(userId);
 
+            if ((DateTimeOffset.Now - user.LastRainbowGemTime).TotalHours >= 24 )
+            {
+                user.RainbowGems++;
+                user.LastRainbowGemTime = DateTimeOffset.Now;
+            }
+
             user.LastActive = DateTimeOffset.Now;
             db.SaveChanges();
 

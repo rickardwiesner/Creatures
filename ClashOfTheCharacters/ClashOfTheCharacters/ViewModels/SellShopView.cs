@@ -16,5 +16,11 @@ namespace ClashOfTheCharacters.Models
         public int Gold { get; set; }
 
         public bool Travelling { get; set; }
+
+        public int RainbowGems { get; set; }
+
+        public int Stamina { get; set; }
+
+        public int MaxStamina { get; set; }
     }
 }

@@ -26,10 +26,13 @@ namespace ClashOfTheCharacters.Controllers
 
             var sellShop = new SellShopView()
             {
-                ShoppingItems = db.Creatures.Where(c => /*!userCharacters.Contains(x.Id) && */c.Rarity != Rarity.Legendary && c.Rarity != Rarity.Epic).ToList(),
+                ShoppingItems = db.Creatures.Where(c => /*!userCharacters.Contains(x.Id) && */c.Rarity != Rarity.Legendary && c.Rarity != Rarity.Epic).OrderBy(c => c.Price).ToList(),
                 //SellItems = user.UserCreatures.Select(o => o.Creature).ToList(),
                 UserCreatures = user.UserCreatures,
                 Gold = user.Gold,
+                RainbowGems = user.RainbowGems,
+                Stamina = user.Stamina,
+                MaxStamina = user.MaxStamina,
                 Travelling = db.Travels.Any(wb => wb.UserId == userId) || db.CurrentLands.Any(cl => cl.UserId == userId)
             };
 
@@ -69,6 +72,23 @@ namespace ClashOfTheCharacters.Controllers
 
                 user.Gold += worth;
                 db.UserCreatures.Remove(userCreature);
+
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult FullStamina()
+        {
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Find(userId);
+
+            if (user.RainbowGems >= 1)
+            {
+                user.Stamina = user.MaxStamina;
+                user.RainbowGems -= 1;
 
                 db.SaveChanges();
             }
