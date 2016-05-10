@@ -2,76 +2,37 @@
 
 @{
     ViewBag.Title = "Land";
-    int y = 0;
-    int x = 0;
-    int shopY = 300;
-    int shopX = 100;
 }
 
-<div class="row @Html.AttributeEncode(Model.Land.Element.ToString().ToLower()) land margin-bottom-20">
+<div class="row land margin-bottom-20" style="background-image: url(@Model.Land.BackgroundImageUrl)">
     <div class="margin-bottom-20">
         <a href="/Map/Index"><span class="back-to-map"><img src="~/Images/Land/map.png" /></span></a>
         <h2 class="text-center">
             The Land Of @Model.Land.Element           
         </h2>
     </div>
-    
-    @for (int i = 1; i <= Model.CurrentLevel; i++)
+
+    @foreach (var stage in Model.Land.Stages)
     {
-        switch (i)
-        {
-            case 1:
-                y = 150;
-                x = 220;
-                break;
-
-            case 2:
-                y = 220;
-                x = 235;
-                break;
-
-            case 3:
-                y = 260;
-                x = 300;
-                break;
-
-            case 4:
-                y = 300;
-                x = 370;
-                break;
-
-            case 5:
-                y = 370;
-                x = 415;
-                break;
-
-            case 6:
-                y = 440;
-                x = 440;
-                break;
-
-        }
-
-        if (Model.CurrentLevel == i)
+        if (Model.CurrentLevel == stage.Level)
         {
             <a href="/Land/Battle/@Model.Id">
-                <span class="fa fa-4x fa-question-circle text-danger" style="@Html.AttributeEncode(string.Format("top: {0}px; left: {1}px", y, x))"></span>
+                <span class="fa fa-4x fa-question-circle text-danger" style="@Html.AttributeEncode(string.Format("top: {0}px; left: {1}px", stage.PositionY, stage.PositionX))"></span>
             </a>
         }
 
-        else if (Model.CurrentLevel > i)
+        else if (Model.CurrentLevel > stage.Level)
         {
-            <span class="fa fa-4x fa-check-circle" style="@Html.AttributeEncode(string.Format("top: {0}px; left: {1}px", y, x))"></span>
+            <span class="fa fa-4x fa-check-circle" style="@Html.AttributeEncode(string.Format("top: {0}px; left: {1}px", stage.PositionY, stage.PositionX))"></span>
         }
-
-        <a href="/Map/Shop">
-            <img class="shop" src="/Images/Land/shop.png" style="@Html.AttributeEncode(string.Format("top: {0}px; left: {1}px", shopY, shopX))"/>
-        </a>
-
     }
+
+    <a href="/Map/Shop">
+        <img class="shop" src="/Images/Land/shop.png" style="@Html.AttributeEncode(string.Format("top: {0}px; left: {1}px", Model.Land.ShopPositionY, Model.Land.ShopPositionX))" />
+    </a>
+
     <form action="/Land/Leave" method="post" class="form-leave">
         <input type="submit" class="btn btn-custom-dark" value="Leave" />
         <label>You will not receive any compensation</label>
     </form>
-
 </div>

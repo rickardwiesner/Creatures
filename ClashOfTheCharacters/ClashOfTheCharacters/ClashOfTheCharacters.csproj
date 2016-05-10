@@ -198,9 +198,9 @@
     <Compile Include="Helpers\Helper.cs" />
     <Compile Include="Helpers\ItemType.cs" />
     <Compile Include="Helpers\Rarity.cs" />
-    <Compile Include="Migrations\201605082119093_added!.cs" />
-    <Compile Include="Migrations\201605082119093_added!.Designer.cs">
-      <DependentUpon>201605082119093_added!.cs</DependentUpon>
+    <Compile Include="Migrations\201605091634322_InitialCreate.cs" />
+    <Compile Include="Migrations\201605091634322_InitialCreate.Designer.cs">
+      <DependentUpon>201605091634322_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -219,6 +219,7 @@
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\Land.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Stage.cs" />
     <Compile Include="Models\Travel.cs" />
     <Compile Include="Models\UnlockedLand.cs" />
     <Compile Include="Models\UserCreature.cs" />
@@ -310,11 +311,18 @@
     <Content Include="Images\Elements\water.png" />
     <Content Include="Images\Help\element_effect.png" />
     <Content Include="Images\Help\ScoreCount.PNG" />
+    <Content Include="Images\Land\air.jpg" />
     <Content Include="Images\Land\attack.png" />
     <Content Include="Images\Land\bag.PNG" />
-    <Content Include="Images\Land\landoffire.jpg" />
+    <Content Include="Images\Land\darkness.jpg" />
+    <Content Include="Images\Land\earth.jpg" />
+    <Content Include="Images\Land\fire.jpg" />
+    <Content Include="Images\Land\gravity.jpg" />
+    <Content Include="Images\Land\light.jpg" />
     <Content Include="Images\Land\map.png" />
+    <Content Include="Images\Land\pollution.jpg" />
     <Content Include="Images\Land\shop.png" />
+    <Content Include="Images\Land\water.jpg" />
     <Content Include="Images\Map\air.png" />
     <Content Include="Images\Map\darkness.png" />
     <Content Include="Images\Map\earth.png" />
@@ -325,7 +333,7 @@
     <Content Include="Images\Map\pollution.png" />
     <Content Include="Images\Map\water.png" />
     <Content Include="Images\Other\concrete.jpg" />
-    <Content Include="Images\Other\forest.jpg" />
+    <Content Include="Images\Land\nature.jpg" />
     <Content Include="Images\Other\gamecard.jpg" />
     <Content Include="Images\Other\map.jpg" />
     <Content Include="Images\Other\noprofilepicture.jpg" />
@@ -419,7 +427,6 @@
     <Content Include="Views\Creature\Index.cshtml" />
     <Content Include="Views\Creature\Select.cshtml" />
     <Content Include="Views\Auction\Index.cshtml" />
-    <Content Include="Views\Auction\Sell.cshtml" />
     <Content Include="Views\Auction\SellCreature.cshtml" />
     <Content Include="Views\Auction\Creatures.cshtml" />
     <Content Include="Views\Auction\Items.cshtml" />
@@ -439,8 +446,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201605082119093_added!.resx">
-      <DependentUpon>201605082119093_added!.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201605091634322_InitialCreate.resx">
+      <DependentUpon>201605091634322_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

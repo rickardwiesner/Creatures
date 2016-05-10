@@ -112,7 +112,7 @@
                         @if (Model.UserCreatures.Count > 1 && !Model.Travelling && userCreature != null)
                         {
                             <li class="divider"></li>
-                            <li>@Html.ActionLink("Remove from squad", "RemoveFromSquad", "Creature", new { userCreatureId = userCreature.Id }, null)</li>
+                            <li>@Html.ActionLink("Remove from squad", "RemoveFromSquad", "User", new { userCreatureId = userCreature.Id }, null)</li>
                         }
 
                     </ul>

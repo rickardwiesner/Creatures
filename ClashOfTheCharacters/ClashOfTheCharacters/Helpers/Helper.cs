@@ -89,12 +89,12 @@ namespace ClashOfTheCharacters.Helpers
 
             else if (timeSpan.TotalHours < 1)
             {
-                return timeSpan.Minutes + "m";
+                return string.Format("{0}m, {1}s", timeSpan.Minutes, timeSpan.Seconds);
             }
 
             else
             {
-                return string.Format("{0}h & {1}m", timeSpan.Hours, timeSpan.Minutes);
+                return string.Format("{0}h, {1}m", timeSpan.Hours, timeSpan.Minutes);
             }          
         }
 
